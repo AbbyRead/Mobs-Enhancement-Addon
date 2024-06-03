@@ -14,6 +14,6 @@ public abstract class BlazeEntityMixin extends EntityBlaze {
 
     @Override
     public int getMaxHealth() {
-        return MEAUtils.getGameProgressMobsLevel(this.worldObj) > 1 ? 24 : 20;
+        return this.worldObj == null ? 20 : MEAUtils.getGameProgressMobsLevel(this.worldObj) > 1 ? 24 : 20;
     }
 }

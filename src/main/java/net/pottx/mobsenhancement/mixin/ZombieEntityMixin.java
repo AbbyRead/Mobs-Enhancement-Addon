@@ -104,7 +104,7 @@ public abstract class ZombieEntityMixin extends EntityZombie implements ZombieEn
 
     @Override
     public int getMaxHealth() {
-        int i = MEAUtils.getGameProgressMobsLevel(this.worldObj);
+        int i = this.worldObj == null ? 0 : MEAUtils.getGameProgressMobsLevel(this.worldObj);
         return i > 1 ? 24 : (i > 0 ? 20 : 16);
     }
 

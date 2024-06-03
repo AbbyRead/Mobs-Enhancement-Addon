@@ -22,7 +22,7 @@ public abstract class SpiderEntityMixin extends EntitySpider
             at = @At(value = "TAIL")
     )
     private void addNaturalPotion(CallbackInfo ci) {
-        if (MEAUtils.getGameProgressMobsLevel(this.worldObj) > 0) {
+        if ((this.worldObj == null ? 0 : MEAUtils.getGameProgressMobsLevel(this.worldObj)) > 0) {
             int i = this.rand.nextInt(16);
 
             if (i == 0) {

@@ -122,3 +122,8 @@ This is a Minecraft Better Than Wolves addon that aims to slightly strengthen mo
 ### Passive Mobs
 
 - Villagers and pigs try to flee from explosions.
+- Pigs counterattack at high health.
+- Some cows counterattack to protect weaker ones in the herd.
+- Animals have enhanced fleeing AI.
+- Players' reputation decrease if they attack villagers in a village.
+- Villagers refuse to trade with players who have low reputation.

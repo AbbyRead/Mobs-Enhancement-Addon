@@ -37,7 +37,7 @@ public class EntityAISmartAttackOnCollide extends EntityAIBase
 
         if (var1 == null) {
             return false;
-        } else if (this.attacker instanceof ZombieEntity && ((ZombieEntityAccess) this.attacker).getIsBreakingBlock()){
+        } else if (this.attacker instanceof ZombieEntity && ((ZombieEntityAccess)this.attacker).getIsBreakingBlock()){
             return false;
         } else {
             this.shouldFlee = var1 instanceof EntityPlayer || var1.getAttackTarget() == this.attacker;
@@ -59,7 +59,7 @@ public class EntityAISmartAttackOnCollide extends EntityAIBase
             return false;
         } else {
             EntityLiving var1 = this.attacker.getAttackTarget();
-            return var1 == null ? false : (!this.entityTarget.isEntityAlive() ? false : (!this.field_75437_f ? !this.attacker.getNavigator().noPath() : this.attacker.isWithinHomeDistance(MathHelper.floor_double(this.entityTarget.posX), MathHelper.floor_double(this.entityTarget.posY), MathHelper.floor_double(this.entityTarget.posZ))));
+            return var1 == null ? false : (!this.entityTarget.isEntityAlive() ? false : this.attacker.isWithinHomeDistance(MathHelper.floor_double(this.entityTarget.posX), MathHelper.floor_double(this.entityTarget.posY), MathHelper.floor_double(this.entityTarget.posZ)));
         }
     }
 
@@ -72,7 +72,7 @@ public class EntityAISmartAttackOnCollide extends EntityAIBase
     public void resetTask()
     {
     	// FCMOD: Added
-    	if ( attacker.getAttackTarget() == entityTarget ) {
+    	if (attacker.getAttackTarget() == entityTarget) {
     		attacker.setAttackTarget(null);
     	}
     	// END FCMOD

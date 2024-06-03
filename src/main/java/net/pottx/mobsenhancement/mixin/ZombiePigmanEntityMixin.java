@@ -17,7 +17,7 @@ public abstract class ZombiePigmanEntityMixin extends EntityPigZombie {
     public void onLivingUpdate() {
         super.onLivingUpdate();
 
-        float f = MEAUtils.getGameProgressMobsLevel(this.worldObj) > 1 ? 6.0F : 1.5F;
+        float f = this.worldObj == null ? 1.5F : MEAUtils.getGameProgressMobsLevel(this.worldObj) > 1 ? 6.0F : 1.5F;
 
         EntityPlayer closestPlayer = this.worldObj.getClosestPlayerToEntity(this, f);
 

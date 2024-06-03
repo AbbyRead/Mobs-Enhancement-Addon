@@ -35,7 +35,7 @@ public abstract class EntitySkeletonMixin extends EntityMob {
             cancellable = true
     )
     private void returnSmallerMaxHealth(CallbackInfoReturnable<Integer> cir) {
-        int i = MEAUtils.getGameProgressMobsLevel(this.worldObj);
+        int i = this.worldObj == null ? 0 : MEAUtils.getGameProgressMobsLevel(this.worldObj);
         i = i > 1 ? 20 : (i > 0 ? 16 : 12);
 
         cir.setReturnValue(i);

@@ -30,7 +30,7 @@ public abstract class EntitySilverfishMixin extends EntityMob {
             cancellable = true
     )
     private void returnScaledHealth(CallbackInfoReturnable<Integer> cir) {
-        cir.setReturnValue(MEAUtils.getGameProgressMobsLevel(this.worldObj) > 0 ? 12 : 8);
+        cir.setReturnValue(this.worldObj == null ? 8 : MEAUtils.getGameProgressMobsLevel(this.worldObj) > 0 ? 12 : 8);
     }
 
     @Unique
