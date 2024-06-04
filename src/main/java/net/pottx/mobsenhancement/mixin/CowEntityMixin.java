@@ -27,7 +27,10 @@ public class CowEntityMixin extends EntityCow {
             method = "<init>",
             at = @At(value = "TAIL")
     )
-    private void addExtraTasks(CallbackInfo ci) {
+    private void addExtraDataAndTasks(CallbackInfo ci) {
+        dataWatcher.addObject(IS_AGGRESSIVE_DATA_WATCHER_ID, (byte)0);
+        if (this.rand.nextInt(2) == 0) this.setIsAggressive((byte)1);
+
         this.tasks.removeAllTasksOfClass(AnimalFleeBehavior.class);
         this.tasks.removeAllTasksOfClass(EntityAIWatchClosest.class);
 
@@ -36,15 +39,6 @@ public class CowEntityMixin extends EntityCow {
         } else {
             tasks.addTask(1, new AnimalCombatBehavior(this, 0.28F, 0.33F, ZombieEntity.class, 15));
         }
-    }
-
-    @Inject(
-            method = "<init>",
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/src/EntityAITasks;removeAllTasks()V")
-    )
-    private void addAggressiveData(CallbackInfo ci) {
-        dataWatcher.addObject(IS_AGGRESSIVE_DATA_WATCHER_ID, (byte)0);
-        if (this.rand.nextInt(2) == 0) this.setIsAggressive((byte)1);
     }
 
     @Unique

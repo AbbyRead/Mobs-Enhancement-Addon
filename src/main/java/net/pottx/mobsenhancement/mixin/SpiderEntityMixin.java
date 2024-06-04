@@ -37,7 +37,7 @@ public abstract class SpiderEntityMixin extends EntitySpider
 
     @Override
     public int getMaxHealth() {
-        int i = MEAUtils.getGameProgressMobsLevel(this.worldObj);
+        int i = this.worldObj == null ? 0 : MEAUtils.getGameProgressMobsLevel(this.worldObj);
         return i > 0 ? 20 : 16;
     }
 }
