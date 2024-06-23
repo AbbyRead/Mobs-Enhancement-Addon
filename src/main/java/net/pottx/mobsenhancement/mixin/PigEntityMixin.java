@@ -21,6 +21,12 @@ public abstract class PigEntityMixin extends EntityPig {
         super(par1World);
     }
 
+    @Override
+    public int getMeleeAttackStrength(Entity target) {
+        return 3;
+    }
+
+
     @Inject(
             method = "<init>",
             at = @At(value = "TAIL")
@@ -52,7 +58,7 @@ public abstract class PigEntityMixin extends EntityPig {
 
                 boolean isSpeciesSame = tempAnimal instanceof PigEntity;
 
-                if (!tempAnimal.isLivingDead && isSpeciesSame && !tempAnimal.hasAttackTarget())
+                if (!tempAnimal.isLivingDead && isSpeciesSame && !tempAnimal.hasAttackTarget() && tempAnimal.canEntityBeSeen(this))
                 {
                     tempAnimal.setAttackTarget((EntityLiving)attacker);
                 }

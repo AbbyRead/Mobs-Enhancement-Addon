@@ -88,7 +88,7 @@ public class AnimalCombatBehavior extends EntityAIBase {
             }
 
             this.attackTimer = Math.max(this.attackTimer - 1, 0);
-            double reach = theAnimal.width + targetEntity.width;
+            double reach = theAnimal.width + targetEntity.width + 0.5D;
 
             if ( targetEntity == this.theAnimal.riddenByEntity ) {
                 return;

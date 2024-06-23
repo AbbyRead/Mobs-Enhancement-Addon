@@ -105,6 +105,7 @@ This is a Minecraft Better Than Wolves addon that aims to slightly strengthen mo
 
 ### Endermen
 
+- Endermen sometimes try to teleport their attack target when they cannot reach them.
 - Players' gloom level rapidly increase when starring at an enderman.
 - Players' gloom level rapidly increase when being too close to an enderman.
 
@@ -124,6 +125,8 @@ This is a Minecraft Better Than Wolves addon that aims to slightly strengthen mo
 - Villagers and pigs try to flee from explosions.
 - Pigs counterattack at high health.
 - Some cows counterattack to protect weaker ones in the herd.
+- Players' view is locked on first person when head crabbed by a squid.
 - Animals have enhanced fleeing AI.
+- Animals panic when pushed by a player.
 - Players' reputation decrease if they attack villagers in a village.
 - Villagers refuse to trade with players who have low reputation.

@@ -23,6 +23,11 @@ public class CowEntityMixin extends EntityCow {
         super(par1World);
     }
 
+    @Override
+    public int getMeleeAttackStrength(Entity target) {
+        return 4;
+    }
+
     @Inject(
             method = "<init>",
             at = @At(value = "TAIL")
@@ -35,9 +40,9 @@ public class CowEntityMixin extends EntityCow {
         this.tasks.removeAllTasksOfClass(EntityAIWatchClosest.class);
 
         if (this.getIsAggressive() == (byte)1) {
-            tasks.addTask(1, new AnimalCombatBehavior(this, 0.28F, 0.33F, ZombieEntity.class, 4));
+            tasks.addTask(1, new AnimalCombatBehavior(this, 0.38F, 0.33F, ZombieEntity.class, 4));
         } else {
-            tasks.addTask(1, new AnimalCombatBehavior(this, 0.28F, 0.33F, ZombieEntity.class, 15));
+            tasks.addTask(1, new AnimalCombatBehavior(this, 0.38F, 0.33F, ZombieEntity.class, 15));
         }
     }
 
@@ -81,7 +86,7 @@ public class CowEntityMixin extends EntityCow {
 
                 boolean isSpeciesSame = tempAnimal instanceof CowEntity;
 
-                if (!tempAnimal.isLivingDead && isSpeciesSame && !tempAnimal.hasAttackTarget())
+                if (!tempAnimal.isLivingDead && isSpeciesSame && !tempAnimal.hasAttackTarget() && tempAnimal.canEntityBeSeen(this))
                 {
                     tempAnimal.setAttackTarget((EntityLiving)attacker);
                 }
