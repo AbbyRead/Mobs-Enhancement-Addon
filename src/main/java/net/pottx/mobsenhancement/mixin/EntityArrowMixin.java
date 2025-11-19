@@ -29,7 +29,7 @@ public abstract class EntityArrowMixin extends Entity implements IProjectile, En
         double initRelativeZ = target.posZ - owner.posZ;
         double relativeX = MEAUtils.predictRelativeXZOnRangedHit(target, initRelativeX, relativeY, initRelativeZ, arrowVelocity)[0];
         double relativeZ = MEAUtils.predictRelativeXZOnRangedHit(target, initRelativeX, relativeY, initRelativeZ, arrowVelocity)[1];
-        double horizontalDist = (double)MathHelper.sqrt_double(relativeX * relativeX + relativeZ * relativeZ);
+        double horizontalDist = MathHelper.sqrt_double(relativeX * relativeX + relativeZ * relativeZ);
 
         if (horizontalDist >= 1.0E-7D)
         {
