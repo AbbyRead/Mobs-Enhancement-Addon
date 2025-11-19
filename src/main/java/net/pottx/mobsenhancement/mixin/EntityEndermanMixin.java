@@ -9,7 +9,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(EntityEnderman.class)
 public class EntityEndermanMixin extends EntityMob {
-    @Shadow protected int teleportDelay;
+    @Shadow
+    private int teleportDelay;
 
     public EntityEndermanMixin(World par1World) {
         super(par1World);
@@ -88,7 +89,7 @@ public class EntityEndermanMixin extends EntityMob {
                         double var24 = x0 + (target.posX - x0) * var19 + (this.rand.nextDouble() - 0.5D) * (double)target.width * 2.0D;
                         double var26 = y0 + (target.posY - y0) * var19 + this.rand.nextDouble() * (double)target.height;
                         double var28 = z0 + (target.posZ - z0) * var19 + (this.rand.nextDouble() - 0.5D) * (double)target.width * 2.0D;
-                        this.worldObj.spawnParticle("portal", var24, var26, var28, (double)var21, (double)var22, (double)var23);
+                        this.worldObj.spawnParticle("portal", var24, var26, var28, var21, var22, var23);
                     }
                     this.worldObj.playSoundEffect(x0, y0, z0, "mob.endermen.portal", 1.0F, 1.0F);
                     target.playSound("mob.endermen.portal", 1.0F, 1.0F);
