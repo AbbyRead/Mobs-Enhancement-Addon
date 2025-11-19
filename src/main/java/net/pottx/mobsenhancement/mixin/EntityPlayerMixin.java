@@ -50,15 +50,16 @@ public abstract class EntityPlayerMixin extends EntityLivingBase implements ICom
     @Override
     public double getRealMotionZ() {return this.realMotionZ;}
 
+    @SuppressWarnings("rawtypes")
     @Unique
     public boolean isCloseToEnd() {
         List veryCloseDragons = this.worldObj.selectEntitiesWithinAABB(EntityDragon.class, this.boundingBox.expand(8.0D, 8.0D, 8.0D), IEntitySelector.selectAnything);
 
-        List veryCloseEndermen = this.worldObj.selectEntitiesWithinAABB(EndermanEntity.class, this.boundingBox.expand(4.0D, 4.0D, 4.0D), IEntitySelector.selectAnything);
+        List veryCloseEndermen = this.worldObj.selectEntitiesWithinAABB(EntityEnderman.class, this.boundingBox.expand(4.0D, 4.0D, 4.0D), IEntitySelector.selectAnything);
 
         if (!veryCloseDragons.isEmpty() || !veryCloseEndermen.isEmpty()) return true;
 
-        List closeEndermen = this.worldObj.selectEntitiesWithinAABB(EndermanEntity.class, this.boundingBox.expand(64.0D, 64.0D, 64.0D), IEntitySelector.selectAnything);
+        List closeEndermen = this.worldObj.selectEntitiesWithinAABB(EntityEnderman.class, this.boundingBox.expand(64.0D, 64.0D, 64.0D), IEntitySelector.selectAnything);
 
         Vec3 vLook = this.getLook(1F).normalize();
 
