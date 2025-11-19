@@ -46,22 +46,18 @@ public abstract class EntityPigMixin extends EntityAnimal {
         if (attacker instanceof EntityLiving) {
             this.setAttackTarget((EntityLiving)attacker);
 
-            List animalList = worldObj.getEntitiesWithinAABB( EntityAnimal.class, boundingBox.expand( 24D, 12D, 24D ) );
+            @SuppressWarnings("rawtypes") List animalList = worldObj.getEntitiesWithinAABB( EntityAnimal.class, boundingBox.expand( 24D, 12D, 24D ) );
 
-            Iterator itemIterator = animalList.iterator();
+	        for (Object o : animalList) {
+		        EntityAnimal tempAnimal = (EntityAnimal) o;
 
-            while (itemIterator.hasNext())
-            {
-                EntityAnimal tempAnimal = (EntityAnimal)itemIterator.next();
+		        boolean isSpeciesSame = tempAnimal instanceof EntityPig;
 
-                boolean isSpeciesSame = tempAnimal instanceof PigEntity;
+		        if (!tempAnimal.isLivingDead && isSpeciesSame && !tempAnimal.hasAttackTarget() && tempAnimal.canEntityBeSeen(this)) {
+			        tempAnimal.setAttackTarget((EntityLiving) attacker);
+		        }
 
-                if (!tempAnimal.isLivingDead && isSpeciesSame && !tempAnimal.hasAttackTarget() && tempAnimal.canEntityBeSeen(this))
-                {
-                    tempAnimal.setAttackTarget((EntityLiving)attacker);
-                }
-
-            }
+	        }
         }
     }
 }
