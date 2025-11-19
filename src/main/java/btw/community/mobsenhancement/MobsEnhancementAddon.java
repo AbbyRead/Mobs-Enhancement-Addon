@@ -5,11 +5,12 @@ import btw.BTWAddon;
 import net.minecraft.server.MinecraftServer;
 import net.pottx.mobsenhancement.MEAEffectManager;
 
+@SuppressWarnings("unused")
 public class MobsEnhancementAddon extends BTWAddon {
     private static MobsEnhancementAddon instance;
 
     private MobsEnhancementAddon() {
-        super("Mobs Enhancement", "0.3.1", "MEA");
+        super();
     }
 
     @Override
