@@ -10,7 +10,6 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.util.Iterator;
 import java.util.List;
 
 @Mixin(EntityEnderCrystal.class)
@@ -82,25 +81,22 @@ public abstract class EntityEnderCrystalMixin extends Entity implements EntityEn
         }
 
         if (this.getIsDried() == (byte) 1) {
-            List nearCrystals = this.worldObj.getEntitiesWithinAABB(EntityEnderCrystal.class, this.boundingBox.expand(32D, 32D, 32D));
+            @SuppressWarnings("rawtypes") List nearCrystals = this.worldObj.getEntitiesWithinAABB(EntityEnderCrystal.class, this.boundingBox.expand(32D, 32D, 32D));
             EntityEnderCrystal nearestChargerCrystal = null;
             double smallestDistance = Double.MAX_VALUE;
-            Iterator nearCrystalsIterator = nearCrystals.iterator();
 
-            while (nearCrystalsIterator.hasNext())
-            {
-                EntityEnderCrystal chargerCrystal = (EntityEnderCrystal)nearCrystalsIterator.next();
-                double distance = chargerCrystal.getDistanceSqToEntity(this);
+	        for (Object nearCrystal : nearCrystals) {
+		        EntityEnderCrystal chargerCrystal = (EntityEnderCrystal) nearCrystal;
+		        double distance = chargerCrystal.getDistanceSqToEntity(this);
 
-                if (((EntityEnderCrystalAccess) chargerCrystal).getIsDried() == (byte) 0 &&
-                        (chargerCrystal == this.chargingEnderCrystal || !((EntityEnderCrystalAccess) chargerCrystal).getIsOccupied()) &&
-                        !((EntityEnderCrystalAccess) chargerCrystal).getIsHealing() &&
-                        distance < smallestDistance)
-                {
-                    smallestDistance = distance;
-                    nearestChargerCrystal = chargerCrystal;
-                }
-            }
+		        if (((EntityEnderCrystalAccess) chargerCrystal).getIsDried() == (byte) 0 &&
+				        (chargerCrystal == this.chargingEnderCrystal || !((EntityEnderCrystalAccess) chargerCrystal).getIsOccupied()) &&
+				        !((EntityEnderCrystalAccess) chargerCrystal).getIsHealing() &&
+				        distance < smallestDistance) {
+			        smallestDistance = distance;
+			        nearestChargerCrystal = chargerCrystal;
+		        }
+	        }
 
             if (nearestChargerCrystal != this.chargingEnderCrystal) {
                 if (this.chargingEnderCrystal != null) ((EntityEnderCrystalAccess) this.chargingEnderCrystal).setIsOccupied(false);
