@@ -1,30 +1,35 @@
 {
   "schemaVersion": 1,
   "id": "mobsenhancement",
-  "version": "0.3.1",
-
+  "version": "${version}",
   "name": "Mobs Enhancement Addon",
   "description": "Slightly strengthens monsters.",
   "authors": [
     "Pot_Tx"
   ],
   "contact": {
-    "sources": "https://github.com/BTW-Community/Mobs-Enhancement-Addon"
+    "homepage": "https://github.com/BTW-Community/Mobs-Enhancement-Addon",
+    "sources": "https://github.com/BTW-Community/Mobs-Enhancement-Addon",
+    "issues": "https://github.com/BTW-Community/Mobs-Enhancement-Addon/issues"
   },
 
   "license": "MIT",
-
+  "icon": "mobsenhancement/thumbnail-to-icon.png",
   "environment": "*",
   "entrypoints": {
-    "init": [],
-    "preLaunch": []
+    "btw:addon": [
+      "btw.community.mobsenhancement.MobsEnhancementAddon"
+    ]
+  },
+  "custom": {
+    "btw:addon_prefix": "MEA"
   },
   "mixins": [
     "mobsenhancement.mixins.json"
   ],
-
   "depends": {
-    "fabricloader": ">=0.7.4"
+    "fabricloader": ">=0.14.25",
+    "minecraft": "1.6.4"
   },
   "suggests": {
     "flamingo": "*"
