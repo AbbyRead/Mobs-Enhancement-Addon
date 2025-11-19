@@ -1,5 +1,3 @@
-// FCMOD
-
 package net.pottx.mobsenhancement;
 
 import net.minecraft.src.*;
@@ -26,8 +24,7 @@ public class EntityAISmartArrowAttack extends EntityAIBase
     private boolean shouldFlee;
     private boolean isFleeing;
 
-	public EntityAISmartArrowAttack(IRangedAttackMob rangedAttackMob, float fMoveSpeed, int iAttackInterval, int iminHealth, float fAttackRange, float fFleeRange)
-	{
+	public EntityAISmartArrowAttack(IRangedAttackMob rangedAttackMob, float fMoveSpeed, int iAttackInterval, int iminHealth, float fAttackRange, float fFleeRange) {
         canSeeTargetCounter = 0;
 
         entityRangedAttackOwner = rangedAttackMob;
@@ -42,33 +39,31 @@ public class EntityAISmartArrowAttack extends EntityAIBase
         setMutexBits(3);
     }
 
-    public boolean shouldExecute()
-    {
+    public boolean shouldExecute() {
         if (entityOwner instanceof EntityLiving livingOwner) {
-        EntityLivingBase target = livingOwner.getAttackTarget();
+            EntityLivingBase target = livingOwner.getAttackTarget();
 
-        if (target == null) {
-            return false;
-        } else if (this.entityOwner instanceof EntityWither && ((EntityWitherAccess)this.entityOwner).getIsDoingSpecialAttack()) {
-            return false;
-        } else {
-            shouldFlee = target instanceof EntityPlayer || target.getAttackTarget() == entityOwner;
-            if (shouldFlee && entityOwner.getHealth() < minHealth) {
+            if (target == null) {
+                return false;
+            } else if (this.entityOwner instanceof EntityWither && ((EntityWitherAccess) this.entityOwner).getIsDoingSpecialAttack()) {
                 return false;
             } else {
-                entityAttackTarget = target;
-                return true;
+                shouldFlee = target instanceof EntityPlayer || target.getAttackTarget() == entityOwner;
+                if (shouldFlee && entityOwner.getHealth() < minHealth) {
+                    return false;
+                } else {
+                    entityAttackTarget = target;
+                    return true;
+                }
             }
         }
     }
 
-    public boolean continueExecuting()
-    {
+    public boolean continueExecuting() {
         return this.shouldExecute() || !entityOwner.getNavigator().noPath();
     }
 
-    public void resetTask()
-    {
+    public void resetTask() {
         entityAttackTarget = null;
         canSeeTargetCounter = 0;
         attackCooldownCounter = attackInterval;
