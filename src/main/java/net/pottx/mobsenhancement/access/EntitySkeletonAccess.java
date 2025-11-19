@@ -1,7 +1,7 @@
 package net.pottx.mobsenhancement.access;
 
 public interface EntitySkeletonAccess {
-    public boolean getIsBreakingTorch();
+    boolean getIsBreakingTorch();
 
-    public void setIsBreakingTorch(boolean isBreakingTorch);
+    void setIsBreakingTorch(boolean isBreakingTorch);
 }
