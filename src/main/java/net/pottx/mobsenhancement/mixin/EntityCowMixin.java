@@ -10,7 +10,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.Iterator;
 import java.util.List;
 
 @Mixin(EntityCow.class)
@@ -82,20 +81,16 @@ public class EntityCowMixin extends KickingAnimal {
 
             List animalList = worldObj.getEntitiesWithinAABB( EntityAnimal.class, boundingBox.expand( 24D, 12D, 24D ) );
 
-            Iterator itemIterator = animalList.iterator();
+	        for (Object o : animalList) {
+		        EntityAnimal tempAnimal = (EntityAnimal) o;
 
-            while (itemIterator.hasNext())
-            {
-                EntityAnimal tempAnimal = (EntityAnimal)itemIterator.next();
+		        boolean isSpeciesSame = tempAnimal instanceof EntityCow;
 
-                boolean isSpeciesSame = tempAnimal instanceof CowEntity;
+		        if (!tempAnimal.isLivingDead && isSpeciesSame && !tempAnimal.hasAttackTarget() && tempAnimal.canEntityBeSeen(this)) {
+			        tempAnimal.setAttackTarget((EntityLiving) attacker);
+		        }
 
-                if (!tempAnimal.isLivingDead && isSpeciesSame && !tempAnimal.hasAttackTarget() && tempAnimal.canEntityBeSeen(this))
-                {
-                    tempAnimal.setAttackTarget((EntityLiving)attacker);
-                }
-
-            }
+	        }
         }
 
         return super.attackEntityFrom(par1DamageSource, par2);
