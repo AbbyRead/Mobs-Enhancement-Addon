@@ -1,11 +1,6 @@
 package net.pottx.mobsenhancement.mixin;
 
-import btw.entity.mob.WitchEntity;
-import btw.entity.mob.villager.VillagerEntity;
-import net.minecraft.src.EntityAINearestAttackableTarget;
-import net.minecraft.src.EntityAIWatchClosest;
-import net.minecraft.src.EntityWitch;
-import net.minecraft.src.World;
+import net.minecraft.src.*;
 import net.pottx.mobsenhancement.EntityAIFleeFromExplosion;
 import net.pottx.mobsenhancement.MEAUtils;
 import net.pottx.mobsenhancement.access.EntityMobAccess;
@@ -14,9 +9,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(WitchEntity.class)
-public abstract class WitchEntityMixin extends EntityWitch {
-    public WitchEntityMixin(World par1World) {
+@Mixin(EntityWitch.class)
+public abstract class New_EntityWitchMixin extends EntityMob {
+    public New_EntityWitchMixin(World par1World) {
         super(par1World);
     }
 

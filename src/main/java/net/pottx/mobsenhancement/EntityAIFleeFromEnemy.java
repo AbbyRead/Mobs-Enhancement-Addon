@@ -5,15 +5,16 @@ import net.minecraft.src.*;
 import java.util.List;
 
 public class EntityAIFleeFromEnemy extends EntityAIBase {
-    private EntityCreature theEntity;
+    private final EntityCreature theEntity;
     private Entity targetEntity;
     private PathEntity fleePath;
-    private float distanceFromTarget;
-    private float entityMoveSpeed;
-    private Class targetEntityClass;
-    private int maxHealth;
+    private final float distanceFromTarget;
+    private final float entityMoveSpeed;
+    @SuppressWarnings("rawtypes")
+    private final Class targetEntityClass;
+    private final int maxHealth;
 
-    public EntityAIFleeFromEnemy(EntityCreature theEntity, Class targetEntityClass, float entityMoveSpeed, float distanceFromEntity, int maxHealth) {
+    public EntityAIFleeFromEnemy(EntityCreature theEntity, @SuppressWarnings("rawtypes") Class targetEntityClass, float entityMoveSpeed, float distanceFromEntity, int maxHealth) {
         this.theEntity = theEntity;
         this.targetEntityClass = targetEntityClass;
         this.entityMoveSpeed = entityMoveSpeed;
@@ -30,7 +31,7 @@ public class EntityAIFleeFromEnemy extends EntityAIBase {
 
             if (this.targetEntity == null) return false;
         } else {
-            List closeEntities = this.theEntity.worldObj.getEntitiesWithinAABB(this.targetEntityClass, this.theEntity.boundingBox.expand(this.distanceFromTarget, 3.0D, this.distanceFromTarget));
+            @SuppressWarnings("rawtypes") List closeEntities = this.theEntity.worldObj.getEntitiesWithinAABB(this.targetEntityClass, this.theEntity.boundingBox.expand(this.distanceFromTarget, 3.0D, this.distanceFromTarget));
 
             if (closeEntities.isEmpty()) return false;
 

@@ -1,15 +1,15 @@
 package net.pottx.mobsenhancement;
 
-import btw.entity.mob.SkeletonEntity;
+import net.minecraft.src.EntitySkeleton;
 import btw.item.BTWItems;
 import net.minecraft.src.*;
-import net.pottx.mobsenhancement.access.WitherEntityAccess;
+import net.pottx.mobsenhancement.access.EntityWitherAccess;
 
 public class WitherSummonMinionBehavior extends EntityAIBase {
-    private EntityWither myWither;
-    private int[] summonX = new int[3];
-    private int[] summonY = new int[3];
-    private int[] summonZ = new int[3];
+    private final EntityWither myWither;
+    private final int[] summonX = new int[3];
+    private final int[] summonY = new int[3];
+    private final int[] summonZ = new int[3];
     private int summonCooldownCounter;
     private int summonProcessCounter;
 
@@ -36,7 +36,7 @@ public class WitherSummonMinionBehavior extends EntityAIBase {
         super.resetTask();
 
         this.summonCooldownCounter = 160 + this.myWither.rand.nextInt(80);
-        ((WitherEntityAccess) this.myWither).setIsDoingSpecialAttack(false);
+        ((EntityWitherAccess) this.myWither).setIsDoingSpecialAttack(false);
     }
 
     public void startExecuting() {
@@ -61,7 +61,7 @@ public class WitherSummonMinionBehavior extends EntityAIBase {
                 int startingY = MathHelper.floor_double(this.myWither.posY);
                 summonY[i] = startingY;
                 while (summonY[i] > 0 && MathHelper.floor_double(this.myWither.posY) - summonY[i] < 64) {
-                    SkeletonEntity summonCheck = (SkeletonEntity) EntityList.createEntityOfType(SkeletonEntity.class, this.myWither.worldObj);
+                    EntitySkeleton summonCheck = (EntitySkeleton) EntityList.createEntityOfType(EntitySkeleton.class, this.myWither.worldObj);
                     summonCheck.setSkeletonType(1);
                     summonCheck.setPosition(summonX[i] + 0.5D, summonY[i], summonZ[i] + 0.5D);
                     if (this.myWither.worldObj.checkNoEntityCollision(summonCheck.boundingBox) &&
@@ -82,7 +82,7 @@ public class WitherSummonMinionBehavior extends EntityAIBase {
         if (summonY[0] > 0 || summonY[1] > 0 || summonY[2] > 0) {
             this.myWither.worldObj.playSoundEffect(this.myWither.posX, this.myWither.posY, this.myWither.posZ, "mob.wither.idle", 2F, 0.25F);
 
-            ((WitherEntityAccess) this.myWither).setIsDoingSpecialAttack(true);
+            ((EntityWitherAccess) this.myWither).setIsDoingSpecialAttack(true);
         }
     }
 
@@ -101,7 +101,7 @@ public class WitherSummonMinionBehavior extends EntityAIBase {
             } else if (this.summonProcessCounter == 0) {
                 for (int i = 0; i < 3; i++) {
                     if (summonY[i] > 0) {
-                        SkeletonEntity summonedSkeleton = (SkeletonEntity) EntityList.createEntityOfType(SkeletonEntity.class, this.myWither.worldObj);
+                        EntitySkeleton summonedSkeleton = (EntitySkeleton) EntityList.createEntityOfType(EntitySkeleton.class, this.myWither.worldObj);
                         summonedSkeleton.setSkeletonType(1);
                         summonedSkeleton.setLocationAndAngles(summonX[i] + 0.5D, summonY[i], summonZ[i] + 0.5D, this.myWither.rand.nextFloat() * 360F, 0.0F);
                         if (this.myWither.rand.nextInt(3) == 0) {

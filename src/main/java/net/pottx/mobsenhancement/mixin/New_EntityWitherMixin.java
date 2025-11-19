@@ -1,11 +1,10 @@
 package net.pottx.mobsenhancement.mixin;
 
 import btw.block.BTWBlocks;
-import btw.entity.mob.WitherEntity;
 import net.minecraft.src.*;
 import net.pottx.mobsenhancement.WitherDashBehavior;
 import net.pottx.mobsenhancement.WitherSummonMinionBehavior;
-import net.pottx.mobsenhancement.access.WitherEntityAccess;
+import net.pottx.mobsenhancement.access.EntityWitherAccess;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -14,12 +13,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
 
-@Mixin(WitherEntity.class)
-public abstract class WitherEntityMixin extends EntityWither implements WitherEntityAccess {
+@Mixin(EntityWither.class)
+public abstract class New_EntityWitherMixin extends EntityMob implements EntityWitherAccess {
     @Unique
     public boolean isDoingSpecialAttack;
 
-    public WitherEntityMixin(World par1World) {
+    public New_EntityWitherMixin(World par1World) {
         super(par1World);
     }
 
@@ -76,14 +75,14 @@ public abstract class WitherEntityMixin extends EntityWither implements WitherEn
 
             for (var1 = 1; var1 < 3; ++var1)
             {
-                if (!((WitherEntityAccess) this).getIsDoingSpecialAttack() && this.ticksExisted >= ((EntityWitherAccess) this).getField_82223_h()[var1 - 1])
+                if (!((EntityWitherAccess) this).getIsDoingSpecialAttack() && this.ticksExisted >= ((net.pottx.mobsenhancement.mixin.EntityWitherAccess) this).getField_82223_h()[var1 - 1])
                 {
-                    ((EntityWitherAccess) this).getField_82223_h()[var1 - 1] = this.ticksExisted + 10 + this.rand.nextInt(10);
+                    ((net.pottx.mobsenhancement.mixin.EntityWitherAccess) this).getField_82223_h()[var1 - 1] = this.ticksExisted + 10 + this.rand.nextInt(10);
 
                     {
                         int var10001 = var1 - 1;
-                        int var10003 = ((EntityWitherAccess) this).getField_82224_i()[var1 - 1];
-                        ((EntityWitherAccess) this).getField_82224_i()[var10001] = ((EntityWitherAccess) this).getField_82224_i()[var1 - 1] + 1;
+                        int var10003 = ((net.pottx.mobsenhancement.mixin.EntityWitherAccess) this).getField_82224_i()[var1 - 1];
+                        ((net.pottx.mobsenhancement.mixin.EntityWitherAccess) this).getField_82224_i()[var10001] = ((net.pottx.mobsenhancement.mixin.EntityWitherAccess) this).getField_82224_i()[var1 - 1] + 1;
 
                         if (var10003 > 15)
                         {
@@ -92,8 +91,8 @@ public abstract class WitherEntityMixin extends EntityWither implements WitherEn
                             double var4 = MathHelper.getRandomDoubleInRange(this.rand, this.posX - (double)var2, this.posX + (double)var2);
                             double var6 = MathHelper.getRandomDoubleInRange(this.rand, this.posY - (double)var3, this.posY + (double)var3);
                             double var8 = MathHelper.getRandomDoubleInRange(this.rand, this.posZ - (double)var2, this.posZ + (double)var2);
-                            ((EntityWitherAccess) this).invokeFunc_82209_a(var1 + 1, var4, var6, var8, true);
-                            ((EntityWitherAccess) this).getField_82224_i()[var1 - 1] = 0;
+                            ((net.pottx.mobsenhancement.mixin.EntityWitherAccess) this).invokeFunc_82209_a(var1 + 1, var4, var6, var8, true);
+                            ((net.pottx.mobsenhancement.mixin.EntityWitherAccess) this).getField_82224_i()[var1 - 1] = 0;
                         }
                     }
 
@@ -105,9 +104,9 @@ public abstract class WitherEntityMixin extends EntityWither implements WitherEn
 
                         if (var14 != null && var14.isEntityAlive() && this.getDistanceSqToEntity(var14) <= 900.0D && this.canEntityBeSeen(var14))
                         {
-                            ((EntityWitherAccess) this).invokeFunc_82216_a(var1 + 1, (EntityLiving)var14);
-                            ((EntityWitherAccess) this).getField_82223_h()[var1 - 1] = this.ticksExisted + 40 + this.rand.nextInt(20);
-                            ((EntityWitherAccess) this).getField_82224_i()[var1 - 1] = 0;
+                            ((net.pottx.mobsenhancement.mixin.EntityWitherAccess) this).invokeFunc_82216_a(var1 + 1, (EntityLiving)var14);
+                            ((net.pottx.mobsenhancement.mixin.EntityWitherAccess) this).getField_82223_h()[var1 - 1] = this.ticksExisted + 40 + this.rand.nextInt(20);
+                            ((net.pottx.mobsenhancement.mixin.EntityWitherAccess) this).getField_82224_i()[var1 - 1] = 0;
                         }
                         else
                         {
@@ -116,7 +115,7 @@ public abstract class WitherEntityMixin extends EntityWither implements WitherEn
                     }
                     else
                     {
-                        List var13 = this.worldObj.selectEntitiesWithinAABB(EntityLiving.class, this.boundingBox.expand(20.0D, 8.0D, 20.0D), EntityWitherAccess.getAttackEntitySelector());
+                        List var13 = this.worldObj.selectEntitiesWithinAABB(EntityLiving.class, this.boundingBox.expand(20.0D, 8.0D, 20.0D), net.pottx.mobsenhancement.mixin.EntityWitherAccess.getAttackEntitySelector());
 
                         for (int var16 = 0; var16 < 10 && !var13.isEmpty(); ++var16)
                         {
@@ -154,11 +153,11 @@ public abstract class WitherEntityMixin extends EntityWither implements WitherEn
                 this.func_82211_c(0, 0);
             }
 
-            if (!((WitherEntityAccess) this).getIsDoingSpecialAttack() && ((EntityWitherAccess) this).getField_82222_j() > 0)
+            if (!((EntityWitherAccess) this).getIsDoingSpecialAttack() && ((net.pottx.mobsenhancement.mixin.EntityWitherAccess) this).getField_82222_j() > 0)
             {
-                ((EntityWitherAccess) this).setField_82222_j(((EntityWitherAccess) this).getField_82222_j() - 1);
+                ((net.pottx.mobsenhancement.mixin.EntityWitherAccess) this).setField_82222_j(((net.pottx.mobsenhancement.mixin.EntityWitherAccess) this).getField_82222_j() - 1);
 
-                if (((EntityWitherAccess) this).getField_82222_j() == 0 && this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing"))
+                if (((net.pottx.mobsenhancement.mixin.EntityWitherAccess) this).getField_82222_j() == 0 && this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing"))
                 {
                     var1 = MathHelper.floor_double(this.posY);
                     var12 = MathHelper.floor_double(this.posX);

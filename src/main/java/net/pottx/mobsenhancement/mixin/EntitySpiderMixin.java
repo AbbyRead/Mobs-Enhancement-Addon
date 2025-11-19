@@ -1,6 +1,6 @@
 package net.pottx.mobsenhancement.mixin;
 
-import btw.entity.mob.SpiderEntity;
+import net.minecraft.src.EntityMob;
 import net.minecraft.src.EntitySpider;
 import net.minecraft.src.PotionEffect;
 import net.minecraft.src.World;
@@ -10,10 +10,10 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(SpiderEntity.class)
-public abstract class SpiderEntityMixin extends EntitySpider
+@Mixin(EntitySpider.class)
+public abstract class EntitySpiderMixin extends EntityMob
 {
-    public SpiderEntityMixin(World par1World) {
+    public EntitySpiderMixin(World par1World) {
         super(par1World);
     }
 

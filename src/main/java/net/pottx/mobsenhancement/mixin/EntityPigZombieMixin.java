@@ -1,15 +1,15 @@
 package net.pottx.mobsenhancement.mixin;
 
-import btw.entity.mob.ZombiePigmanEntity;
 import net.minecraft.src.EntityPigZombie;
 import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.EntityZombie;
 import net.minecraft.src.World;
 import net.pottx.mobsenhancement.MEAUtils;
 import org.spongepowered.asm.mixin.Mixin;
 
-@Mixin(ZombiePigmanEntity.class)
-public abstract class ZombiePigmanEntityMixin extends EntityPigZombie {
-    public ZombiePigmanEntityMixin(World par1World) {
+@Mixin(EntityPigZombie.class)
+public abstract class EntityPigZombieMixin extends EntityZombie {
+    public EntityPigZombieMixin(World par1World) {
         super(par1World);
     }
 

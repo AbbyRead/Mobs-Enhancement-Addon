@@ -1,10 +1,8 @@
 package net.pottx.mobsenhancement.mixin;
 
-import btw.entity.mob.EndermanEntity;
 import net.minecraft.src.*;
 import net.pottx.mobsenhancement.access.EntityPlayerAccess;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;

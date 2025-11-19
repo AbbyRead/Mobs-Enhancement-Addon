@@ -1,6 +1,5 @@
 package net.pottx.mobsenhancement.mixin;
 
-import btw.entity.LightningBoltEntity;
 import net.minecraft.src.*;
 import net.pottx.mobsenhancement.access.EntityEnderCrystalAccess;
 import org.spongepowered.asm.mixin.Mixin;
@@ -125,7 +124,7 @@ public abstract class EntityEnderCrystalMixin extends Entity implements EntityEn
         }
 
         if (destoryer instanceof EntityLiving) {
-            this.worldObj.addWeatherEffect(EntityList.createEntityOfType(LightningBoltEntity.class, this.worldObj,
+            this.worldObj.addWeatherEffect(EntityList.createEntityOfType(EntityLightningBolt.class, this.worldObj,
                     destoryer.posX, destoryer.posY, destoryer.posZ));
         }
     }

@@ -1,13 +1,12 @@
 package net.pottx.mobsenhancement.mixin;
 
-import btw.block.blocks.MobSpawnerBlock;
 import net.minecraft.src.*;
 import org.spongepowered.asm.mixin.Mixin;
 
 import java.util.List;
 
-@Mixin(MobSpawnerBlock.class)
-public abstract class MobSpawnerBlockMixin extends BlockMobSpawner {
+@Mixin(BlockMobSpawner.class)
+public abstract class MobSpawnerBlockMixin extends BlockContainer {
     protected MobSpawnerBlockMixin(int par1) {
         super(par1);
     }

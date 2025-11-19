@@ -4,25 +4,23 @@ import btw.util.RandomPositionGenerator;
 import net.minecraft.src.*;
 
 public class AnimalCombatBehavior extends EntityAIBase {
-    private EntityAnimal theAnimal;
+    private final EntityAnimal theAnimal;
     private EntityLiving targetEntity;
     private PathEntity animalPathEntity;
     private float distanceFromTarget;
-    private float animalApproachSpeed;
-    private float animalFleeSpeed;
-    private Class fearedEntityClass;
-    private boolean aggressiveMode;
+    private final float animalApproachSpeed;
+    private final float animalFleeSpeed;
+	private boolean aggressiveMode;
     private int attackTimer;
     private int pathTimer;
-    private int healthBoundry;
+    private final int healthBoundary;
 
-    public AnimalCombatBehavior(EntityAnimal theAnimal, float animalApproachSpeed, float animalFleeSpeed, Class fearedEntityClass, int healthBoundry)
+    public AnimalCombatBehavior(EntityAnimal theAnimal, float animalApproachSpeed, float animalFleeSpeed, @SuppressWarnings("rawtypes") Class fearedEntityClass, int healthBoundary)
     {
         this.theAnimal = theAnimal;
         this.animalApproachSpeed = animalApproachSpeed;
         this.animalFleeSpeed = animalFleeSpeed;
-        this.fearedEntityClass = fearedEntityClass;
-        this.healthBoundry = healthBoundry;
+	    this.healthBoundary = healthBoundary;
         this.pathTimer = 8;
         this.attackTimer = 5;
         this.aggressiveMode = false;
@@ -30,14 +28,14 @@ public class AnimalCombatBehavior extends EntityAIBase {
 
     @Override
     public boolean shouldExecute() {
-        if (this.theAnimal.getHealth() > this.healthBoundry && this.theAnimal.hasAttackTarget()) {
+        if (this.theAnimal.getHealth() > this.healthBoundary && this.theAnimal.hasAttackTarget()) {
             this.aggressiveMode = true;
-            this.targetEntity = this.theAnimal.getAttackTarget();
+            this.targetEntity = (EntityLiving) this.theAnimal.getAttackTarget();
             this.animalPathEntity = this.theAnimal.getNavigator().getPathToEntity(this.targetEntity);
             return true;
         } else if (this.theAnimal.getAITarget() != null || this.theAnimal.fleeingTick > 0) {
             this.aggressiveMode = false;
-            this.targetEntity = this.theAnimal.getAITarget() != null ? this.theAnimal.getAITarget() : this.theAnimal;
+            this.targetEntity = this.theAnimal.getAITarget() != null ? (EntityLiving) this.theAnimal.getAITarget() : this.theAnimal;
             Vec3 destination = RandomPositionGenerator.findRandomTargetBlockAwayFrom(this.theAnimal, 8, 6, this.theAnimal.worldObj.getWorldVec3Pool().getVecFromPool(this.targetEntity.posX, this.targetEntity.posY, this.targetEntity.posZ));
             if (destination == null) {
                 return false;
@@ -53,14 +51,14 @@ public class AnimalCombatBehavior extends EntityAIBase {
 
     public boolean continueExecuting() {
         if (this.aggressiveMode) {
-            if (this.theAnimal.getHealth() <= this.healthBoundry) {
+            if (this.theAnimal.getHealth() <= this.healthBoundary) {
                 this.aggressiveMode = false;
             } else {
-                EntityLiving target = this.theAnimal.getAttackTarget();
-                return target == null ? false : (!this.targetEntity.isEntityAlive() ? false : this.theAnimal.getDistanceSqToEntity(target) < 32D * 32D || this.theAnimal.getEntitySenses().canSee(this.targetEntity));
+                EntityLiving target = (EntityLiving) this.theAnimal.getAttackTarget();
+                return target != null && (this.targetEntity.isEntityAlive() && (this.theAnimal.getDistanceSqToEntity(target) < 32D * 32D || this.theAnimal.getEntitySenses().canSee(this.targetEntity)));
             }
-        } else if (this.theAnimal.getAITarget() != null || this.theAnimal.fleeingTick > 0) {
-            return true;
+        } else {
+	        return this.theAnimal.getAITarget() != null || this.theAnimal.fleeingTick > 0;
         }
         return false;
     }

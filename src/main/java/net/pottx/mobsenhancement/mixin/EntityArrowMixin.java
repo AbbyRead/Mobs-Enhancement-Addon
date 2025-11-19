@@ -1,10 +1,8 @@
 package net.pottx.mobsenhancement.mixin;
 
-
-import btw.entity.mob.GhastEntity;
+import net.minecraft.src.*;
 import net.pottx.mobsenhancement.MEAUtils;
 import net.pottx.mobsenhancement.access.EntityArrowAccess;
-import net.minecraft.src.*;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -21,11 +19,11 @@ public abstract class EntityArrowMixin extends Entity implements IProjectile, En
             at = @At(value = "INVOKE", target = "Lnet/minecraft/src/Entity;canBeCollidedWith()Z")
     )
     private boolean notCollideWithGhasts(Entity var10) {
-        return var10.canBeCollidedWith() && !(var10 instanceof GhastEntity);
+        return var10.canBeCollidedWith() && !(var10 instanceof EntityGhast);
     }
 
     @Unique
-    public void resetForPrediction(EntityLiving owner, EntityLiving target, float arrowVelocity, float deviation) {
+    public void mea$resetForPrediction(EntityLiving owner, EntityLiving target, float arrowVelocity, float deviation) {
         double initRelativeX = target.posX - owner.posX;
         double relativeY = target.boundingBox.minY + (double)(target.height / 3.0F) - this.posY;
         double initRelativeZ = target.posZ - owner.posZ;

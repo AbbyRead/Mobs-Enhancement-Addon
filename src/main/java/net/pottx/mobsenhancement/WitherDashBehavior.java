@@ -2,13 +2,12 @@ package net.pottx.mobsenhancement;
 
 import btw.block.BTWBlocks;
 import net.minecraft.src.*;
-import net.pottx.mobsenhancement.access.WitherEntityAccess;
+import net.pottx.mobsenhancement.access.EntityWitherAccess;
 
-import java.util.Iterator;
 import java.util.List;
 
 public class WitherDashBehavior extends EntityAIBase {
-    private EntityWither myWither;
+    private final EntityWither myWither;
     private EntityLiving dashTarget;
     private double targetX;
     private double targetY;
@@ -40,12 +39,12 @@ public class WitherDashBehavior extends EntityAIBase {
         super.resetTask();
 
         this.dashCooldownCounter = (this.myWither.posY > 256D ? 40 : 80) + this.myWither.rand.nextInt(40);
-        ((WitherEntityAccess) this.myWither).setIsDoingSpecialAttack(false);
+        ((EntityWitherAccess) this.myWither).setIsDoingSpecialAttack(false);
     }
 
     public void startExecuting() {
-        ((WitherEntityAccess) this.myWither).setIsDoingSpecialAttack(true);
-        this.dashTarget = this.myWither.getAttackTarget();
+        ((EntityWitherAccess) this.myWither).setIsDoingSpecialAttack(true);
+        this.dashTarget = (EntityLiving) this.myWither.getAttackTarget();
         this.dashProcessCounter = 40;
     }
 
@@ -94,16 +93,15 @@ public class WitherDashBehavior extends EntityAIBase {
                 }
             }
 
-            List nearEntities = this.myWither.worldObj.getEntitiesWithinAABB(Entity.class, this.myWither.boundingBox.expand(4.0D, 4.0D, 4.0D));
-            Iterator nearEntitiesIterator = nearEntities.iterator();
+            @SuppressWarnings("rawtypes") List nearEntities = this.myWither.worldObj.getEntitiesWithinAABB(Entity.class, this.myWither.boundingBox.expand(4.0D, 4.0D, 4.0D));
 
-            while (nearEntitiesIterator.hasNext()) {
-                Entity nearEntity = (Entity) nearEntitiesIterator.next();
-                double combinedWidth = this.myWither.width + nearEntity.width;
-                if (this.myWither.getDistanceSq(nearEntity.posX, nearEntity.posY, nearEntity.posZ) <= combinedWidth * combinedWidth) {
-                    this.myWither.attackEntityAsMob(nearEntity);
-                }
-            }
+	        for (Object entity : nearEntities) {
+		        Entity nearEntity = (Entity) entity;
+		        double combinedWidth = this.myWither.width + nearEntity.width;
+		        if (this.myWither.getDistanceSq(nearEntity.posX, nearEntity.posY, nearEntity.posZ) <= combinedWidth * combinedWidth) {
+			        this.myWither.attackEntityAsMob(nearEntity);
+		        }
+	        }
         }
     }
 }

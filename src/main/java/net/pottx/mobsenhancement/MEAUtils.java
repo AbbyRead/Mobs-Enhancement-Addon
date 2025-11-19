@@ -2,11 +2,12 @@ package net.pottx.mobsenhancement;
 
 import btw.block.BTWBlocks;
 import btw.world.util.WorldUtils;
+import btw.world.util.difficulty.DifficultyParam;
 import net.minecraft.src.*;
 import net.pottx.mobsenhancement.access.EntityPlayerAccess;
 
 public class MEAUtils {
-    public static double[] predictRelativeXZOnRangedHit(EntityLiving target, double initRelativeX, double initRelativeY, double initRelativeZ, float projectileVelocity) {
+    public static double[] predictRelativeXZOnRangedHit(EntityLivingBase target, double initRelativeX, double initRelativeY, double initRelativeZ, float projectileVelocity) {
         double targetMotionX = target.motionX;
         double targetMotionY = target.motionY;
         double targetMotionZ = target.motionZ;
@@ -277,7 +278,7 @@ public class MEAUtils {
     }
 
     public static int getGameProgressMobsLevel(World world) {
-        if (!world.worldInfo.getDifficulty().shouldHCSRangeIncrease()) {
+        if (!(Boolean) world.getDifficultyParameter(DifficultyParam.ShouldHardcoreSpawnRadiusIncreaseWithProgress.class)) {
             return 0;
         }
         else if (WorldUtils.gameProgressHasEndDimensionBeenAccessedServerOnly()) {

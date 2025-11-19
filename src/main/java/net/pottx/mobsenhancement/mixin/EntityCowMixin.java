@@ -1,7 +1,6 @@
 package net.pottx.mobsenhancement.mixin;
 
-import btw.entity.mob.CowEntity;
-import btw.entity.mob.ZombieEntity;
+import btw.entity.mob.KickingAnimal;
 import btw.entity.mob.behavior.AnimalFleeBehavior;
 import net.minecraft.src.*;
 import net.pottx.mobsenhancement.AnimalCombatBehavior;
@@ -14,13 +13,18 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.Iterator;
 import java.util.List;
 
-@Mixin(CowEntity.class)
-public class CowEntityMixin extends EntityCow {
+@Mixin(EntityCow.class)
+public class EntityCowMixin extends KickingAnimal {
     @Unique
     private static final int IS_AGGRESSIVE_DATA_WATCHER_ID = 31;
 
-    public CowEntityMixin(World par1World) {
+    public EntityCowMixin(World par1World) {
         super(par1World);
+    }
+
+    @Override
+    public EntityAgeable createChild(EntityAgeable var1) {
+        return null; // TODO: Add actual implementation
     }
 
     @Override
@@ -40,9 +44,9 @@ public class CowEntityMixin extends EntityCow {
         this.tasks.removeAllTasksOfClass(EntityAIWatchClosest.class);
 
         if (this.getIsAggressive() == (byte)1) {
-            tasks.addTask(1, new AnimalCombatBehavior(this, 0.38F, 0.33F, ZombieEntity.class, 4));
+            tasks.addTask(1, new AnimalCombatBehavior(this, 0.38F, 0.33F, EntityZombie.class, 4));
         } else {
-            tasks.addTask(1, new AnimalCombatBehavior(this, 0.38F, 0.33F, ZombieEntity.class, 15));
+            tasks.addTask(1, new AnimalCombatBehavior(this, 0.38F, 0.33F, EntityZombie.class, 15));
         }
     }
 

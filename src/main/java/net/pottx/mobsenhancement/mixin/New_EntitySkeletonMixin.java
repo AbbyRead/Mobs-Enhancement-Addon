@@ -1,12 +1,10 @@
 package net.pottx.mobsenhancement.mixin;
 
-import btw.entity.mob.SkeletonEntity;
-import btw.entity.mob.villager.VillagerEntity;
 import net.pottx.mobsenhancement.*;
 import net.pottx.mobsenhancement.access.EntityArrowAccess;
 import net.minecraft.src.*;
 import net.pottx.mobsenhancement.access.EntityMobAccess;
-import net.pottx.mobsenhancement.access.SkeletonEntityAccess;
+import net.pottx.mobsenhancement.access.EntitySkeletonAccess;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -15,11 +13,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
-@Mixin(SkeletonEntity.class)
-public abstract class SkeletonEntityMixin extends EntitySkeleton implements SkeletonEntityAccess {
+@Mixin(EntitySkeleton.class)
+public abstract class New_EntitySkeletonMixin extends EntityMob implements EntitySkeletonAccess {
     @Shadow public abstract void setCombatTask();
 
-    public SkeletonEntityMixin(World world) {
+    public New_EntitySkeletonMixin(World world) {
         super(world);
     }
 
@@ -75,7 +73,7 @@ public abstract class SkeletonEntityMixin extends EntitySkeleton implements Skel
         if (itemStack.getItem() == Item.bow) {
             itemStack.damageItem(1, this);
             if (itemStack.stackSize <= 0) {
-                SkeletonEntity skeleton = (SkeletonEntity) EntityList.createEntityOfType(SkeletonEntity.class, this.worldObj);
+                EntitySkeleton skeleton = (EntitySkeleton) EntityList.createEntityOfType(EntitySkeleton.class, this.worldObj);
                 skeleton.setSkeletonType(this.getSkeletonType());
                 skeleton.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
                 skeleton.setRotationYawHead(this.rotationYawHead);
@@ -160,8 +158,8 @@ public abstract class SkeletonEntityMixin extends EntitySkeleton implements Skel
 
     @Redirect(
             method = "onLivingUpdate()V",
-            at = @At(value = "INVOKE", target = "Lbtw/entity/mob/SkeletonEntity;checkForCatchFireInSun()V")
+            at = @At(value = "INVOKE", target = "Lbtw/entity/mob/EntitySkeleton;checkForCatchFireInSun()V")
     )
-    private void skipSunCheck(SkeletonEntity skeletonEntity) {
+    private void skipSunCheck(EntitySkeleton EntitySkeleton) {
     }
 }

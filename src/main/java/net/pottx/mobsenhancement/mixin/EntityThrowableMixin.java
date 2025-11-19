@@ -1,7 +1,7 @@
 package net.pottx.mobsenhancement.mixin;
 
-import btw.entity.mob.GhastEntity;
 import net.minecraft.src.Entity;
+import net.minecraft.src.EntityGhast;
 import net.minecraft.src.EntityThrowable;
 import net.minecraft.src.World;
 import org.spongepowered.asm.mixin.Mixin;
@@ -19,6 +19,6 @@ public abstract class EntityThrowableMixin extends Entity {
             at = @At(value = "INVOKE", target = "Lnet/minecraft/src/Entity;canBeCollidedWith()Z")
     )
     private boolean notCollideWithGhasts(Entity var10) {
-        return var10.canBeCollidedWith() && !(var10 instanceof GhastEntity);
+        return var10.canBeCollidedWith() && !(var10 instanceof EntityGhast);
     }
 }

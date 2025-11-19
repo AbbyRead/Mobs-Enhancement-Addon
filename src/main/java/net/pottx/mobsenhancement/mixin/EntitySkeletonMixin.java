@@ -1,81 +1,165 @@
 package net.pottx.mobsenhancement.mixin;
 
-import btw.item.BTWItems;
+import net.pottx.mobsenhancement.*;
+import net.pottx.mobsenhancement.access.EntityArrowAccess;
 import net.minecraft.src.*;
-import net.pottx.mobsenhancement.MEAUtils;
 import net.pottx.mobsenhancement.access.EntityMobAccess;
+import net.pottx.mobsenhancement.access.EntitySkeletonAccess;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyArgs;
+import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
 @Mixin(EntitySkeleton.class)
-public abstract class EntitySkeletonMixin extends EntityMob {
-    @Shadow private EntityAIArrowAttack aiArrowAttack;
+public abstract class EntitySkeletonMixin extends EntityMob implements IRangedAttackMob, EntitySkeletonAccess {
+    @Shadow public abstract void setCombatTask();
 
-    public EntitySkeletonMixin(World par1World) {
-        super(par1World);
+    public EntitySkeletonMixin(World world) {
+        super(world);
     }
+
+    @Unique
+    private EntityAISmartArrowAttack aiSmartRangedAttack;
+
+    @Unique
+    private EntityAISmartAttackOnCollide aiSmartMeleeAttack;
+
+    @Unique
+    private boolean isBreakingTorch;
 
     @Inject(
             method = "<init>",
             at = @At(value = "TAIL")
     )
-    private void resetMoveSpeed(CallbackInfo ci) {
-        this.moveSpeed = 0.375F;
+    private void addExtraTasks(CallbackInfo ci) {
+        this.tasks.removeAllTasksOfClass(EntityAIWatchClosest.class);
+        this.tasks.removeAllTasksOfClass(EntityAIFleeSun.class);
+
+        tasks.addTask(2, new EntityAIFleeFromExplosion(this, 0.375F, 4.0F));
+        tasks.addTask(3, new EntityAIFleeFromEnemy(this, EntityPlayer.class, 0.375F, 24.0F, 5));
+        this.targetTasks.addTask(4, new SkeletonBreakTorchBehavior(this));
+        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, VillagerEntity.class, 24.0F, 0, ((EntityMobAccess)this).getCanXray() == (byte)0));
     }
 
     @Inject(
-            method = "getMaxHealth()I",
-            at = @At(value = "HEAD"),
-            cancellable = true
-    )
-    private void returnSmallerMaxHealth(CallbackInfoReturnable<Integer> cir) {
-        int i = this.worldObj == null ? 0 : MEAUtils.getGameProgressMobsLevel(this.worldObj);
-        i = i > 1 ? 20 : (i > 0 ? 16 : 12);
-
-        cir.setReturnValue(i);
-    }
-
-    @Inject(
-            method = "addRandomArmor()V",
+            method = "entityInit()V",
             at = @At(value = "TAIL")
     )
-    private void resetRandomWeapon(CallbackInfo ci) {
-        if (this.rand.nextInt(8) == 0) {
-            this.setCurrentItemOrArmor(0, this.rand.nextInt(4) == 0 ? new ItemStack(Item.axeStone) : new ItemStack(BTWItems.boneClub));
+    private void setSmartAttackAI(CallbackInfo ci) {
+        this.aiSmartRangedAttack = new EntityAISmartArrowAttack(this, 0.375F, 60, 6, 20F , 6F);
+        this.aiSmartMeleeAttack = new EntityAISmartAttackOnCollide(this, 0.375F, false, 6);
+    }
+
+    @Inject(
+            method = {"attackEntityWithRangedAttack(Lnet/minecraft/src/EntityLiving;F)V", "method_4552"},
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/src/EnchantmentHelper;getEnchantmentLevel(ILnet/minecraft/src/ItemStack;)I"),
+            locals = LocalCapture.CAPTURE_FAILHARD
+    )
+    private void resetArrowForPrediction(EntityLiving target, float fDamageModifier, CallbackInfo ci, EntityArrow arrow) {
+        int i = MEAUtils.getGameProgressMobsLevel(this.worldObj);
+        float f = i > 2 ? 2F : (i > 1 ? 4F : (i > 0 ? 6F : 8F));
+        ((EntityArrowAccess)arrow).mea$resetForPrediction(this, target, 1.6F, f);
+    }
+
+    @Inject(
+            method = {"attackEntityWithRangedAttack(Lnet/minecraft/src/EntityLiving;F)V", "method_4552"},
+            at = @At(value = "TAIL")
+    )
+    private void damageBow(EntityLiving target, float fDamageModifier, CallbackInfo ci) {
+        ItemStack itemStack = this.getHeldItem();
+        if (itemStack.getItem() == Item.bow) {
+            itemStack.damageItem(1, this);
+            if (itemStack.stackSize <= 0) {
+                EntitySkeleton skeleton = (EntitySkeleton) EntityList.createEntityOfType(EntitySkeleton.class, this.worldObj);
+                skeleton.setSkeletonType(this.getSkeletonType());
+                skeleton.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
+                skeleton.setRotationYawHead(this.rotationYawHead);
+                skeleton.setEntityHealth(this.health);
+                skeleton.setCurrentItemOrArmor(0, (ItemStack) null);
+                this.setDead();
+                this.worldObj.spawnEntityInWorld(skeleton);
+            }
+        }
+    }
+
+    @Inject(
+            method = "initCreature()V",
+            at = @At(value = "TAIL")
+    )
+    private void witherChanceAfterNether(CallbackInfo ci) {
+        if (this.worldObj.provider.dimensionId == 0 && this.posY < 32 && getRNG().nextInt( 4 ) == 0)
+        {
+            setSkeletonType( 1 );
         }
     }
 
     @ModifyArgs(
-            method = "addRandomArmor()V",
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/src/EntitySkeleton;setCurrentItemOrArmor(ILnet/minecraft/src/ItemStack;)V")
+            method = "setCombatTask()V",
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/src/EntityAITasks;removeTask(Lnet/minecraft/src/EntityAIBase;)V", ordinal = 1)
     )
-    private void setDamagedBow(Args args) {
-        ItemStack bow = new ItemStack(Item.bow);
-        int i = MEAUtils.getGameProgressMobsLevel(this.worldObj);
-        i = i > 1 ? 15 : (i > 0 ? 9 : 5);
-        bow.setItemDamage(384 - (2 + this.rand.nextInt(i)));
-        args.set(1, bow);
+    private void removeSmartRangedAttackAI(Args args) {
+        args.set(0, this.aiSmartRangedAttack);
     }
 
     @ModifyArgs(
-            method = "<init>(Lnet/minecraft/src/World;)V",
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/src/EntityAITasks;addTask(ILnet/minecraft/src/EntityAIBase;)V", ordinal = 7)
+            method = "setCombatTask()V",
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/src/EntityAITasks;removeTask(Lnet/minecraft/src/EntityAIBase;)V", ordinal = 0)
     )
-    private void modifyNearestAttackableTargetTask(Args args) {
-        args.set(1, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 24.0F, 0, ((EntityMobAccess)this).getCanXray() == (byte)0));
+    private void removeSmartMeleeAttackAI(Args args) {
+        args.set(0, this.aiSmartMeleeAttack);
     }
 
     @ModifyArgs(
-            method = "<init>(Lnet/minecraft/src/World;)V",
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/src/EntityAITasks;addTask(ILnet/minecraft/src/EntityAIBase;)V", ordinal = 2)
+            method = "setCombatTask()V",
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/src/EntityAITasks;addTask(ILnet/minecraft/src/EntityAIBase;)V", ordinal = 0)
     )
-    private void modifyFleeSunTask(Args args) {
-        args.set(1, new EntityAIFleeSun(this, 0.375F));
+    private void addSmartRangedAttackAI(Args args) {
+        args.set(1, this.aiSmartRangedAttack);
+    }
+
+    @ModifyArgs(
+            method = "setCombatTask()V",
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/src/EntityAITasks;addTask(ILnet/minecraft/src/EntityAIBase;)V", ordinal = 1)
+    )
+    private void addSmartMeleeAttackAI(Args args) {
+        args.set(1, this.aiSmartMeleeAttack);
+    }
+
+    @ModifyVariable(
+            method = "dropFewItems(ZI)V",
+            at = @At(value = "STORE"),
+            ordinal = 1
+    )
+    private int dropLessBones(int iNumBones, boolean bKilledByPlayer, int iLootingModifier) {
+        return this.rand.nextInt(2 + iLootingModifier);
+    }
+
+    @Unique
+    public boolean getIsBreakingTorch() {
+        return this.isBreakingTorch;
+    }
+
+    @Unique
+    public void setIsBreakingTorch(boolean isBreakingTorch) {
+        this.isBreakingTorch = isBreakingTorch;
+    }
+
+    @Override
+    public void addRandomArmor() {
+        super.addRandomArmor();
+
+        if (getHeldItem().itemID != Item.bow.itemID) {
+            equipmentDropChances[0] = 0.99F;
+        }
+    }
+
+    @Redirect(
+            method = "onLivingUpdate()V",
+            at = @At(value = "INVOKE", target = "Lbtw/entity/mob/EntitySkeleton;checkForCatchFireInSun()V")
+    )
+    private void skipSunCheck(EntitySkeleton EntitySkeleton) {
     }
 }

@@ -1,29 +1,36 @@
 package net.pottx.mobsenhancement.mixin;
 
-import btw.entity.mob.CreeperEntity;
 import net.minecraft.src.*;
 import net.pottx.mobsenhancement.MEAUtils;
 import net.pottx.mobsenhancement.access.EntityMobAccess;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(CreeperEntity.class)
-public abstract class CreeperEntityMixin extends EntityCreeper {
-    @Shadow(remap = false)
-    public abstract int getNeuteredState();
+@Mixin(EntityCreeper.class)
+public class New_EntityCreeperMixin extends EntityMob {
+    public New_EntityCreeperMixin(World par1World) {
+        super(par1World);
+    }
 
-    public CreeperEntityMixin(World par1World) {
+	@Shadow(remap = false)
+	public int getNeuteredState() {
+		return 0; // TODO: Add actual implementation
+	}
+
+	@Unique
+    public void CreeperEntityMixin(World par1World) {
         super(par1World);
     }
 
     @Override
     public boolean attackEntityFrom(DamageSource par1DamageSource, int par2) {
         if (par1DamageSource.isExplosion() && this.getNeuteredState() == 0) {
-            ((CreeperEntityAccess)this).setIsDeterminedToExplode(true);
+            ((EntityCreeperAccess)this).setIsDeterminedToExplode(true);
             this.setCreeperState(1);
             return false;
         }

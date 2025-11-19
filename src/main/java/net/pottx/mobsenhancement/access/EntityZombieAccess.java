@@ -1,6 +1,6 @@
 package net.pottx.mobsenhancement.access;
 
-public interface ZombieEntityAccess {
+public interface EntityZombieAccess {
     boolean getIsBreakingBlock();
 
     void setIsBreakingBlock(boolean isBreakingBlock);

@@ -1,14 +1,11 @@
 package net.pottx.mobsenhancement.mixin;
 
-import btw.entity.mob.SkeletonEntity;
-import btw.entity.mob.ZombieEntity;
-import btw.entity.mob.villager.VillagerEntity;
 import net.minecraft.src.*;
 import net.pottx.mobsenhancement.EntityAIBreakBlock;
 import net.pottx.mobsenhancement.EntityAISmartAttackOnCollide;
 import net.pottx.mobsenhancement.MEAUtils;
 import net.pottx.mobsenhancement.access.EntityMobAccess;
-import net.pottx.mobsenhancement.access.ZombieEntityAccess;
+import net.pottx.mobsenhancement.access.EntityZombieAccess;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -19,14 +16,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
-@Mixin(ZombieEntity.class)
-public abstract class ZombieEntityMixin extends EntityZombie implements ZombieEntityAccess {
+@Mixin(EntityZombie.class)
+public abstract class EntityZombieMixin extends EntityMob implements EntityZombieAccess {
     @Unique
     private boolean isBreakingBlock = false;
     @Shadow
     private IEntitySelector targetEntitySelector;
 
-    public ZombieEntityMixin(World par1World) {
+    public EntityZombieMixin(World par1World) {
         super(par1World);
     }
 
@@ -91,7 +88,7 @@ public abstract class ZombieEntityMixin extends EntityZombie implements ZombieEn
     {
         if (!this.worldObj.isRemote)
         {
-            SkeletonEntity skeleton = (SkeletonEntity) EntityList.createEntityOfType(SkeletonEntity.class, this.worldObj);
+            EntitySkeleton skeleton = (EntitySkeleton) EntityList.createEntityOfType(EntitySkeleton.class, this.worldObj);
             skeleton.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
             skeleton.setEntityHealth(MathHelper.ceiling_float_int((float) skeleton.getMaxHealth() / 2.0F));
             for (int i = 0; i < 5 ; i++) {

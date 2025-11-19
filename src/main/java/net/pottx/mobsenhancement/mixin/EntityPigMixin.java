@@ -1,7 +1,5 @@
 package net.pottx.mobsenhancement.mixin;
 
-import btw.entity.mob.PigEntity;
-import btw.entity.mob.ZombieEntity;
 import btw.entity.mob.behavior.AnimalFleeBehavior;
 import net.minecraft.src.*;
 import net.pottx.mobsenhancement.AnimalCombatBehavior;
@@ -15,9 +13,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.Iterator;
 import java.util.List;
 
-@Mixin(PigEntity.class)
-public abstract class PigEntityMixin extends EntityPig {
-    public PigEntityMixin(World par1World) {
+@Mixin(EntityPig.class)
+public abstract class EntityPigMixin extends EntityAnimal {
+    public EntityPigMixin(World par1World) {
         super(par1World);
     }
 
@@ -35,7 +33,7 @@ public abstract class PigEntityMixin extends EntityPig {
         this.tasks.removeAllTasksOfClass(AnimalFleeBehavior.class);
         this.tasks.removeAllTasksOfClass(EntityAIWatchClosest.class);
 
-        tasks.addTask(1, new AnimalCombatBehavior(this, 0.33F, 0.38F, ZombieEntity.class, 6));
+        tasks.addTask(1, new AnimalCombatBehavior(this, 0.33F, 0.38F, EntityZombie.class, 6));
         tasks.addTask(2, new EntityAIFleeFromExplosion(this, 0.38F, 4.0F));
     }
 

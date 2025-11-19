@@ -1,5 +1,5 @@
 package net.pottx.mobsenhancement.access;
 
-public interface SlimeEntityAccess {
+public interface EntitySlimeAccess {
     void setMagma();
 }

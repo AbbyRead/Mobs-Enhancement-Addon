@@ -1,18 +1,18 @@
 package net.pottx.mobsenhancement;
 
 import btw.entity.MiningChargeEntity;
-import btw.entity.mob.CreeperEntity;
+import net.minecraft.src.EntityCreeper;
 import net.minecraft.src.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class EntityAIFleeFromExplosion extends EntityAIBase {
-    private EntityCreature theEntity;
+    private final EntityCreature theEntity;
     private Entity targetEntity;
     private PathEntity fleePath;
-    private float distanceFromTarget;
-    private float entityMoveSpeed;
+    private final float distanceFromTarget;
+    private final float entityMoveSpeed;
 
     public EntityAIFleeFromExplosion(EntityCreature theEntity, float entityMoveSpeed, float distanceFromEntity) {
         this.theEntity = theEntity;
@@ -20,13 +20,14 @@ public class EntityAIFleeFromExplosion extends EntityAIBase {
         this.distanceFromTarget = distanceFromEntity;
     }
 
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
     public boolean shouldExecute() {
         List closeCharges = this.theEntity.worldObj.getEntitiesWithinAABB(MiningChargeEntity.class,
                 this.theEntity.boundingBox.expand(this.distanceFromTarget, this.distanceFromTarget, this.distanceFromTarget));
         List closeKegs = this.theEntity.worldObj.getEntitiesWithinAABB(EntityTNTPrimed.class,
                 this.theEntity.boundingBox.expand(this.distanceFromTarget * 1.5F, this.distanceFromTarget * 1.5F, this.distanceFromTarget * 1.5F));
-        List closeCreepers = this.theEntity.worldObj.getEntitiesWithinAABB(CreeperEntity.class,
+        List closeCreepers = this.theEntity.worldObj.getEntitiesWithinAABB(EntityCreeper.class,
                 this.theEntity.boundingBox.expand(this.distanceFromTarget, this.distanceFromTarget, this.distanceFromTarget));
 
         List closeEntities = new ArrayList();
@@ -35,7 +36,7 @@ public class EntityAIFleeFromExplosion extends EntityAIBase {
         closeEntities.addAll(closeKegs);
 
         for (Object closeCreeper : closeCreepers) {
-            if (((CreeperEntity)closeCreeper).getCreeperState() > 0) {
+            if (((EntityCreeper)closeCreeper).getCreeperState() > 0) {
                 closeEntities.add(closeCreeper);
             }
         }

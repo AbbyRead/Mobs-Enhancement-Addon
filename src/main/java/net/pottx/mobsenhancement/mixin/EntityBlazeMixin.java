@@ -1,14 +1,14 @@
 package net.pottx.mobsenhancement.mixin;
 
-import btw.entity.mob.BlazeEntity;
 import net.minecraft.src.EntityBlaze;
+import net.minecraft.src.EntityLivingBase;
 import net.minecraft.src.World;
 import net.pottx.mobsenhancement.MEAUtils;
 import org.spongepowered.asm.mixin.Mixin;
 
-@Mixin(BlazeEntity.class)
-public abstract class BlazeEntityMixin extends EntityBlaze {
-    public BlazeEntityMixin(World par1World) {
+@Mixin(EntityBlaze.class)
+public abstract class EntityBlazeMixin extends EntityLivingBase {
+    public EntityBlazeMixin(World par1World) {
         super(par1World);
     }
 

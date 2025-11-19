@@ -1,13 +1,9 @@
 package net.pottx.mobsenhancement.mixin;
 
-import btw.entity.mob.SlimeEntity;
-import net.minecraft.src.EntitySlime;
-import net.minecraft.src.MathHelper;
-import net.minecraft.src.NBTTagCompound;
-import net.minecraft.src.World;
+import net.minecraft.src.*;
 import net.pottx.mobsenhancement.MEAEffectManager;
 import net.pottx.mobsenhancement.MEAUtils;
-import net.pottx.mobsenhancement.access.SlimeEntityAccess;
+import net.pottx.mobsenhancement.access.EntitySlimeAccess;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -17,8 +13,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
 
-@Mixin(SlimeEntity.class)
-public abstract class SlimeEntityMixin extends EntitySlime implements SlimeEntityAccess {
+@Mixin(EntitySlime.class)
+public abstract class EntitySlimeMixin extends EntityLiving implements EntitySlimeAccess {
     @Unique
     public boolean isMagma;
     @Unique
@@ -28,7 +24,7 @@ public abstract class SlimeEntityMixin extends EntitySlime implements SlimeEntit
     @Unique
     public boolean isMerging = false;
 
-    public SlimeEntityMixin(World par1World) {
+    public EntitySlimeMixin(World par1World) {
         super(par1World);
     }
 
@@ -64,7 +60,7 @@ public abstract class SlimeEntityMixin extends EntitySlime implements SlimeEntit
                     List closeSlimes = this.worldObj.getEntitiesWithinAABB(SlimeEntity.class, this.boundingBox.expand(12.0D, 6.0D, 12.0D));
 
                     for (int i = closeSlimes.size() - 1; i >= 0; i--) {
-                        if (((SlimeEntityMixin) closeSlimes.get(i)).getIsCore() == (byte) 1 ||
+                        if (((EntitySlimeMixin) closeSlimes.get(i)).getIsCore() == (byte) 1 ||
                                 ((SlimeEntity) closeSlimes.get(i)).getSlimeSize() != this.getSlimeSize() ||
                                 !((SlimeEntity) closeSlimes.get(i)).isEntityAlive()) {
                             closeSlimes.remove(i);
@@ -79,7 +75,7 @@ public abstract class SlimeEntityMixin extends EntitySlime implements SlimeEntit
                             List veryCloseSlimes = this.worldObj.getEntitiesWithinAABB(SlimeEntity.class, this.boundingBox.expand(checkRange, checkRange, checkRange));
 
                             for (int i = veryCloseSlimes.size() - 1; i >= 0; i--) {
-                                if (((SlimeEntityMixin) veryCloseSlimes.get(i)).getIsCore() == (byte) 1 ||
+                                if (((EntitySlimeMixin) veryCloseSlimes.get(i)).getIsCore() == (byte) 1 ||
                                         ((SlimeEntity) veryCloseSlimes.get(i)).getSlimeSize() != this.getSlimeSize() ||
                                         !((SlimeEntity) veryCloseSlimes.get(i)).isEntityAlive()) {
                                     veryCloseSlimes.remove(i);
@@ -93,26 +89,26 @@ public abstract class SlimeEntityMixin extends EntitySlime implements SlimeEntit
                                 this.setSlimeSize(this.getSlimeSize() * 2);
                                 if (this.getSlimeSize() == 4) this.setIsCore((byte) 0);
                                 for (int i = 0; i < 2; i++) {
-                                    ((SlimeEntityMixin) veryCloseSlimes.get(i)).simpleSetDead();
+                                    ((EntitySlimeMixin) veryCloseSlimes.get(i)).simpleSetDead();
                                 }
 
                                 this.isMerging = false;
                                 this.mergeCooldownCounter = 40;
                                 for (Object closeSlime : closeSlimes) {
-                                    ((SlimeEntityMixin) closeSlime).isMerging = false;
+                                    ((EntitySlimeMixin) closeSlime).isMerging = false;
                                 }
                             }
                         } else {
                             this.isMerging = true;
                             for (Object closeSlime : closeSlimes) {
-                                ((SlimeEntityMixin) closeSlime).isMerging = true;
+                                ((EntitySlimeMixin) closeSlime).isMerging = true;
                             }
                         }
                     } else if (this.isMerging) {
                         this.isMerging = false;
                         this.mergeCooldownCounter = 40;
                         for (Object closeSlime : closeSlimes) {
-                            ((SlimeEntityMixin) closeSlime).isMerging = false;
+                            ((EntitySlimeMixin) closeSlime).isMerging = false;
                         }
                     }
                 }
@@ -122,7 +118,7 @@ public abstract class SlimeEntityMixin extends EntitySlime implements SlimeEntit
                 SlimeEntity coreSlime = null;
 
                 for (int i = 0; i < closeSlimes.size(); i++) {
-                    if (((SlimeEntityMixin) closeSlimes.get(i)).getIsCore() == (byte) 1 && ((SlimeEntity) closeSlimes.get(i)).isEntityAlive()) {
+                    if (((EntitySlimeMixin) closeSlimes.get(i)).getIsCore() == (byte) 1 && ((SlimeEntity) closeSlimes.get(i)).isEntityAlive()) {
                         coreSlime = (SlimeEntity) closeSlimes.get(i);
                         break;
                     }
@@ -156,7 +152,7 @@ public abstract class SlimeEntityMixin extends EntitySlime implements SlimeEntit
     @Unique
     public EntitySlime simpleCreateInstance() {
         EntitySlime instance = this.createInstance();
-        ((SlimeEntityMixin)instance).setIsCore((byte)0);
+        ((EntitySlimeMixin)instance).setIsCore((byte)0);
         return instance;
     }
 
@@ -217,10 +213,10 @@ public abstract class SlimeEntityMixin extends EntitySlime implements SlimeEntit
                 float var5 = ((float)(var3 / 2) - 0.5F) * (float)var1 / 40.0F;
                 EntitySlime var6 = this.simpleCreateInstance();
                 if (coreNeeded) {
-                    ((SlimeEntityMixin)var6).setIsCore((byte)1);
+                    ((EntitySlimeMixin)var6).setIsCore((byte)1);
                     coreNeeded = false;
                 }
-                ((SlimeEntityMixin)var6).setSlimeSize(var1 / 2);
+                ((EntitySlimeMixin)var6).setSlimeSize(var1 / 2);
                 var6.setLocationAndAngles(this.posX + (double)var4, this.posY + 0.5D, this.posZ + (double)var5, this.rand.nextFloat() * 360.0F, 0.0F);
                 this.worldObj.spawnEntityInWorld(var6);
             }

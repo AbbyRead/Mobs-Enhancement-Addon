@@ -1,12 +1,12 @@
 package net.pottx.mobsenhancement;
 
-import btw.entity.mob.SkeletonEntity;
-import btw.entity.mob.ZombieEntity;
+import net.minecraft.src.EntitySkeleton;
+import net.minecraft.src.EntityZombie;
 import net.minecraft.src.*;
-import net.pottx.mobsenhancement.access.ZombieEntityAccess;
+import net.pottx.mobsenhancement.access.EntityZombieAccess;
 
 public class EntityAIBreakBlock extends EntityAIBase {
-    private EntityLiving theEntity;
+    private final EntityLiving theEntity;
     private int targetPosX;
     private int targetPosY;
     private int targetPosZ;
@@ -82,11 +82,7 @@ public class EntityAIBreakBlock extends EntityAIBase {
                             }
 
                             this.breakingCooldownCounter --;
-                            if (this.breakingCooldownCounter <= 0) {
-                                return true;
-                            } else {
-                                return false;
-                            }
+	                        return this.breakingCooldownCounter <= 0;
                         }
                     }
                 }
@@ -105,8 +101,8 @@ public class EntityAIBreakBlock extends EntityAIBase {
     public void resetTask() {
         super.resetTask();
 
-        if (this.theEntity instanceof ZombieEntity) {
-            ((ZombieEntityAccess) this.theEntity).setIsBreakingBlock(false);
+        if (this.theEntity instanceof EntityZombie) {
+            ((EntityZombieAccess) this.theEntity).setIsBreakingBlock(false);
         }
 
         this.breakingCooldownCounter = 20;
@@ -114,8 +110,8 @@ public class EntityAIBreakBlock extends EntityAIBase {
     }
 
     public void startExecuting() {
-        if (this.theEntity instanceof ZombieEntity) {
-            ((ZombieEntityAccess) this.theEntity).setIsBreakingBlock(true);
+        if (this.theEntity instanceof EntityZombie) {
+            ((EntityZombieAccess) this.theEntity).setIsBreakingBlock(true);
         }
 
         this.hasStoppedBlockBreaking = false;
@@ -175,7 +171,7 @@ public class EntityAIBreakBlock extends EntityAIBase {
         if (blockId != 0) {
             if (tool != null) {
                 canBreak = tool.canHarvestBlock(this.theEntity.worldObj, block, x, y, z) || (block.getBlockHardness(this.theEntity.worldObj, x, y, z) > 0.0D && block.getBlockHardness(this.theEntity.worldObj, x, y, z) <= 1.5D);
-            } else if (!(this.theEntity instanceof SkeletonEntity)){
+            } else if (!(this.theEntity instanceof EntitySkeleton)){
                 canBreak = block.getBlockHardness(this.theEntity.worldObj, x, y, z) > 0.0D && block.getBlockHardness(this.theEntity.worldObj, x, y, z) <= 1.5D;
             }
         }

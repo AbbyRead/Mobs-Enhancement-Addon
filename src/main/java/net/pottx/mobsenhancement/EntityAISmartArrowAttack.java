@@ -3,25 +3,25 @@
 package net.pottx.mobsenhancement;
 
 import net.minecraft.src.*;
-import net.pottx.mobsenhancement.access.WitherEntityAccess;
+import net.pottx.mobsenhancement.access.EntityWitherAccess;
 
 public class EntityAISmartArrowAttack extends EntityAIBase
 {
-    private final EntityLiving entityOwner;
+    private final EntityLivingBase entityOwner;
     private final IRangedAttackMob entityRangedAttackOwner;
 
-    private EntityLiving entityAttackTarget;
+    private EntityLivingBase entityAttackTarget;
 
     private int attackCooldownCounter;
-    private float entityMoveSpeed;
-    
+    private final float entityMoveSpeed;
+
     private int canSeeTargetCounter;
 
-    private int minHealth;
+    private final int minHealth;
 
-    private int attackInterval;
-    private double attackRangeSq;
-    private double fleeRangeSq;
+    private final int attackInterval;
+    private final double attackRangeSq;
+    private final double fleeRangeSq;
 
     private boolean shouldFlee;
     private boolean isFleeing;
@@ -31,24 +31,25 @@ public class EntityAISmartArrowAttack extends EntityAIBase
         canSeeTargetCounter = 0;
 
         entityRangedAttackOwner = rangedAttackMob;
-        entityOwner = (EntityLiving)rangedAttackMob;
+        entityOwner = (EntityLivingBase) rangedAttackMob;
         entityMoveSpeed = fMoveSpeed;
         attackInterval = iAttackInterval;
         attackCooldownCounter = iAttackInterval >> 1;
         minHealth = iminHealth;
         attackRangeSq = fAttackRange * fAttackRange;
         fleeRangeSq = fFleeRange * fFleeRange;
-        
+
         setMutexBits(3);
     }
 
     public boolean shouldExecute()
     {
-        EntityLiving target = entityOwner.getAttackTarget();
+        if (entityOwner instanceof EntityLiving livingOwner) {
+        EntityLivingBase target = livingOwner.getAttackTarget();
 
         if (target == null) {
             return false;
-        } else if (this.entityOwner instanceof EntityWither && ((WitherEntityAccess)this.entityOwner).getIsDoingSpecialAttack()) {
+        } else if (this.entityOwner instanceof EntityWither && ((EntityWitherAccess)this.entityOwner).getIsDoingSpecialAttack()) {
             return false;
         } else {
             shouldFlee = target instanceof EntityPlayer || target.getAttackTarget() == entityOwner;
@@ -104,12 +105,12 @@ public class EntityAISmartArrowAttack extends EntityAIBase
         }
 
         entityOwner.getLookHelper().setLookPositionWithEntity(entityAttackTarget, 30.0F, 30.0F);
-        
+
         if (attackCooldownCounter > 1) {
             attackCooldownCounter--;
         } else {
             if (dDistSqToTarget <= attackRangeSq && bCanSeeTarget) {
-            	entityRangedAttackOwner.attackEntityWithRangedAttack(entityAttackTarget, 1F);
+                entityRangedAttackOwner.attackEntityWithRangedAttack(entityAttackTarget, 1F);
                 attackCooldownCounter = attackInterval;
             }
         }
@@ -122,7 +123,12 @@ public class EntityAISmartArrowAttack extends EntityAIBase
             isFleeing = true;
             for (int i=0; i<8; i++) {
                 if (destination == null || entityAttackTarget.getDistanceSq(destination.xCoord, destination.yCoord, destination.zCoord) <= entityAttackTarget.getDistanceSqToEntity(entityOwner)) {
-                    destination = RandomPositionGenerator.findRandomTargetBlockAwayFrom((EntityCreature) entityOwner, 16, 7, entityOwner.worldObj.getWorldVec3Pool().getVecFromPool(entityAttackTarget.posX, entityAttackTarget.posY, entityAttackTarget.posZ));
+                    destination = RandomPositionGenerator.findRandomTargetBlockAwayFrom(
+                            (EntityCreature) entityOwner,
+                            16,
+                            7,
+                            entityOwner.worldObj.getWorldVec3Pool().getVecFromPool(entityAttackTarget.posX, entityAttackTarget.posY, entityAttackTarget.posZ)
+                    );
                 } else {
                     break;
                 }
@@ -130,7 +136,10 @@ public class EntityAISmartArrowAttack extends EntityAIBase
         }
 
         if (destination != null) {
-            entityOwner.getNavigator().setPath(entityOwner.getNavigator().getPathToXYZ(destination.xCoord, destination.yCoord, destination.zCoord), entityMoveSpeed);
+            entityOwner.getNavigator().setPath(
+                    entityOwner.getNavigator().getPathToXYZ(destination.xCoord, destination.yCoord, destination.zCoord),
+                    entityMoveSpeed
+            );
         }
     }
 }

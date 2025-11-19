@@ -2,10 +2,10 @@ package net.pottx.mobsenhancement;
 
 import btw.block.BTWBlocks;
 import net.minecraft.src.*;
-import net.pottx.mobsenhancement.access.SkeletonEntityAccess;
+import net.pottx.mobsenhancement.access.EntitySkeletonAccess;
 
 public class SkeletonBreakTorchBehavior extends EntityAIBase {
-    private EntitySkeleton mySkeleton;
+    private final EntitySkeleton mySkeleton;
     private int targetPosX;
     private int targetPosY;
     private int targetPosZ;
@@ -53,12 +53,8 @@ public class SkeletonBreakTorchBehavior extends EntityAIBase {
                 }
             }
 
-            if (this.targetBlock != null && Math.random() < 0.25D) {
-                return true;
-            }
+	        return this.targetBlock != null && Math.random() < 0.25D;
         }
-
-        return false;
     }
 
     public boolean continueExecuting() {
@@ -66,13 +62,13 @@ public class SkeletonBreakTorchBehavior extends EntityAIBase {
     }
 
     public void resetTask() {
-        ((SkeletonEntityAccess) this.mySkeleton).setIsBreakingTorch(false);
+        ((EntitySkeletonAccess) this.mySkeleton).setIsBreakingTorch(false);
         this.mySkeleton.getNavigator().clearPathEntity();
         this.targetBlock = null;
     }
 
     public void startExecuting() {
-        ((SkeletonEntityAccess) this.mySkeleton).setIsBreakingTorch(true);
+        ((EntitySkeletonAccess) this.mySkeleton).setIsBreakingTorch(true);
     }
 
     public void updateTask() {

@@ -1,6 +1,6 @@
 package net.pottx.mobsenhancement.mixin;
 
-import net.minecraft.client.Minecraft;
+import net.minecraft.src.Minecraft;
 import net.minecraft.src.EntityClientPlayerMP;
 import net.minecraft.src.GameSettings;
 import org.spongepowered.asm.mixin.Mixin;

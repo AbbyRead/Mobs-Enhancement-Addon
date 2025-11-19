@@ -1,18 +1,15 @@
 package net.pottx.mobsenhancement.mixin;
 
-import btw.entity.mob.GhastEntity;
-import net.minecraft.src.DamageSource;
-import net.minecraft.src.EntityGhast;
-import net.minecraft.src.World;
+import net.minecraft.src.*;
 import net.pottx.mobsenhancement.MEAUtils;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(GhastEntity.class)
-public abstract class GhastEntityMixin extends EntityGhast implements EntityGhastAccess {
-    public GhastEntityMixin(World par1World) {
+@Mixin(EntityGhast.class)
+public abstract class EntityGhastMixin extends EntityFlying implements EntityGhastAccess {
+    public EntityGhastMixin(World par1World) {
         super(par1World);
     }
 
