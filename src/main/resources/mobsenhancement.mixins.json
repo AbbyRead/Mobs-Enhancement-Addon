@@ -46,7 +46,6 @@
     "MinecraftMixin",
     "MobSpawnerBlockMixin",
     "New_EntityWitchMixin",
-    "Temp_EntityWitherMixin",
     "RenderEnderCrystalMixin",
     "RenderGhastMixin",
     "SimpleWanderBehaviorMixin",

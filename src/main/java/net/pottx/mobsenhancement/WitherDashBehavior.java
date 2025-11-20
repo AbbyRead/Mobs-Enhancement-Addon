@@ -2,6 +2,7 @@ package net.pottx.mobsenhancement;
 
 import btw.block.BTWBlocks;
 import net.minecraft.src.*;
+import net.pottx.mobsenhancement.extend.EntityWitherExtend;
 import net.pottx.mobsenhancement.mixin.EntityWitherAccess;
 
 import java.util.List;
@@ -23,12 +24,12 @@ public class WitherDashBehavior extends EntityAIBase {
 
     @Override
     public boolean shouldExecute() {
-        if (this.myWither.isEntityAlive() && this.myWither.func_82212_n() <= 0 && this.myWither.isArmored()) {
+        if (this.myWither.isEntityAlive() && ((EntityWitherAccess)this.myWither).invokeGetSpawnInvulnerabilityTime() <= 0 && this.myWither.isArmored()) {
             this.dashCooldownCounter--;
         }
 
         return this.myWither.isEntityAlive() && this.myWither.getAttackTarget() != null &&
-                this.myWither.func_82212_n() <= 0 && this.myWither.isArmored() && this.dashCooldownCounter <= 0;
+                ((EntityWitherAccess)this.myWither).invokeGetSpawnInvulnerabilityTime() <= 0 && this.myWither.isArmored() && this.dashCooldownCounter <= 0;
     }
 
     public boolean continueExecuting() {
@@ -39,11 +40,11 @@ public class WitherDashBehavior extends EntityAIBase {
         super.resetTask();
 
         this.dashCooldownCounter = (this.myWither.posY > 256D ? 40 : 80) + this.myWither.rand.nextInt(40);
-        ((EntityWitherAccess) this.myWither).mea$setIsDoingSpecialAttack(false);
+        ((EntityWitherExtend)this.myWither).mea$setIsDoingSpecialAttack(false);
     }
 
     public void startExecuting() {
-        this.myWither.setIsDoingSpecialAttack(true);
+        ((EntityWitherExtend)this.myWither).mea$setIsDoingSpecialAttack(true);
         this.dashTarget = (EntityLiving) this.myWither.getAttackTarget();
         this.dashProcessCounter = 40;
     }

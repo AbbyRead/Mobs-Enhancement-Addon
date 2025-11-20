@@ -20,12 +20,12 @@ public class WitherSummonMinionBehavior extends EntityAIBase {
 
     @Override
     public boolean shouldExecute() {
-        if (this.myWither.isEntityAlive() && this.myWither.func_82212_n() <= 0 && !this.myWither.isArmored()) {
+        if (this.myWither.isEntityAlive() && this.myWither.invokeGetSpawnInvulnerabilityTime() <= 0 && !this.myWither.isArmored()) {
             this.summonCooldownCounter--;
         }
 
         return this.myWither.isEntityAlive() && this.myWither.getAttackTarget() != null &&
-                this.myWither.func_82212_n() <= 0 && !this.myWither.isArmored() && this.summonCooldownCounter <= 0;
+                this.myWither.invokeGetSpawnInvulnerabilityTime() <= 0 && !this.myWither.isArmored() && this.summonCooldownCounter <= 0;
     }
 
     public boolean continueExecuting() {

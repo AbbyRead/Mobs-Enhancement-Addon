@@ -1,10 +1,7 @@
 package net.pottx.mobsenhancement.mixin;
 
-import net.minecraft.src.EntityLivingBase;
-import net.minecraft.src.EntityWither;
-import net.minecraft.src.IEntitySelector;
+import net.minecraft.src.*;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
@@ -42,5 +39,11 @@ public interface EntityWitherAccess {
 
     @Invoker("func_82211_c")
     void invokeSetHeadTarget(int headIndex, int targetEntityId);
+
+    @Invoker("func_82212_n")
+    int invokeGetSpawnInvulnerabilityTime();
+
+    @Invoker("func_82215_s")
+    void invokeSetSpawnInvulnerabilityTime(int time);
 
 }
