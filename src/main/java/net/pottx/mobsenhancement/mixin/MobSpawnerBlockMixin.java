@@ -19,7 +19,7 @@ public abstract class MobSpawnerBlockMixin extends BlockContainer {
         double centerY = y + 0.5;
         double centerZ = z + 0.5;
 
-        List closePlayers = world.getEntitiesWithinAABB(EntityPlayer.class,
+        @SuppressWarnings("rawtypes") List closePlayers = world.getEntitiesWithinAABB(EntityPlayer.class,
                 AxisAlignedBB.getBoundingBox(
                         centerX - 6.0D, centerY - 7.0D, centerZ - 6.0D,
                         centerX + 6.0D, centerY + 5.0D, centerZ + 6.0D));
