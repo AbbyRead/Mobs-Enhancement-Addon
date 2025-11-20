@@ -47,15 +47,6 @@ public abstract class EntityZombieMixin extends EntityMob implements EntityZombi
 
     }
 
-    @Inject(
-            method = "func_96121_ay()I",
-            at = @At(value = "HEAD"),
-            cancellable = true
-    )
-    private void returnBiggerPathSearchRange(CallbackInfoReturnable<Integer> cir) {
-        cir.setReturnValue(32);
-    }
-
     @ModifyArgs(
             method = "<init>",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/src/EntityAITasks;addTask(ILnet/minecraft/src/EntityAIBase;)V", ordinal = 1)
