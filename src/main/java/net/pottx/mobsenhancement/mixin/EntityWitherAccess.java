@@ -1,6 +1,6 @@
 package net.pottx.mobsenhancement.mixin;
 
-import net.minecraft.src.EntityLiving;
+import net.minecraft.src.EntityLivingBase;
 import net.minecraft.src.EntityWither;
 import net.minecraft.src.IEntitySelector;
 import org.spongepowered.asm.mixin.Mixin;
@@ -10,25 +10,35 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 @Mixin(EntityWither.class)
 public interface EntityWitherAccess {
     @Accessor("field_82223_h")
-    public int[] getField_82223_h();
+    int[] getNextHeadAttackTime();
 
     @Accessor("field_82224_i")
-    public int[] getField_82224_i();
+    int[] getIdleHeadTicks();
 
     @Accessor("field_82222_j")
-    public int getField_82222_j();
+    int getBlockBreakCounter();
 
     @Accessor("field_82222_j")
-    public void setField_82222_j(int field_82222_j);
+    void setBlockBreakCounter(int blockBreakCounter);
 
     @Accessor("attackEntitySelector")
-    public static IEntitySelector getAttackEntitySelector() {
+    static IEntitySelector getValidTargetSelector() {
         throw new AssertionError();
     }
 
     @Invoker("func_82209_a")
-    public void invokeFunc_82209_a(int par1, double par2, double par4, double par6, boolean par8);
+    void invokeShootSkullAt(
+            int headIndex,
+            double targetX,
+            double targetY,
+            double targetZ,
+            boolean isCharged
+    );
 
     @Invoker("func_82216_a")
-    public void invokeFunc_82216_a(int par1, EntityLiving par2EntityLiving);
+    void invokeFireSkullAtEntity(int headIndex, EntityLivingBase target);
+
+    @Invoker("func_82211_c")
+    void invokeSetHeadTarget(int headIndex, int targetEntityId);
+
 }
