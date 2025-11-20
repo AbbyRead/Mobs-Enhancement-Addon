@@ -6,7 +6,6 @@ import net.minecraft.src.*;
 import net.pottx.mobsenhancement.access.EntityMobAccess;
 import net.pottx.mobsenhancement.access.EntitySkeletonAccess;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -15,7 +14,8 @@ import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
 @Mixin(EntitySkeleton.class)
 public abstract class EntitySkeletonMixin extends EntityMob implements IRangedAttackMob, EntitySkeletonAccess {
-    @Shadow public abstract void setCombatTask();
+    @Unique
+    EntitySkeleton self = (EntitySkeleton) (Object) this;
 
     public EntitySkeletonMixin(World world) {
         super(world);
@@ -40,8 +40,8 @@ public abstract class EntitySkeletonMixin extends EntityMob implements IRangedAt
 
         tasks.addTask(2, new EntityAIFleeFromExplosion(this, 0.375F, 4.0F));
         tasks.addTask(3, new EntityAIFleeFromEnemy(this, EntityPlayer.class, 0.375F, 24.0F, 5));
-        this.targetTasks.addTask(4, new SkeletonBreakTorchBehavior(this));
-        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, VillagerEntity.class, 24.0F, 0, ((EntityMobAccess)this).getCanXray() == (byte)0));
+        this.targetTasks.addTask(4, new SkeletonBreakTorchBehavior(self));
+        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityVillager.class, 24.0F, 0, ((EntityMobAccess)this).getCanXray() == (byte)0));
     }
 
     @Inject(
@@ -61,7 +61,8 @@ public abstract class EntitySkeletonMixin extends EntityMob implements IRangedAt
     private void resetArrowForPrediction(EntityLiving target, float fDamageModifier, CallbackInfo ci, EntityArrow arrow) {
         int i = MEAUtils.getGameProgressMobsLevel(this.worldObj);
         float f = i > 2 ? 2F : (i > 1 ? 4F : (i > 0 ? 6F : 8F));
-        ((EntityArrowAccess)arrow).mea$resetForPrediction(this, target, 1.6F, f);
+        // use the updated accessor method name resetForPrediction (adjust if your access interface still uses mea$ prefix)
+        ((EntityArrowAccess)arrow).resetForPrediction(this, target, 1.6F, f);
     }
 
     @Inject(
@@ -90,9 +91,8 @@ public abstract class EntitySkeletonMixin extends EntityMob implements IRangedAt
             at = @At(value = "TAIL")
     )
     private void witherChanceAfterNether(CallbackInfo ci) {
-        if (this.worldObj.provider.dimensionId == 0 && this.posY < 32 && getRNG().nextInt( 4 ) == 0)
-        {
-            setSkeletonType( 1 );
+        if (this.worldObj.provider.dimensionId == 0 && this.posY < 32 && getRNG().nextInt(4) == 0) {
+            setSkeletonType(1);
         }
     }
 
@@ -161,5 +161,6 @@ public abstract class EntitySkeletonMixin extends EntityMob implements IRangedAt
             at = @At(value = "INVOKE", target = "Lnet/minecraft/src/EntitySkeleton;checkForCatchFireInSun()V")
     )
     private void skipSunCheck(EntitySkeleton EntitySkeleton) {
+        // intentionally empty: skip the vanilla sun-catch-fire check for this mixin's behaviour
     }
 }
