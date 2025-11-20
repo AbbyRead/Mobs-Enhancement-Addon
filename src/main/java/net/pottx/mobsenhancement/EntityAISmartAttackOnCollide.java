@@ -1,6 +1,6 @@
 package net.pottx.mobsenhancement;
 
-import btw.entity.mob.EntityZombie;
+import net.minecraft.src.EntityZombie;
 import net.minecraft.src.*;
 import net.pottx.mobsenhancement.access.EntityZombieAccess;
 
@@ -17,10 +17,9 @@ public class EntityAISmartAttackOnCollide extends EntityAIBase
     public PathEntity entityPathEntity;
     private int field_75445_i;
 
-    private int minHealth;
-    private boolean shouldFlee;
+    private final int minHealth;
 
-    public EntityAISmartAttackOnCollide(EntityLiving par1EntityLiving, float par2, boolean par3, int iminHealth)
+	public EntityAISmartAttackOnCollide(EntityLiving par1EntityLiving, float par2, boolean par3, int iminHealth)
     {
         this.attackTick = 0;
         this.attacker = par1EntityLiving;
@@ -40,9 +39,9 @@ public class EntityAISmartAttackOnCollide extends EntityAIBase
         } else if (this.attacker instanceof EntityZombie && ((EntityZombieAccess)this.attacker).getIsBreakingBlock()){
             return false;
         } else {
-            this.shouldFlee = var1 instanceof EntityPlayer || var1.getAttackTarget() == this.attacker;
+	        boolean shouldFlee = var1 instanceof EntityPlayer || var1.getAttackTarget() == this.attacker;
 
-            if (this.shouldFlee && this.attacker.getHealth() < minHealth) {
+            if (shouldFlee && this.attacker.getHealth() < minHealth) {
                 return false;
             } else {
                 this.entityTarget = var1;
