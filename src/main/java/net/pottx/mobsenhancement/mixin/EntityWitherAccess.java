@@ -4,11 +4,19 @@ import net.minecraft.src.EntityLivingBase;
 import net.minecraft.src.EntityWither;
 import net.minecraft.src.IEntitySelector;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
 @Mixin(EntityWither.class)
 public interface EntityWitherAccess {
+
+    @Unique
+    boolean getIsDoingSpecialAttack();
+
+    @Unique
+    void setIsDoingSpecialAttack(boolean isDoingSpecialAttack);
+
     @Accessor("field_82223_h")
     int[] getNextHeadAttackTime();
 
