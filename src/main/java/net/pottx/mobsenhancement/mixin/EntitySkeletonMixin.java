@@ -78,7 +78,7 @@ public abstract class EntitySkeletonMixin extends EntityMob implements IRangedAt
                 skeleton.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
                 skeleton.setRotationYawHead(this.rotationYawHead);
                 skeleton.setEntityHealth(this.health);
-                skeleton.setCurrentItemOrArmor(0, (ItemStack) null);
+                skeleton.setCurrentItemOrArmor(0, null);
                 this.setDead();
                 this.worldObj.spawnEntityInWorld(skeleton);
             }
