@@ -10,11 +10,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(EntityAICreeperSwell.class)
 public abstract class CreeperSwellBehaviorMixin extends EntityAIBase {
-    @Shadow
-    public EntityCreeper swellingCreeper;
+    @Shadow public EntityCreeper swellingCreeper;
+    @Shadow public EntityLivingBase creeperAttackTarget;
 
     public CreeperSwellBehaviorMixin(EntityCreeper par1EntityCreeper) {
-        super(par1EntityCreeper);
+        super();
     }
 
     @Inject(
@@ -35,7 +35,7 @@ public abstract class CreeperSwellBehaviorMixin extends EntityAIBase {
 
     @Redirect(
             method = "updateTask()V",
-            at = @At(value = "INVOKE", target = "Lbtw/entity/mob/EntityCreeper;getDistanceSqToEntity(Lnet/minecraft/src/Entity;)D")
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/src/EntityCreeper;getDistanceSqToEntity(Lnet/minecraft/src/Entity;)D")
     )
     private double calmDownFurtherAcrossWall(EntityCreeper EntityCreeper, Entity par1Entity) {
         double distance = this.swellingCreeper.getDistanceSqToEntity(creeperAttackTarget);
