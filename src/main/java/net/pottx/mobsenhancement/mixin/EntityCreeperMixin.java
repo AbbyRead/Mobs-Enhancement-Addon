@@ -2,7 +2,7 @@ package net.pottx.mobsenhancement.mixin;
 
 import net.minecraft.src.*;
 import net.pottx.mobsenhancement.MEAUtils;
-import net.pottx.mobsenhancement.access.EntityMobAccess;
+import net.pottx.mobsenhancement.extend.EntityMobExtend;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -38,8 +38,8 @@ public abstract class EntityCreeperMixin extends EntityMob {
         ((EntityCreeperAccess)this).setFuseTime(i > 0 ? 20 : 25);
 
         // Reduce xray chance
-        if (((EntityMobAccess)this).getCanXray() == (byte)1 && this.rand.nextInt(2) == 0) {
-            ((EntityMobAccess)this).setCanXray((byte)0);
+        if (((EntityMobExtend)this).getCanXray() == (byte)1 && this.rand.nextInt(2) == 0) {
+            ((EntityMobExtend)this).setCanXray((byte)0);
         }
 
         // Random powered creeper chance
@@ -56,7 +56,7 @@ public abstract class EntityCreeperMixin extends EntityMob {
             at = @At(value = "INVOKE", target = "Lnet/minecraft/src/EntityAITasks;addTask(ILnet/minecraft/src/EntityAIBase;)V", ordinal = 7)
     )
     private void modifyNearestAttackablePlayerTask(Args args) {
-        args.set(1, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 32.0F, 0, ((EntityMobAccess)this).getCanXray() == (byte)0));
+        args.set(1, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 32.0F, 0, ((EntityMobExtend)this).getCanXray() == (byte)0));
     }
 
     @ModifyArgs(

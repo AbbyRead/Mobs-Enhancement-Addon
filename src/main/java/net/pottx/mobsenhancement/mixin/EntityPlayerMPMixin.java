@@ -1,7 +1,7 @@
 package net.pottx.mobsenhancement.mixin;
 
 import net.minecraft.src.*;
-import net.pottx.mobsenhancement.access.EntityPlayerAccess;
+import net.pottx.mobsenhancement.extend.EntityPlayerExtend;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -20,7 +20,7 @@ public abstract class EntityPlayerMPMixin extends EntityPlayer {
             cancellable = true
     )
     private void gloomIfStarringAtEnd(CallbackInfoReturnable<Boolean> cir) {
-        if (((EntityPlayerAccess)this).isCloseToEnd()) {
+        if (((EntityPlayerExtend)this).isCloseToEnd()) {
             cir.setReturnValue(true);
         }
     }
@@ -30,7 +30,7 @@ public abstract class EntityPlayerMPMixin extends EntityPlayer {
             at = @At("HEAD")
     )
     private void fasterInGloomCountWhenCloseToEnd(CallbackInfo ci) {
-        if (!this.isDead && ((EntityPlayerAccess)this).isCloseToEnd()) {
+        if (!this.isDead && ((EntityPlayerExtend)this).isCloseToEnd()) {
             inGloomCounter += 3;
         }
     }

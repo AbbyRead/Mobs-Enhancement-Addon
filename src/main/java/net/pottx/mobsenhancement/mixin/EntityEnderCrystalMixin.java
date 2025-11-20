@@ -1,7 +1,7 @@
 package net.pottx.mobsenhancement.mixin;
 
 import net.minecraft.src.*;
-import net.pottx.mobsenhancement.access.EntityEnderCrystalInterface;
+import net.pottx.mobsenhancement.extend.EntityEnderCrystalExtend;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.List;
 
 @Mixin(EntityEnderCrystal.class)
-public abstract class EntityEnderCrystalMixin extends Entity implements EntityEnderCrystalInterface {
+public abstract class EntityEnderCrystalMixin extends Entity implements EntityEnderCrystalExtend {
     @Unique
     private static final int IS_DRIED_DATA_WATCHER_ID = 25;
 
@@ -46,7 +46,7 @@ public abstract class EntityEnderCrystalMixin extends Entity implements EntityEn
             at = @At(value = "INVOKE", target = "Lnet/minecraft/src/EntityEnderCrystal;isEntityInvulnerable()Z")
     )
     private boolean doIsDriedCheck(EntityEnderCrystal entityEnderCrystal) {
-        return ((EntityEnderCrystalInterface) entityEnderCrystal).mea$getIsDried() == (byte) 1 || entityEnderCrystal.isEntityInvulnerable();
+        return ((EntityEnderCrystalExtend) entityEnderCrystal).mea$getIsDried() == (byte) 1 || entityEnderCrystal.isEntityInvulnerable();
     }
 
     @Redirect(
@@ -76,8 +76,8 @@ public abstract class EntityEnderCrystalMixin extends Entity implements EntityEn
         }
 
         if (this.chargingEnderCrystal != null) {
-            if (this.mea$getIsDried() == (byte) 0 || ((EntityEnderCrystalInterface) this.chargingEnderCrystal).mea$getIsDried() == (byte) 1) {
-                ((EntityEnderCrystalInterface) this.chargingEnderCrystal).mea$setIsOccupied(false);
+            if (this.mea$getIsDried() == (byte) 0 || ((EntityEnderCrystalExtend) this.chargingEnderCrystal).mea$getIsDried() == (byte) 1) {
+                ((EntityEnderCrystalExtend) this.chargingEnderCrystal).mea$setIsOccupied(false);
                 this.chargingEnderCrystal = null;
             } else if (this.chargingCounter < 640) {
                 this.chargingCounter++;
@@ -94,9 +94,9 @@ public abstract class EntityEnderCrystalMixin extends Entity implements EntityEn
                 EntityEnderCrystal chargerCrystal = (EntityEnderCrystal) nearCrystal;
                 double distance = chargerCrystal.getDistanceSqToEntity(this);
 
-                if (((EntityEnderCrystalInterface) chargerCrystal).mea$getIsDried() == (byte) 0 &&
-                        (chargerCrystal == this.chargingEnderCrystal || !((EntityEnderCrystalInterface) chargerCrystal).mea$getIsOccupied()) &&
-                        !((EntityEnderCrystalInterface) chargerCrystal).mea$getIsHealing() &&
+                if (((EntityEnderCrystalExtend) chargerCrystal).mea$getIsDried() == (byte) 0 &&
+                        (chargerCrystal == this.chargingEnderCrystal || !((EntityEnderCrystalExtend) chargerCrystal).mea$getIsOccupied()) &&
+                        !((EntityEnderCrystalExtend) chargerCrystal).mea$getIsHealing() &&
                         distance < smallestDistance) {
                     smallestDistance = distance;
                     nearestChargerCrystal = chargerCrystal;
@@ -105,10 +105,10 @@ public abstract class EntityEnderCrystalMixin extends Entity implements EntityEn
 
             if (nearestChargerCrystal != this.chargingEnderCrystal) {
                 if (this.chargingEnderCrystal != null) {
-                    ((EntityEnderCrystalInterface) this.chargingEnderCrystal).mea$setIsOccupied(false);
+                    ((EntityEnderCrystalExtend) this.chargingEnderCrystal).mea$setIsOccupied(false);
                 }
                 if (nearestChargerCrystal != null) {
-                    ((EntityEnderCrystalInterface) nearestChargerCrystal).mea$setIsOccupied(true);
+                    ((EntityEnderCrystalExtend) nearestChargerCrystal).mea$setIsOccupied(true);
                 }
 
                 this.chargingEnderCrystal = nearestChargerCrystal;

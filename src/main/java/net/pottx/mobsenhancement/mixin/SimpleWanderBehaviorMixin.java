@@ -5,8 +5,8 @@ import net.minecraft.src.EntityAIBase;
 import net.minecraft.src.EntityCreature;
 import net.minecraft.src.EntitySkeleton;
 import net.minecraft.src.EntityZombie;
-import net.pottx.mobsenhancement.access.EntitySkeletonAccess;
-import net.pottx.mobsenhancement.access.EntityZombieAccess;
+import net.pottx.mobsenhancement.extend.EntitySkeletonExtend;
+import net.pottx.mobsenhancement.extend.EntityZombieExtend;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -23,8 +23,8 @@ public abstract class SimpleWanderBehaviorMixin extends EntityAIBase {
             cancellable = true
     )
     private void shouldNotExecuteIfBreaking(CallbackInfoReturnable<Boolean> cir) {
-        if ((this.myEntity instanceof EntityZombie && ((EntityZombieAccess) this.myEntity).getIsBreakingBlock()) ||
-                (this.myEntity instanceof EntitySkeleton && ((EntitySkeletonAccess) this.myEntity).mea$getIsBreakingTorch())) {
+        if ((this.myEntity instanceof EntityZombie && ((EntityZombieExtend) this.myEntity).getIsBreakingBlock()) ||
+                (this.myEntity instanceof EntitySkeleton && ((EntitySkeletonExtend) this.myEntity).mea$getIsBreakingTorch())) {
             cir.setReturnValue(false);
         }
     }
@@ -35,8 +35,8 @@ public abstract class SimpleWanderBehaviorMixin extends EntityAIBase {
             cancellable = true
     )
     private void notContinueIfBreaking(CallbackInfoReturnable<Boolean> cir) {
-        if ((this.myEntity instanceof EntityZombie && ((EntityZombieAccess) this.myEntity).getIsBreakingBlock()) ||
-                (this.myEntity instanceof EntitySkeleton && ((EntitySkeletonAccess) this.myEntity).mea$getIsBreakingTorch())) {
+        if ((this.myEntity instanceof EntityZombie && ((EntityZombieExtend) this.myEntity).getIsBreakingBlock()) ||
+                (this.myEntity instanceof EntitySkeleton && ((EntitySkeletonExtend) this.myEntity).mea$getIsBreakingTorch())) {
             cir.setReturnValue(false);
         }
     }

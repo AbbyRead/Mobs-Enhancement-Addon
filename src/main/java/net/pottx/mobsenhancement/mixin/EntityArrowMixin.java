@@ -2,14 +2,14 @@ package net.pottx.mobsenhancement.mixin;
 
 import net.minecraft.src.*;
 import net.pottx.mobsenhancement.MEAUtils;
-import net.pottx.mobsenhancement.access.EntityArrowAccess;
+import net.pottx.mobsenhancement.extend.EntityArrowExtend;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(EntityArrow.class)
-public abstract class EntityArrowMixin extends Entity implements IProjectile, EntityArrowAccess {
+public abstract class EntityArrowMixin extends Entity implements IProjectile, EntityArrowExtend {
     public EntityArrowMixin(World world) {
         super(world);
     }

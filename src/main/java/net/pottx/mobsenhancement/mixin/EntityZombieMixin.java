@@ -4,8 +4,8 @@ import net.minecraft.src.*;
 import net.pottx.mobsenhancement.EntityAIBreakBlock;
 import net.pottx.mobsenhancement.EntityAISmartAttackOnCollide;
 import net.pottx.mobsenhancement.MEAUtils;
-import net.pottx.mobsenhancement.access.EntityMobAccess;
-import net.pottx.mobsenhancement.access.EntityZombieAccess;
+import net.pottx.mobsenhancement.extend.EntityMobExtend;
+import net.pottx.mobsenhancement.extend.EntityZombieExtend;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -13,11 +13,13 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArgs;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
 @Mixin(EntityZombie.class)
-public abstract class EntityZombieMixin extends EntityMob implements EntityZombieAccess {
+public abstract class EntityZombieMixin extends EntityMob implements EntityZombieExtend {
+    @Unique
+    EntityZombie self = (EntityZombie) (Object) this;
+
     @Unique
     private boolean isBreakingBlock = false;
     @Shadow
@@ -40,7 +42,7 @@ public abstract class EntityZombieMixin extends EntityMob implements EntityZombi
         this.tasks.addTask(2, new EntityAISmartAttackOnCollide(this, this.moveSpeed, false, 0));
 
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 24.0F, 0,
-                ((EntityMobAccess)this).getCanXray() == (byte)0));
+                ((EntityMobExtend)this).getCanXray() == (byte)0));
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityVillager.class, 24.0F, 0, false));
         this.targetTasks.addTask( 2, new EntityAINearestAttackableTarget(this, EntityCreature.class, 24.0F, 0,
                 false, false, targetEntitySelector));
@@ -81,7 +83,7 @@ public abstract class EntityZombieMixin extends EntityMob implements EntityZombi
         {
             EntitySkeleton skeleton = (EntitySkeleton) EntityList.createEntityOfType(EntitySkeleton.class, this.worldObj);
             skeleton.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
-            skeleton.setEntityHealth(MathHelper.ceiling_float_int(skeleton.getMaxHealth() / 2.0F));
+            skeleton.setHealth(MathHelper.ceiling_float_int(skeleton.getMaxHealth() / 2.0F));
             for (int i = 0; i < 5 ; i++) {
                 skeleton.setCurrentItemOrArmor(0, this.getCurrentItemOrArmor(0));
             }
@@ -101,7 +103,7 @@ public abstract class EntityZombieMixin extends EntityMob implements EntityZombi
     {
         if (!this.isEntityInvulnerable())
         {
-            if (par1DamageSource == DamageSource.onFire && !this.isVillager() && this.health <= par2)
+            if (par1DamageSource == DamageSource.onFire && !self.isVillager() && self.getHealth() <= par2)
             {
                 this.onKilledBySun();
             }

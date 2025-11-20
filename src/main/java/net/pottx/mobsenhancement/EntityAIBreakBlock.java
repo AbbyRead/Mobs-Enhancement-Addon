@@ -3,7 +3,7 @@ package net.pottx.mobsenhancement;
 import net.minecraft.src.EntitySkeleton;
 import net.minecraft.src.EntityZombie;
 import net.minecraft.src.*;
-import net.pottx.mobsenhancement.access.EntityZombieAccess;
+import net.pottx.mobsenhancement.extend.EntityZombieExtend;
 
 public class EntityAIBreakBlock extends EntityAIBase {
     private final EntityLiving theEntity;
@@ -102,7 +102,7 @@ public class EntityAIBreakBlock extends EntityAIBase {
         super.resetTask();
 
         if (this.theEntity instanceof EntityZombie) {
-            ((EntityZombieAccess) this.theEntity).setIsBreakingBlock(false);
+            ((EntityZombieExtend) this.theEntity).setIsBreakingBlock(false);
         }
 
         this.breakingCooldownCounter = 20;
@@ -111,7 +111,7 @@ public class EntityAIBreakBlock extends EntityAIBase {
 
     public void startExecuting() {
         if (this.theEntity instanceof EntityZombie) {
-            ((EntityZombieAccess) this.theEntity).setIsBreakingBlock(true);
+            ((EntityZombieExtend) this.theEntity).setIsBreakingBlock(true);
         }
 
         this.hasStoppedBlockBreaking = false;

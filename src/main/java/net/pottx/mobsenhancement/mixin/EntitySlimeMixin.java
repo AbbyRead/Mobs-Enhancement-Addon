@@ -3,7 +3,7 @@ package net.pottx.mobsenhancement.mixin;
 import net.minecraft.src.*;
 import net.pottx.mobsenhancement.MEAEffectManager;
 import net.pottx.mobsenhancement.MEAUtils;
-import net.pottx.mobsenhancement.access.EntitySlimeAccess;
+import net.pottx.mobsenhancement.extend.EntitySlimeExtend;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.List;
 
 @Mixin(EntitySlime.class)
-public abstract class EntitySlimeMixin extends EntityLiving implements EntitySlimeAccess {
+public abstract class EntitySlimeMixin extends EntityLiving implements EntitySlimeExtend {
     @Unique
     public boolean isMagma;
     @Unique

@@ -1,6 +1,6 @@
-package net.pottx.mobsenhancement.access;
+package net.pottx.mobsenhancement.extend;
 
-public interface EntityPlayerAccess {
+public interface EntityPlayerExtend {
     double getRealMotionX();
 
     double getRealMotionY();

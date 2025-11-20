@@ -2,7 +2,7 @@ package net.pottx.mobsenhancement;
 
 import btw.block.BTWBlocks;
 import net.minecraft.src.*;
-import net.pottx.mobsenhancement.access.EntitySkeletonAccess;
+import net.pottx.mobsenhancement.extend.EntitySkeletonExtend;
 
 public class SkeletonBreakTorchBehavior extends EntityAIBase {
     private final EntitySkeleton mySkeleton;
@@ -62,13 +62,13 @@ public class SkeletonBreakTorchBehavior extends EntityAIBase {
     }
 
     public void resetTask() {
-        ((EntitySkeletonAccess) this.mySkeleton).mea$setIsBreakingTorch(false);
+        ((EntitySkeletonExtend) this.mySkeleton).mea$setIsBreakingTorch(false);
         this.mySkeleton.getNavigator().clearPathEntity();
         this.targetBlock = null;
     }
 
     public void startExecuting() {
-        ((EntitySkeletonAccess) this.mySkeleton).mea$setIsBreakingTorch(true);
+        ((EntitySkeletonExtend) this.mySkeleton).mea$setIsBreakingTorch(true);
     }
 
     public void updateTask() {

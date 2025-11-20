@@ -1,8 +1,8 @@
-package net.pottx.mobsenhancement.access;
+package net.pottx.mobsenhancement.extend;
 
 import net.minecraft.src.EntityEnderCrystal;
 
-public interface EntityEnderCrystalInterface {
+public interface EntityEnderCrystalExtend {
     void mea$setRespawnCounter(int respawnCounter);
 
     byte mea$getIsDried();

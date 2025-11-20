@@ -2,7 +2,7 @@ package net.pottx.mobsenhancement;
 
 import net.minecraft.src.EntityZombie;
 import net.minecraft.src.*;
-import net.pottx.mobsenhancement.access.EntityZombieAccess;
+import net.pottx.mobsenhancement.extend.EntityZombieExtend;
 
 public class EntityAISmartAttackOnCollide extends EntityAIBase
 {
@@ -36,7 +36,7 @@ public class EntityAISmartAttackOnCollide extends EntityAIBase
 
         if (var1 == null) {
             return false;
-        } else if (this.attacker instanceof EntityZombie && ((EntityZombieAccess)this.attacker).getIsBreakingBlock()){
+        } else if (this.attacker instanceof EntityZombie && ((EntityZombieExtend)this.attacker).getIsBreakingBlock()){
             return false;
         } else {
 	        boolean shouldFlee = var1 instanceof EntityPlayer || var1.getAttackTarget() == this.attacker;
@@ -54,7 +54,7 @@ public class EntityAISmartAttackOnCollide extends EntityAIBase
     public boolean continueExecuting() {
         if (this.attacker.getHealth() < this.minHealth) {
             return false;
-        } else if (this.attacker instanceof EntityZombie && ((EntityZombieAccess) this.attacker).getIsBreakingBlock()){
+        } else if (this.attacker instanceof EntityZombie && ((EntityZombieExtend) this.attacker).getIsBreakingBlock()){
             return false;
         } else {
             EntityLiving var1 = this.attacker.getAttackTarget();

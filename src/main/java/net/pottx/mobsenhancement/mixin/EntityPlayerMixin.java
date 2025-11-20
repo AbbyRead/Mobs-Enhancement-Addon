@@ -1,7 +1,7 @@
 package net.pottx.mobsenhancement.mixin;
 
 import net.minecraft.src.*;
-import net.pottx.mobsenhancement.access.EntityPlayerAccess;
+import net.pottx.mobsenhancement.extend.EntityPlayerExtend;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.List;
 
 @Mixin(EntityPlayer.class)
-public abstract class EntityPlayerMixin extends EntityLivingBase implements ICommandSender, EntityPlayerAccess {
+public abstract class EntityPlayerMixin extends EntityLivingBase implements ICommandSender, EntityPlayerExtend {
     public EntityPlayerMixin(World par1World) {
         super(par1World);
     }

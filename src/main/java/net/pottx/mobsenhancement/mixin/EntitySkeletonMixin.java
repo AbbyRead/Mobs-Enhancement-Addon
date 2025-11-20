@@ -2,10 +2,10 @@ package net.pottx.mobsenhancement.mixin;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import net.pottx.mobsenhancement.*;
-import net.pottx.mobsenhancement.access.EntityArrowAccess;
+import net.pottx.mobsenhancement.extend.EntityArrowExtend;
 import net.minecraft.src.*;
-import net.pottx.mobsenhancement.access.EntityMobAccess;
-import net.pottx.mobsenhancement.access.EntitySkeletonAccess;
+import net.pottx.mobsenhancement.extend.EntityMobExtend;
+import net.pottx.mobsenhancement.extend.EntitySkeletonExtend;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.*;
@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
 @Mixin(EntitySkeleton.class)
-public abstract class EntitySkeletonMixin extends EntityMob implements IRangedAttackMob, EntitySkeletonAccess {
+public abstract class EntitySkeletonMixin extends EntityMob implements IRangedAttackMob, EntitySkeletonExtend {
     @Unique
     EntitySkeleton self = (EntitySkeleton) (Object) this;
 
@@ -44,7 +44,7 @@ public abstract class EntitySkeletonMixin extends EntityMob implements IRangedAt
         tasks.addTask(2, new EntityAIFleeFromExplosion(this, 0.375F, 4.0F));
         tasks.addTask(3, new EntityAIFleeFromEnemy(this, EntityPlayer.class, 0.375F, 24.0F, 5));
         this.targetTasks.addTask(4, new SkeletonBreakTorchBehavior(self));
-        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityVillager.class, 24.0F, 0, ((EntityMobAccess)this).getCanXray() == (byte)0));
+        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityVillager.class, 24.0F, 0, ((EntityMobExtend)this).getCanXray() == (byte)0));
     }
 
     @Inject(
@@ -63,7 +63,7 @@ public abstract class EntitySkeletonMixin extends EntityMob implements IRangedAt
     private void resetArrowForPrediction(EntityLivingBase target, float fDamageModifier, CallbackInfo ci, @Local EntityArrow arrow) {
         int i = MEAUtils.getGameProgressMobsLevel(this.worldObj);
         float f = i > 2 ? 2F : (i > 1 ? 4F : (i > 0 ? 6F : 8F));
-        ((EntityArrowAccess)arrow).resetForPrediction(this, target, 1.6F, f);
+        ((EntityArrowExtend)arrow).resetForPrediction(this, target, 1.6F, f);
     }
 
     @Inject(

@@ -1,8 +1,8 @@
-package net.pottx.mobsenhancement.access;
+package net.pottx.mobsenhancement.extend;
 
 import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntityLivingBase;
 
-public interface EntityArrowAccess {
+public interface EntityArrowExtend {
     void resetForPrediction(EntityLiving owner, EntityLivingBase target, float arrowVelocity, float deviation);
 }

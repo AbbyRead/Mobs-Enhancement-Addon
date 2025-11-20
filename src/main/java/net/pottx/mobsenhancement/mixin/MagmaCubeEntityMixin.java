@@ -2,7 +2,7 @@ package net.pottx.mobsenhancement.mixin;
 
 import net.pottx.mobsenhancement.MEAUtils;
 import net.minecraft.src.*;
-import net.pottx.mobsenhancement.access.EntitySlimeAccess;
+import net.pottx.mobsenhancement.extend.EntitySlimeExtend;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -19,7 +19,7 @@ public abstract class MagmaCubeEntityMixin extends EntitySlime {
             at = @At(value = "TAIL")
     )
     private void setIsMagma(CallbackInfo ci) {
-        ((EntitySlimeAccess)this).setMagma();
+        ((EntitySlimeExtend)this).setMagma();
     }
 
     @Override

@@ -1,7 +1,7 @@
 package net.pottx.mobsenhancement.mixin;
 
 import net.minecraft.src.*;
-import net.pottx.mobsenhancement.access.EntityEnderCrystalInterface;
+import net.pottx.mobsenhancement.extend.EntityEnderCrystalExtend;
 import org.lwjgl.opengl.GL11;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -18,7 +18,7 @@ public abstract class RenderEnderCrystalMixin extends Render {
             at = @At(value = "INVOKE", target = "Lnet/minecraft/src/RenderEnderCrystal;loadTexture(Ljava/lang/String;)V")
     )
     private void changeTextureIfDried(Args args, EntityEnderCrystal par1EntityEnderCrystal, double par2, double par4, double par6, float par8, float par9) {
-        if (((EntityEnderCrystalInterface) par1EntityEnderCrystal).mea$getIsDried() == (byte) 1) {
+        if (((EntityEnderCrystalExtend) par1EntityEnderCrystal).mea$getIsDried() == (byte) 1) {
             args.set(0, "/meatextures/crystal_dried.png");
         }
     }
@@ -28,7 +28,7 @@ public abstract class RenderEnderCrystalMixin extends Render {
             at = @At(value = "INVOKE", target = "Lnet/minecraft/src/ModelBase;render(Lnet/minecraft/src/Entity;FFFFFF)V")
     )
     private void renderStillIfDried(Args args, EntityEnderCrystal par1EntityEnderCrystal, double par2, double par4, double par6, float par8, float par9) {
-        if (((EntityEnderCrystalInterface) par1EntityEnderCrystal).mea$getIsDried() == (byte) 1) {
+        if (((EntityEnderCrystalExtend) par1EntityEnderCrystal).mea$getIsDried() == (byte) 1) {
             args.set(2, 0.0F);
             args.set(3, 0.0F);
         }
@@ -44,14 +44,14 @@ public abstract class RenderEnderCrystalMixin extends Render {
     
     @Unique
     public void doRenderChargingBeam(EntityEnderCrystal par1EntityEnderCrystal, double par2, double par4, double par6, float par8, float par9) {
-        if (((EntityEnderCrystalInterface) par1EntityEnderCrystal).mea$getChargingEnderCrystal() != null)
+        if (((EntityEnderCrystalExtend) par1EntityEnderCrystal).mea$getChargingEnderCrystal() != null)
         {
-            float var10 = (float)((EntityEnderCrystalInterface) par1EntityEnderCrystal).mea$getChargingEnderCrystal().innerRotation + par9;
+            float var10 = (float)((EntityEnderCrystalExtend) par1EntityEnderCrystal).mea$getChargingEnderCrystal().innerRotation + par9;
             float var11 = MathHelper.sin(var10 * 0.2F) / 2.0F + 0.5F;
             var11 = (var11 * var11 + var11) * 0.2F;
-            float var12 = (float)(((EntityEnderCrystalInterface) par1EntityEnderCrystal).mea$getChargingEnderCrystal().posX - par1EntityEnderCrystal.posX - (par1EntityEnderCrystal.prevPosX - par1EntityEnderCrystal.posX) * (double)(1.0F - par9));
-            float var13 = (float)((double)var11 + ((EntityEnderCrystalInterface) par1EntityEnderCrystal).mea$getChargingEnderCrystal().posY - par1EntityEnderCrystal.posY - (par1EntityEnderCrystal.prevPosY - par1EntityEnderCrystal.posY) * (double)(1.0F - par9));
-            float var14 = (float)(((EntityEnderCrystalInterface) par1EntityEnderCrystal).mea$getChargingEnderCrystal().posZ - par1EntityEnderCrystal.posZ - (par1EntityEnderCrystal.prevPosZ - par1EntityEnderCrystal.posZ) * (double)(1.0F - par9));
+            float var12 = (float)(((EntityEnderCrystalExtend) par1EntityEnderCrystal).mea$getChargingEnderCrystal().posX - par1EntityEnderCrystal.posX - (par1EntityEnderCrystal.prevPosX - par1EntityEnderCrystal.posX) * (double)(1.0F - par9));
+            float var13 = (float)((double)var11 + ((EntityEnderCrystalExtend) par1EntityEnderCrystal).mea$getChargingEnderCrystal().posY - par1EntityEnderCrystal.posY - (par1EntityEnderCrystal.prevPosY - par1EntityEnderCrystal.posY) * (double)(1.0F - par9));
+            float var14 = (float)(((EntityEnderCrystalExtend) par1EntityEnderCrystal).mea$getChargingEnderCrystal().posZ - par1EntityEnderCrystal.posZ - (par1EntityEnderCrystal.prevPosZ - par1EntityEnderCrystal.posZ) * (double)(1.0F - par9));
             float var15 = MathHelper.sqrt_float(var12 * var12 + var14 * var14);
             float var16 = MathHelper.sqrt_float(var12 * var12 + var13 * var13 + var14 * var14);
             GL11.glPushMatrix();

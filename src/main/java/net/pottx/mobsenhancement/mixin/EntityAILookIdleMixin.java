@@ -1,8 +1,8 @@
 package net.pottx.mobsenhancement.mixin;
 
 import net.minecraft.src.*;
-import net.pottx.mobsenhancement.access.EntitySkeletonAccess;
-import net.pottx.mobsenhancement.access.EntityZombieAccess;
+import net.pottx.mobsenhancement.extend.EntitySkeletonExtend;
+import net.pottx.mobsenhancement.extend.EntityZombieExtend;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -20,8 +20,8 @@ public abstract class EntityAILookIdleMixin extends EntityAIBase {
             cancellable = true
     )
     private void shouldNotExecuteIfBreaking(CallbackInfoReturnable<Boolean> cir) {
-        if ((this.idleEntity instanceof EntityZombie && ((EntityZombieAccess) this.idleEntity).getIsBreakingBlock()) ||
-                (this.idleEntity instanceof EntitySkeleton && ((EntitySkeletonAccess) this.idleEntity).mea$getIsBreakingTorch())) {
+        if ((this.idleEntity instanceof EntityZombie && ((EntityZombieExtend) this.idleEntity).getIsBreakingBlock()) ||
+                (this.idleEntity instanceof EntitySkeleton && ((EntitySkeletonExtend) this.idleEntity).mea$getIsBreakingTorch())) {
             cir.setReturnValue(false);
         }
     }
@@ -32,8 +32,8 @@ public abstract class EntityAILookIdleMixin extends EntityAIBase {
             cancellable = true
     )
     private void notContinueIfBreaking(CallbackInfoReturnable<Boolean> cir) {
-        if ((this.idleEntity instanceof EntityZombie && ((EntityZombieAccess) this.idleEntity).getIsBreakingBlock()) ||
-                (this.idleEntity instanceof EntitySkeleton && ((EntitySkeletonAccess) this.idleEntity).mea$getIsBreakingTorch())) {
+        if ((this.idleEntity instanceof EntityZombie && ((EntityZombieExtend) this.idleEntity).getIsBreakingBlock()) ||
+                (this.idleEntity instanceof EntitySkeleton && ((EntitySkeletonExtend) this.idleEntity).mea$getIsBreakingTorch())) {
             cir.setReturnValue(false);
         }
     }

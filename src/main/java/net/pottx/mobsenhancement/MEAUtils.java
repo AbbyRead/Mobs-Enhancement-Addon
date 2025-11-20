@@ -4,7 +4,7 @@ import btw.block.BTWBlocks;
 import btw.world.util.WorldUtils;
 import btw.world.util.difficulty.DifficultyParam;
 import net.minecraft.src.*;
-import net.pottx.mobsenhancement.access.EntityPlayerAccess;
+import net.pottx.mobsenhancement.extend.EntityPlayerExtend;
 
 public class MEAUtils {
     public static double[] predictRelativeXZOnRangedHit(EntityLivingBase target, double initRelativeX, double initRelativeY, double initRelativeZ, float projectileVelocity) {
@@ -12,9 +12,9 @@ public class MEAUtils {
         double targetMotionY = target.motionY;
         double targetMotionZ = target.motionZ;
         if (target instanceof EntityPlayer) {
-            targetMotionX = ((EntityPlayerAccess)target).getRealMotionX();
-            targetMotionY = ((EntityPlayerAccess)target).getRealMotionY();
-            targetMotionZ = ((EntityPlayerAccess)target).getRealMotionZ();
+            targetMotionX = ((EntityPlayerExtend)target).getRealMotionX();
+            targetMotionY = ((EntityPlayerExtend)target).getRealMotionY();
+            targetMotionZ = ((EntityPlayerExtend)target).getRealMotionZ();
         }
         double a = targetMotionX * targetMotionX + targetMotionY * targetMotionY + targetMotionZ * targetMotionZ - (double) projectileVelocity * (double) projectileVelocity;
         double b = 2 * (initRelativeX * targetMotionX + initRelativeY * targetMotionY + initRelativeZ * targetMotionZ);

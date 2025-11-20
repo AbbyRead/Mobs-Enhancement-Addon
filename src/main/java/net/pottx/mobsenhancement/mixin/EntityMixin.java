@@ -2,7 +2,7 @@ package net.pottx.mobsenhancement.mixin;
 
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityEnderCrystal;
-import net.pottx.mobsenhancement.access.EntityEnderCrystalInterface;
+import net.pottx.mobsenhancement.extend.EntityEnderCrystalExtend;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -26,7 +26,7 @@ public class EntityMixin {
 	private void preventDeathIfDried(CallbackInfo ci) {
 		if (!(self instanceof EntityEnderCrystal)) return;
 
-		EntityEnderCrystalInterface crystal = (EntityEnderCrystalInterface) self;
+		EntityEnderCrystalExtend crystal = (EntityEnderCrystalExtend) self;
 		if (crystal.mea$getIsDried() == (byte) 0) {
 			// Allow normal death
 			crystal.mea$setIsDried((byte) 1);

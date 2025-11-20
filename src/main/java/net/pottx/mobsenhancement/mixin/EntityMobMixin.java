@@ -4,7 +4,7 @@ import net.minecraft.src.EntityCreature;
 import net.minecraft.src.EntityMob;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.World;
-import net.pottx.mobsenhancement.access.EntityMobAccess;
+import net.pottx.mobsenhancement.extend.EntityMobExtend;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(EntityMob.class)
-public abstract class EntityMobMixin extends EntityCreature implements EntityMobAccess {
+public abstract class EntityMobMixin extends EntityCreature implements EntityMobExtend {
     @Unique
     private static final int CAN_XRAY_DATA_WATCHER_ID = 31;
 
