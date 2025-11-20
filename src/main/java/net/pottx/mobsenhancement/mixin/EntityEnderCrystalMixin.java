@@ -112,16 +112,16 @@ public abstract class EntityEnderCrystalMixin extends Entity implements EntityEn
             at = @At(value = "INVOKE", target = "Lnet/minecraft/src/EntityEnderCrystal;setDead()V")
     )
     private void avengeDestroyer(DamageSource par1DamageSource, int par2, CallbackInfoReturnable<Boolean> cir) {
-        Entity destoryer = par1DamageSource.getSourceOfDamage();
-        if (destoryer instanceof EntityArrow) {
-            destoryer = ((EntityArrow) destoryer).shootingEntity;
-        } else if (destoryer instanceof EntityThrowable) {
-            destoryer = ((EntityThrowable) destoryer).getThrower();
+        Entity destroyer = par1DamageSource.getSourceOfDamage();
+        if (destroyer instanceof EntityArrow) {
+            destroyer = ((EntityArrow) destroyer).shootingEntity;
+        } else if (destroyer instanceof EntityThrowable) {
+            destroyer = ((EntityThrowable) destroyer).getThrower();
         }
 
-        if (destoryer instanceof EntityLiving) {
+        if (destroyer instanceof EntityLiving) {
             this.worldObj.addWeatherEffect(EntityList.createEntityOfType(EntityLightningBolt.class, this.worldObj,
-                    destoryer.posX, destoryer.posY, destoryer.posZ));
+                    destroyer.posX, destroyer.posY, destroyer.posZ));
         }
     }
 
