@@ -12,7 +12,6 @@
     "sources": "https://github.com/BTW-Community/Mobs-Enhancement-Addon",
     "issues": "https://github.com/BTW-Community/Mobs-Enhancement-Addon/issues"
   },
-
   "license": "MIT",
   "icon": "mobsenhancement/thumbnail-to-icon.png",
   "environment": "*",
@@ -22,7 +21,12 @@
     ]
   },
   "custom": {
-    "btw:addon_prefix": "MEA"
+    "btw:addon_prefix": "MEA",
+    "loom:injected_interfaces": {
+      "net/minecraft/src/EntitySlime": [
+        "net/pottx/mobsenhancement/extend/EntitySlimeExtend"
+      ]
+    }
   },
   "mixins": [
     "mobsenhancement.mixins.json"
