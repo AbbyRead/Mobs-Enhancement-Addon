@@ -52,7 +52,6 @@
     "access.EntityLivingAccess",
     "access.EntityLivingBaseAccess",
     "access.EntityPigZombieAccess",
-    "access.EntitySlimeAccess",
     "access.EntityWitherAccess"
   ],
   "client": [

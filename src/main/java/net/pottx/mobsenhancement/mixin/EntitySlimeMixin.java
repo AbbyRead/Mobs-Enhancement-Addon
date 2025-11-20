@@ -9,8 +9,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.List;
-
 @Mixin(EntitySlime.class)
 public abstract class EntitySlimeMixin extends EntityLiving implements EntitySlimeExtend {
 
@@ -81,6 +79,7 @@ public abstract class EntitySlimeMixin extends EntityLiving implements EntitySli
     // ------------------------------
     // Example: merge logic using Mixin fields
     // ------------------------------
+    @Unique
     private void doMergeLogic() {
         if (isMagma) return;
         if (this.mea$getIsCore() != (byte)1) return;
