@@ -160,6 +160,7 @@ public abstract class EntitySkeletonMixin extends EntityMob implements IRangedAt
         }
     }
 
+    @SuppressWarnings("EmptyMethod")
     @Redirect(
             method = "onLivingUpdate()V",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/src/EntitySkeleton;checkForCatchFireInSun()V")

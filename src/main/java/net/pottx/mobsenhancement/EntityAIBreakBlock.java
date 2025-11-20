@@ -4,6 +4,7 @@ import net.minecraft.src.EntitySkeleton;
 import net.minecraft.src.EntityZombie;
 import net.minecraft.src.*;
 import net.pottx.mobsenhancement.extend.EntityZombieExtend;
+import org.jetbrains.annotations.NotNull;
 
 public class EntityAIBreakBlock extends EntityAIBase {
     private final EntityLiving theEntity;
@@ -39,25 +40,7 @@ public class EntityAIBreakBlock extends EntityAIBase {
             float yaw = this.theEntity.rotationYawHead >= 0 ? this.theEntity.rotationYawHead % 360 : this.theEntity.rotationYawHead % 360 + 360;
             double angel;
             boolean lor = Math.random() < 0.5;
-            int[][] dxzList;
-
-            if (yaw < 22.5 || yaw > 337.5) {
-                dxzList = lor ? new int[][]{{0, 0}, {0, 1}, {1, 1}, {-1, 1}} : new int[][]{{0, 0}, {0, 1}, {-1, 1}, {1, 1}};
-            } else if (yaw <= 67.5) {
-                dxzList = lor ? new int[][]{{0, 0}, {0, 1}, {-1, 0}, {-1, 1}} : new int[][]{{0, 0}, {-1, 0}, {0, 1}, {-1, 1}};
-            } else if (yaw < 112.5) {
-                dxzList = lor ? new int[][]{{0, 0}, {-1, 0}, {-1, 1}, {-1, -1}} : new int[][]{{0, 0}, {-1, 0}, {-1, -1}, {-1, 1}};
-            } else if (yaw <= 157.5) {
-                dxzList = lor ? new int[][]{{0, 0}, {-1, 0}, {0, -1}, {-1, -1}} : new int[][]{{0, 0}, {0, -1}, {-1, 0}, {-1, -1}};
-            } else if (yaw < 202.5) {
-                dxzList = lor ? new int[][]{{0, 0}, {0, -1}, {-1, -1}, {1, -1}} : new int[][]{{0, 0}, {0, -1}, {1, -1}, {-1, -1}};
-            } else if (yaw <= 247.5) {
-                dxzList = lor ? new int[][]{{0, 0}, {0, -1}, {1, 0}, {1, -1}} : new int[][]{{0, 0}, {1, 0}, {0, -1}, {1, -1}};
-            } else if (yaw < 292.5) {
-                dxzList = lor ? new int[][]{{0, 0}, {1, 0}, {1, -1}, {1, 1}} : new int[][]{{0, 0}, {1, 0}, {1, 1}, {1, -1}};
-            } else {
-                dxzList = lor ? new int[][]{{0, 0}, {1, 0}, {0, 1}, {1, 1}} : new int[][]{{0, 0}, {0, 1}, {1, 0}, {1, 1}};
-            }
+            int[][] dxzList = getInts(yaw, lor);
 
             for (int dy : new int[]{1, 0}) {
 
@@ -92,6 +75,29 @@ public class EntityAIBreakBlock extends EntityAIBase {
         } else {
             return false;
         }
+    }
+
+    private static int[] @NotNull [] getInts(float yaw, boolean lor) {
+        int[][] dxzList;
+
+        if (yaw < 22.5 || yaw > 337.5) {
+            dxzList = lor ? new int[][]{{0, 0}, {0, 1}, {1, 1}, {-1, 1}} : new int[][]{{0, 0}, {0, 1}, {-1, 1}, {1, 1}};
+        } else if (yaw <= 67.5) {
+            dxzList = lor ? new int[][]{{0, 0}, {0, 1}, {-1, 0}, {-1, 1}} : new int[][]{{0, 0}, {-1, 0}, {0, 1}, {-1, 1}};
+        } else if (yaw < 112.5) {
+            dxzList = lor ? new int[][]{{0, 0}, {-1, 0}, {-1, 1}, {-1, -1}} : new int[][]{{0, 0}, {-1, 0}, {-1, -1}, {-1, 1}};
+        } else if (yaw <= 157.5) {
+            dxzList = lor ? new int[][]{{0, 0}, {-1, 0}, {0, -1}, {-1, -1}} : new int[][]{{0, 0}, {0, -1}, {-1, 0}, {-1, -1}};
+        } else if (yaw < 202.5) {
+            dxzList = lor ? new int[][]{{0, 0}, {0, -1}, {-1, -1}, {1, -1}} : new int[][]{{0, 0}, {0, -1}, {1, -1}, {-1, -1}};
+        } else if (yaw <= 247.5) {
+            dxzList = lor ? new int[][]{{0, 0}, {0, -1}, {1, 0}, {1, -1}} : new int[][]{{0, 0}, {1, 0}, {0, -1}, {1, -1}};
+        } else if (yaw < 292.5) {
+            dxzList = lor ? new int[][]{{0, 0}, {1, 0}, {1, -1}, {1, 1}} : new int[][]{{0, 0}, {1, 0}, {1, 1}, {1, -1}};
+        } else {
+            dxzList = lor ? new int[][]{{0, 0}, {1, 0}, {0, 1}, {1, 1}} : new int[][]{{0, 0}, {0, 1}, {1, 0}, {1, 1}};
+        }
+        return dxzList;
     }
 
     public boolean continueExecuting() {
