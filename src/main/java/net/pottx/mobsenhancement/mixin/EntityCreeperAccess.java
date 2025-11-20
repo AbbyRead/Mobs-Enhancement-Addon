@@ -7,5 +7,8 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 @Mixin(EntityCreeper.class)
 public interface EntityCreeperAccess {
     @Accessor("fuseTime")
-    public void setFuseTime(int fuseTime);
+    void setFuseTime(int fuseTime);
+
+    @Accessor(value = "determinedToExplode", remap = false)
+    void setIsDeterminedToExplode(boolean determinedToExplode);
 }
