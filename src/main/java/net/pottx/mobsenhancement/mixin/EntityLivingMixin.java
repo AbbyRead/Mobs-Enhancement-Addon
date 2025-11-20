@@ -3,6 +3,7 @@ package net.pottx.mobsenhancement.mixin;
 import net.minecraft.src.EntityCreature;
 import net.minecraft.src.EntityLiving;
 import net.pottx.mobsenhancement.extend.EntityLivingExtend;
+import net.pottx.mobsenhancement.mixin.access.EntityCreatureAccess;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 

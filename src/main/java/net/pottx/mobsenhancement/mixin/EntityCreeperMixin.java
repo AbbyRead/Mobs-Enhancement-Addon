@@ -3,6 +3,7 @@ package net.pottx.mobsenhancement.mixin;
 import net.minecraft.src.*;
 import net.pottx.mobsenhancement.MEAUtils;
 import net.pottx.mobsenhancement.extend.EntityMobExtend;
+import net.pottx.mobsenhancement.mixin.access.EntityCreeperAccess;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;

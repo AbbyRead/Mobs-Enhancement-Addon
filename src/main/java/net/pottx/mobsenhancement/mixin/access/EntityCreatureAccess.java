@@ -1,4 +1,4 @@
-package net.pottx.mobsenhancement.mixin;
+package net.pottx.mobsenhancement.mixin.access;
 
 import net.minecraft.src.ChunkCoordinates;
 import net.minecraft.src.EntityCreature;

@@ -3,7 +3,7 @@ package net.pottx.mobsenhancement;
 import net.minecraft.src.*;
 import btw.item.BTWItems;
 import net.pottx.mobsenhancement.extend.EntityWitherExtend;
-import net.pottx.mobsenhancement.mixin.EntityWitherAccess;
+import net.pottx.mobsenhancement.mixin.access.EntityWitherAccess;
 
 public class WitherSummonMinionBehavior extends EntityAIBase {
 

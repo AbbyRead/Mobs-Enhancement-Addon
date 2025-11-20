@@ -3,7 +3,7 @@ package net.pottx.mobsenhancement;
 import btw.block.BTWBlocks;
 import net.minecraft.src.*;
 import net.pottx.mobsenhancement.extend.EntityWitherExtend;
-import net.pottx.mobsenhancement.mixin.EntityWitherAccess;
+import net.pottx.mobsenhancement.mixin.access.EntityWitherAccess;
 
 import java.util.List;
 

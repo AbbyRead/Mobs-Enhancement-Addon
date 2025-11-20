@@ -2,7 +2,7 @@ package net.pottx.mobsenhancement;
 
 import net.minecraft.src.*;
 import net.pottx.mobsenhancement.extend.EntityWitherExtend;
-import net.pottx.mobsenhancement.mixin.EntityLivingAccess;
+import net.pottx.mobsenhancement.mixin.access.EntityLivingAccess;
 
 public class EntityAISmartArrowAttack extends EntityAIBase
 {

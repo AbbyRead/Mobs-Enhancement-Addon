@@ -2,6 +2,7 @@ package net.pottx.mobsenhancement.mixin;
 
 import net.minecraft.src.*;
 import net.pottx.mobsenhancement.MEAUtils;
+import net.pottx.mobsenhancement.mixin.access.EntityGhastAccess;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;

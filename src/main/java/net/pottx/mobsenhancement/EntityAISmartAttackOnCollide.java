@@ -3,7 +3,7 @@ package net.pottx.mobsenhancement;
 import net.minecraft.src.*;
 import net.pottx.mobsenhancement.extend.EntityLivingExtend;
 import net.pottx.mobsenhancement.extend.EntityZombieExtend;
-import net.pottx.mobsenhancement.mixin.EntityLivingAccess;
+import net.pottx.mobsenhancement.mixin.access.EntityLivingAccess;
 
 /**
  * Enhanced attack AI that adds health-based fleeing behavior and respects entity home distances.
