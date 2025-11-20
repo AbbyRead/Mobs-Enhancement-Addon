@@ -14,13 +14,30 @@ import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 @Mixin(RenderEnderCrystal.class)
 public abstract class RenderEnderCrystalMixin extends Render {
 
+    @Unique
+    private static final ResourceLocation DRIED_CRYSTAL_TEXTURE =
+            new ResourceLocation("meatextures/crystal_dried.png");
+
+    @Unique
+    private static final ResourceLocation BEAM_TEXTURE =
+            new ResourceLocation("textures/entity/enderdragon/beam.png");
+
+    @Unique
+    private static final byte DRIED_STATE = 1;
+
+    @Unique
+    private static final float BEAM_RADIUS = 0.75F;
+
+    @Unique
+    private static final int BEAM_SEGMENTS = 8;
+
     @ModifyArgs(
             method = "doRenderEnderCrystal(Lnet/minecraft/src/EntityEnderCrystal;DDDFF)V",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/src/RenderEnderCrystal;bindTexture(Lnet/minecraft/src/ResourceLocation;)V")
     )
-    private void changeTextureIfDried(Args args, EntityEnderCrystal par1EntityEnderCrystal) {
-        if (((EntityEnderCrystalExtend) par1EntityEnderCrystal).mea$getIsDried() == (byte) 1) {
-            args.set(0, new ResourceLocation("meatextures/crystal_dried.png"));
+    private void useDriedTextureIfNeeded(Args args, EntityEnderCrystal crystal) {
+        if (isDried(crystal)) {
+            args.set(0, DRIED_CRYSTAL_TEXTURE);
         }
     }
 
@@ -28,10 +45,10 @@ public abstract class RenderEnderCrystalMixin extends Render {
             method = "doRenderEnderCrystal(Lnet/minecraft/src/EntityEnderCrystal;DDDFF)V",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/src/ModelBase;render(Lnet/minecraft/src/Entity;FFFFFF)V")
     )
-    private void renderStillIfDried(Args args, EntityEnderCrystal par1EntityEnderCrystal) {
-        if (((EntityEnderCrystalExtend) par1EntityEnderCrystal).mea$getIsDried() == (byte) 1) {
-            args.set(2, 0.0F); // Sets f2 * 3.0f parameter to 0
-            args.set(3, 0.0F); // Sets f3 * 0.2f parameter to 0
+    private void freezeAnimationIfDried(Args args, EntityEnderCrystal crystal) {
+        if (isDried(crystal)) {
+            args.set(2, 0.0F); // Stop rotation animation
+            args.set(3, 0.0F); // Stop bobbing animation
         }
     }
 
@@ -39,50 +56,121 @@ public abstract class RenderEnderCrystalMixin extends Render {
             method = "doRenderEnderCrystal(Lnet/minecraft/src/EntityEnderCrystal;DDDFF)V",
             at = @At("TAIL")
     )
-    private void renderChargingBeam(EntityEnderCrystal par1EntityEnderCrystal, double par2, double par4, double par6, float par8, float par9, CallbackInfo ci) {
-        this.doRenderChargingBeam(par1EntityEnderCrystal, par2, par4, par6, par8, par9);
+    private void addChargingBeamEffect(EntityEnderCrystal crystal, double x, double y, double z,
+                                       float yaw, float partialTicks, CallbackInfo ci) {
+        renderChargingBeam(crystal, x, y, z, yaw, partialTicks);
     }
 
     @Unique
-    public void doRenderChargingBeam(EntityEnderCrystal par1EntityEnderCrystal, double par2, double par4, double par6, float par8, float par9) {
-        if (((EntityEnderCrystalExtend) par1EntityEnderCrystal).mea$getChargingEnderCrystal() != null) {
-            float var10 = (float)((EntityEnderCrystalExtend) par1EntityEnderCrystal).mea$getChargingEnderCrystal().innerRotation + par9;
-            float var11 = MathHelper.sin(var10 * 0.2F) / 2.0F + 0.5F;
-            var11 = (var11 * var11 + var11) * 0.2F;
-            float var12 = (float)(((EntityEnderCrystalExtend) par1EntityEnderCrystal).mea$getChargingEnderCrystal().posX - par1EntityEnderCrystal.posX - (par1EntityEnderCrystal.prevPosX - par1EntityEnderCrystal.posX) * (double)(1.0F - par9));
-            float var13 = (float)((double)var11 + ((EntityEnderCrystalExtend) par1EntityEnderCrystal).mea$getChargingEnderCrystal().posY - par1EntityEnderCrystal.posY - (par1EntityEnderCrystal.prevPosY - par1EntityEnderCrystal.posY) * (double)(1.0F - par9));
-            float var14 = (float)(((EntityEnderCrystalExtend) par1EntityEnderCrystal).mea$getChargingEnderCrystal().posZ - par1EntityEnderCrystal.posZ - (par1EntityEnderCrystal.prevPosZ - par1EntityEnderCrystal.posZ) * (double)(1.0F - par9));
-            float var15 = MathHelper.sqrt_float(var12 * var12 + var14 * var14);
-            float var16 = MathHelper.sqrt_float(var12 * var12 + var13 * var13 + var14 * var14);
-            GL11.glPushMatrix();
-            GL11.glTranslatef((float)par2, (float)par4 + 1.0F, (float)par6);
-            GL11.glRotatef((float)(-Math.atan2((double)var14, (double)var12)) * 180.0F / (float)Math.PI - 90.0F, 0.0F, 1.0F, 0.0F);
-            GL11.glRotatef((float)(-Math.atan2((double)var15, (double)var13)) * 180.0F / (float)Math.PI - 90.0F, 1.0F, 0.0F, 0.0F);
-            Tessellator var17 = Tessellator.instance;
-            RenderHelper.disableStandardItemLighting();
-            GL11.glDisable(GL11.GL_CULL_FACE);
-            this.bindTexture(new ResourceLocation("textures/entity/enderdragon/beam.png"));
-            GL11.glShadeModel(GL11.GL_SMOOTH);
-            float var18 = 0.0F - ((float)par1EntityEnderCrystal.ticksExisted + par9) * 0.01F;
-            float var19 = MathHelper.sqrt_float(var12 * var12 + var13 * var13 + var14 * var14) / 32.0F - ((float)par1EntityEnderCrystal.ticksExisted + par9) * 0.01F;
-            var17.startDrawing(5);
-            byte var20 = 8;
+    private boolean isDried(EntityEnderCrystal crystal) {
+        return ((EntityEnderCrystalExtend) crystal).mea$getIsDried() == DRIED_STATE;
+    }
 
-            for (int var21 = 0; var21 <= var20; ++var21) {
-                float var22 = MathHelper.sin((float)(var21 % var20) * (float)Math.PI * 2.0F / (float)var20) * 0.75F;
-                float var23 = MathHelper.cos((float)(var21 % var20) * (float)Math.PI * 2.0F / (float)var20) * 0.75F;
-                float var24 = (float)(var21 % var20) * 1.0F / (float)var20;
-                var17.setColorOpaque_I(0);
-                var17.addVertexWithUV((double)(var22 * 0.2F), (double)(var23 * 0.2F), 0.0D, (double)var24, (double)var19);
-                var17.setColorOpaque_I(16777215);
-                var17.addVertexWithUV((double)var22, (double)var23, (double)var16, (double)var24, (double)var18);
-            }
+    @Unique
+    private EntityEnderCrystal getChargingTarget(EntityEnderCrystal crystal) {
+        return ((EntityEnderCrystalExtend) crystal).mea$getChargingEnderCrystal();
+    }
 
-            var17.draw();
-            GL11.glEnable(GL11.GL_CULL_FACE);
-            GL11.glShadeModel(GL11.GL_FLAT);
-            RenderHelper.enableStandardItemLighting();
-            GL11.glPopMatrix();
+    @Unique
+    private void renderChargingBeam(EntityEnderCrystal crystal, double renderX, double renderY,
+                                    double renderZ, float yaw, float partialTicks) {
+        EntityEnderCrystal target = getChargingTarget(crystal);
+        if (target == null) {
+            return;
         }
+
+        // Calculate target position with interpolation
+        float targetRotation = (float) target.innerRotation + partialTicks;
+        float targetBobOffset = calculateBobOffset(targetRotation);
+
+        float deltaX = interpolatePosition(target.posX, crystal.posX, crystal.prevPosX, partialTicks);
+        float deltaY = targetBobOffset + interpolatePosition(target.posY, crystal.posY, crystal.prevPosY, partialTicks);
+        float deltaZ = interpolatePosition(target.posZ, crystal.posZ, crystal.prevPosZ, partialTicks);
+
+        float horizontalDistance = MathHelper.sqrt_float(deltaX * deltaX + deltaZ * deltaZ);
+        float totalDistance = MathHelper.sqrt_float(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ);
+
+        // Set up rendering transformation
+        GL11.glPushMatrix();
+        GL11.glTranslatef((float) renderX, (float) renderY + 1.0F, (float) renderZ);
+        GL11.glRotatef(calculateYawRotation(deltaZ, deltaX), 0.0F, 1.0F, 0.0F);
+        GL11.glRotatef(calculatePitchRotation(horizontalDistance, deltaY), 1.0F, 0.0F, 0.0F);
+
+        // Render the beam
+        setupBeamRendering();
+        bindTexture(BEAM_TEXTURE);
+        drawBeamGeometry(crystal, partialTicks, deltaX, deltaY, deltaZ, totalDistance);
+        cleanupBeamRendering();
+
+        GL11.glPopMatrix();
+    }
+
+    @Unique
+    private float calculateBobOffset(float rotation) {
+        float bob = MathHelper.sin(rotation * 0.2F) / 2.0F + 0.5F;
+        return (bob * bob + bob) * 0.2F;
+    }
+
+    @Unique
+    private float interpolatePosition(double current, double renderPos, double prevPos, float partialTicks) {
+        return (float) (current - renderPos - (prevPos - renderPos) * (1.0F - partialTicks));
+    }
+
+    @Unique
+    private float calculateYawRotation(float deltaZ, float deltaX) {
+        return (float) (-Math.atan2(deltaZ, deltaX)) * 180.0F / (float) Math.PI - 90.0F;
+    }
+
+    @Unique
+    private float calculatePitchRotation(float horizontalDist, float deltaY) {
+        return (float) (-Math.atan2(horizontalDist, deltaY)) * 180.0F / (float) Math.PI - 90.0F;
+    }
+
+    @Unique
+    private void setupBeamRendering() {
+        RenderHelper.disableStandardItemLighting();
+        GL11.glDisable(GL11.GL_CULL_FACE);
+        GL11.glShadeModel(GL11.GL_SMOOTH);
+    }
+
+    @Unique
+    private void cleanupBeamRendering() {
+        GL11.glEnable(GL11.GL_CULL_FACE);
+        GL11.glShadeModel(GL11.GL_FLAT);
+        RenderHelper.enableStandardItemLighting();
+    }
+
+    @Unique
+    private void drawBeamGeometry(EntityEnderCrystal crystal, float partialTicks,
+                                  float deltaX, float deltaY, float deltaZ, float distance) {
+        Tessellator tessellator = Tessellator.instance;
+
+        float textureOffsetStart = calculateTextureOffset(crystal, partialTicks, 0.0F);
+        float textureOffsetEnd = calculateTextureOffset(crystal, partialTicks, distance);
+
+        tessellator.startDrawing(5); // GL_TRIANGLE_STRIP
+
+        for (int segment = 0; segment <= BEAM_SEGMENTS; segment++) {
+            float angle = (float) (segment % BEAM_SEGMENTS) * (float) Math.PI * 2.0F / (float) BEAM_SEGMENTS;
+            float offsetX = MathHelper.sin(angle) * BEAM_RADIUS;
+            float offsetY = MathHelper.cos(angle) * BEAM_RADIUS;
+            float textureU = (float) (segment % BEAM_SEGMENTS) / (float) BEAM_SEGMENTS;
+
+            // Inner vertex (dark)
+            tessellator.setColorOpaque_I(0);
+            tessellator.addVertexWithUV(offsetX * 0.2F, offsetY * 0.2F, 0.0D, textureU, textureOffsetEnd);
+
+            // Outer vertex (white)
+            tessellator.setColorOpaque_I(16777215);
+            tessellator.addVertexWithUV(offsetX, offsetY, distance, textureU, textureOffsetStart);
+        }
+
+        tessellator.draw();
+    }
+
+    @Unique
+    private float calculateTextureOffset(EntityEnderCrystal crystal, float partialTicks, float distanceModifier) {
+        float baseDistance = distanceModifier == 0.0F ? 0.0F : distanceModifier / 32.0F;
+        return baseDistance - ((float) crystal.ticksExisted + partialTicks) * 0.01F;
     }
 }
