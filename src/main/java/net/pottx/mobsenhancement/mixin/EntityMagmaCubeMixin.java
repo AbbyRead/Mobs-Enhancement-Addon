@@ -19,7 +19,7 @@ public abstract class EntityMagmaCubeMixin extends EntitySlime {
             at = @At(value = "TAIL")
     )
     private void setIsMagma(CallbackInfo ci) {
-        ((EntitySlimeExtend)this).setMagma();
+        ((EntitySlimeExtend)this).mea$setIsMagma(true);
     }
 
     @Override
