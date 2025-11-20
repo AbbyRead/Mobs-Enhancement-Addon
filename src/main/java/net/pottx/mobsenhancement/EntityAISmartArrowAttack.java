@@ -24,17 +24,17 @@ public class EntityAISmartArrowAttack extends EntityAIBase
     private boolean shouldFlee;
     private boolean isFleeing;
 
-	public EntityAISmartArrowAttack(IRangedAttackMob rangedAttackMob, float fMoveSpeed, int iAttackInterval, int iminHealth, float fAttackRange, float fFleeRange) {
+	public EntityAISmartArrowAttack(IRangedAttackMob rangedAttackMob, float moveSpeed, int attackInterval, int minHealth, float attackRange, float fleeRange) {
         canSeeTargetCounter = 0;
 
         entityRangedAttackOwner = rangedAttackMob;
         entityOwner = (EntityLivingBase) rangedAttackMob;
-        entityMoveSpeed = fMoveSpeed;
-        attackInterval = iAttackInterval;
-        attackCooldownCounter = iAttackInterval >> 1;
-        minHealth = iminHealth;
-        attackRangeSq = fAttackRange * fAttackRange;
-        fleeRangeSq = fFleeRange * fFleeRange;
+        entityMoveSpeed = moveSpeed;
+        this.attackInterval = attackInterval;
+        attackCooldownCounter = attackInterval >> 1;
+        this.minHealth = minHealth;
+        attackRangeSq = attackRange * attackRange;
+        fleeRangeSq = fleeRange * fleeRange;
 
         setMutexBits(3);
     }

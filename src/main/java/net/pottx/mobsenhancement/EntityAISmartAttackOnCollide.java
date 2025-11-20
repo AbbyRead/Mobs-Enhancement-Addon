@@ -19,14 +19,14 @@ public class EntityAISmartAttackOnCollide extends EntityAIBase
 
     private final int minHealth;
 
-	public EntityAISmartAttackOnCollide(EntityLiving par1EntityLiving, float par2, boolean par3, int iminHealth)
+	public EntityAISmartAttackOnCollide(EntityLiving entityLiving, float par2, boolean par3, int minHealth)
     {
         this.attackTick = 0;
-        this.attacker = par1EntityLiving;
-        this.worldObj = par1EntityLiving.worldObj;
+        this.attacker = entityLiving;
+        this.worldObj = entityLiving.worldObj;
         this.field_75440_e = par2;
         this.field_75437_f = par3;
-        this.minHealth = iminHealth;
+        this.minHealth = minHealth;
         this.setMutexBits(3);
     }
 
