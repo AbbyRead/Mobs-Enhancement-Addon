@@ -3,6 +3,7 @@ package net.pottx.mobsenhancement.mixin;
 import net.minecraft.src.*;
 import net.pottx.mobsenhancement.MEAUtils;
 import net.pottx.mobsenhancement.extend.EntityLivingBaseExtend;
+import net.pottx.mobsenhancement.extend.EntitySilverfishExtend;
 import net.pottx.mobsenhancement.extend.EntityZombieExtend;
 import net.pottx.mobsenhancement.mixin.access.EntityLivingBaseAccess;
 import org.spongepowered.asm.mixin.Mixin;
@@ -97,6 +98,15 @@ public class EntityLivingBaseMixin implements EntityLivingBaseExtend {
 
 		if (villager.villageObj != null && damageSource.getEntity() instanceof EntityPlayer player) {
 			villager.villageObj.setReputationForPlayer(player.getCommandSenderName(), -1);
+		}
+	}
+
+	// Trigger silverfish splitting
+	@Inject(method = "attackEntityFrom", at = @At(value = "RETURN", ordinal = 1))
+	private void silverfishSplitWhenAttacked(DamageSource damageSource, float amount, CallbackInfoReturnable<Boolean> cir) {
+		if (!(self instanceof EntitySilverfish silverfish)) return;
+		if (damageSource instanceof EntityDamageSource && amount < silverfish.getHealth()) {
+			((EntitySilverfishExtend)silverfish).mea$split();
 		}
 	}
 
