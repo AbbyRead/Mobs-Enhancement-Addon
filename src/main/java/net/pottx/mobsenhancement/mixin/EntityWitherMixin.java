@@ -30,7 +30,7 @@ public abstract class EntityWitherMixin extends EntityMob implements IRangedAtta
             at = @At(value = "INVOKE", target = "Lnet/minecraft/src/World;getEntityByID(I)Lnet/minecraft/src/Entity;", ordinal = 0)
     )
     private Entity stayStillWhenDoingSpecialAttack(World world, int var1) {
-        if (((WitherEntityAccess) this).getIsDoingSpecialAttack()) {
+        if (((EntityWitherAccess) this).getIsDoingSpecialAttack()) {
             return null;
         } else {
             return this.worldObj.getEntityByID(this.getWatchedTargetId(0));
@@ -42,7 +42,7 @@ public abstract class EntityWitherMixin extends EntityMob implements IRangedAtta
             at = @At(value = "INVOKE", target = "Lnet/minecraft/src/MathHelper;sqrt_double(D)F", ordinal = 0)
     )
     private float keepFartherDistance(double var6) {
-        if (var6 > 64D && !((WitherEntityAccess) this).getIsDoingSpecialAttack()) {
+        if (var6 > 64D && !((EntityWitherAccess) this).getIsDoingSpecialAttack()) {
             return 1.5F * MathHelper.sqrt_double(var6);
         } else {
             return Float.MAX_VALUE;
