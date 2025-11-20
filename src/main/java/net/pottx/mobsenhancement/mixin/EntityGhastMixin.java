@@ -6,44 +6,45 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(EntityGhast.class)
 public abstract class EntityGhastMixin extends EntityFlying implements EntityGhastAccess {
-    public EntityGhastMixin(World par1World) {
-        super(par1World);
+
+    public EntityGhastMixin(World world) {
+        super(world);
     }
 
-    @Inject(
-            method = "<init>",
-            at = @At(value = "TAIL")
-    )
-    private void progressBasedExplosionStrength(CallbackInfo ci) {
+    @Inject(method = "<init>", at = @At("TAIL"))
+    private void setProgressBasedExplosionStrength(World world, CallbackInfo ci) {
         if (MEAUtils.getGameProgressMobsLevel(this.worldObj) > 1) {
             this.setExplosionStrength(2);
         }
     }
 
-    @Override
-    public boolean attackEntityFrom(DamageSource par1DamageSource, int par2) {
-        if (!par1DamageSource.isMagicDamage() && !"fireball".equals(par1DamageSource.getDamageType())) {
-            return false;
-        } else {
-            super.attackEntityFrom(par1DamageSource, par2);
+    @Inject(method = "applyEntityAttributes", at = @At("RETURN"))
+    private void modifyMaxHealth(CallbackInfo ci) {
+        double baseHealth = 10.0;
+
+        if (this.worldObj != null) {
+            int tier = MEAUtils.getGameProgressMobsLevel(this.worldObj);
+            if (tier > 1) {
+                baseHealth = 16.0;
+            }
         }
-        return false;
+
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth)
+                .setAttribute(baseHealth);
+
+        // Heal to new max HP since applyEntityAttributes is called at construction time
+        this.setHealth((float) baseHealth);
     }
 
-    @Override
-    public void onUpdate() {
-        super.onUpdate();
-        byte var1 = this.dataWatcher.getWatchableObjectByte(16);
-        this.texture = var1 == 1 ? "/meatextures/ghast_fire.png" : "/meatextures/ghast.png";
-    }
-
-    @Override
-    public int getMaxHealth() {
-        int i = MEAUtils.getGameProgressMobsLevel(this.worldObj);
-
-        return i > 1 ? 16 : 10;
+    @Inject(method = "attackEntityFrom", at = @At("HEAD"), cancellable = true)
+    private void restrictDamageTypes(DamageSource damageSource, float amount, CallbackInfoReturnable<Boolean> cir) {
+        // Only allow magic damage and fireball damage
+        if (!damageSource.isMagicDamage() && !"fireball".equals(damageSource.getDamageType())) {
+            cir.setReturnValue(false);
+        }
     }
 }
