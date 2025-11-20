@@ -39,7 +39,7 @@ public abstract class EntityZombieMixin extends EntityMob implements EntityZombi
         this.tasks.removeAllTasksOfClass(EntityAIAttackOnCollide.class);
 
         this.tasks.addTask(1, new EntityAIBreakBlock(this));
-        this.tasks.addTask(2, new EntityAISmartAttackOnCollide(this, this.moveSpeed, false, 0));
+        this.tasks.addTask(2, new EntityAISmartAttackOnCollide(this, this.getSpeedModifier(), false, 0));
 
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 24.0F, 0,
                 ((EntityMobExtend)this).getCanXray() == (byte)0));
@@ -54,7 +54,7 @@ public abstract class EntityZombieMixin extends EntityMob implements EntityZombi
             at = @At(value = "INVOKE", target = "Lnet/minecraft/src/EntityAITasks;addTask(ILnet/minecraft/src/EntityAIBase;)V", ordinal = 1)
     )
     private void replaceAttackOnCollideTask(Args args) {
-        args.set(1, new EntityAISmartAttackOnCollide(this, this.moveSpeed, false, 0));
+        args.set(1, new EntityAISmartAttackOnCollide(this, this.getSpeedModifier(), false, 0));
     }
 
     @ModifyArgs(
