@@ -17,8 +17,6 @@ import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
 @Mixin(EntityZombie.class)
 public abstract class EntityZombieMixin extends EntityMob implements EntityZombieExtend {
-    @Unique
-    EntityZombie self = (EntityZombie) (Object) this;
 
     @Unique
     private boolean isBreakingBlock = false;
@@ -69,8 +67,15 @@ public abstract class EntityZombieMixin extends EntityMob implements EntityZombi
             at = @At(value = "INVOKE", target = "Lnet/minecraft/src/EntityAITasks;addTask(ILnet/minecraft/src/EntityAIBase;)V", ordinal = 5)
     )
     private void modifyNearestAttackableVillagerTask(Args args) {
-        args.set(1, new EntityAINearestAttackableTarget(this, EntityCreature.class, 24F, 0,
-                false, false, targetEntitySelector));
+        args.set(1, new EntityAINearestAttackableTarget(
+                this,                     // owner
+                EntityCreature.class,      // target class
+                24,                        // chance (int)
+                false,                     // checkSight
+                false,                     // nearbyOnly
+                targetEntitySelector,      // selector
+                false                      // ignoreOutsideHome
+        ));
     }
 
     @Unique
@@ -83,8 +88,7 @@ public abstract class EntityZombieMixin extends EntityMob implements EntityZombi
         this.isBreakingBlock = isBreakingBlock;
     }
 
-    @Unique
-    public void onKilledBySun() {
+    public void mea$onKilledBySun() {
         if (this.worldObj.isRemote) return;
 
         // Create the skeleton directly
@@ -111,25 +115,18 @@ public abstract class EntityZombieMixin extends EntityMob implements EntityZombi
         this.setDead();
     }
 
-    @Override
-    public int getMaxHealth() {
-        int i = this.worldObj == null ? 0 : MEAUtils.getGameProgressMobsLevel(this.worldObj);
-        return i > 1 ? 24 : (i > 0 ? 20 : 16);
+    @Inject(method = "applyEntityAttributes", at = @At("RETURN"))
+    private void modifyMaxHealth(CallbackInfo ci) {
+        int tier = this.worldObj != null ? MEAUtils.getGameProgressMobsLevel(this.worldObj) : 0;
+
+        double baseHealth = switch (tier) {
+            case 0 -> 16.0;
+            case 1 -> 20.0;
+            default -> 24.0; // assuming tier 2 or higher
+        };
+
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(baseHealth);
+        this.setHealth((float) baseHealth);
     }
 
-    @Override
-    protected void damageEntity(DamageSource par1DamageSource, int par2)
-    {
-        if (!this.isEntityInvulnerable())
-        {
-            if (par1DamageSource == DamageSource.onFire && !self.isVillager() && self.getHealth() <= par2)
-            {
-                this.onKilledBySun();
-            }
-            else
-            {
-                super.damageEntity(par1DamageSource, par2);
-            }
-        }
-    }
 }

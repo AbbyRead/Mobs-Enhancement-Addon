@@ -3,10 +3,13 @@ package net.pottx.mobsenhancement.mixin;
 import net.minecraft.src.*;
 import net.pottx.mobsenhancement.MEAUtils;
 import net.pottx.mobsenhancement.extend.EntityLivingBaseExtend;
+import net.pottx.mobsenhancement.extend.EntityZombieExtend;
+import net.pottx.mobsenhancement.mixin.access.EntityLivingBaseAccess;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(EntityLivingBase.class)
@@ -96,4 +99,29 @@ public class EntityLivingBaseMixin implements EntityLivingBaseExtend {
 			villager.villageObj.setReputationForPlayer(player.getCommandSenderName(), -1);
 		}
 	}
+
+	@Inject(method = "damageEntity", at = @At("HEAD"), cancellable = true)
+	private void overrideDamageEntity(DamageSource damageSource, float amount, CallbackInfo ci) {
+		EntityLivingBase self = (EntityLivingBase) (Object) this;
+
+		// Only handle zombies
+		if (!(self instanceof EntityZombie zombie)) return; // guard clause
+
+		EntityZombieExtend extendedZombie = (EntityZombieExtend) zombie; // access an additional new method
+		if (!self.isEntityInvulnerable())
+		{
+			if (damageSource == DamageSource.onFire && !zombie.isVillager() && self.getHealth() <= amount)
+			{
+				extendedZombie.mea$onKilledBySun();
+			}
+			else
+			{
+				((EntityLivingBaseAccess)self).invokeDamageEntity(damageSource, amount);
+			}
+		}
+		// Cancel normal handling for EntityZombie's inherited damageEntity
+		ci.cancel();
+	}
+
+
 }
