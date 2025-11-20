@@ -50,7 +50,7 @@ public class New_EntityCreeperMixin extends EntityMob {
 
         if (i > 0 && this.rand.nextInt(8) == 0)
         {
-            this.dataWatcher.updateObject(17, Byte.valueOf((byte)1));
+            this.dataWatcher.updateObject(17, (byte) 1);
         }
 
         this.tasks.removeAllTasksOfClass(EntityAIWatchClosest.class);
