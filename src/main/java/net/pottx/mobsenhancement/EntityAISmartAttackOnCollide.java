@@ -1,125 +1,195 @@
 package net.pottx.mobsenhancement;
 
-import net.minecraft.src.EntityZombie;
 import net.minecraft.src.*;
 import net.pottx.mobsenhancement.extend.EntityLivingExtend;
 import net.pottx.mobsenhancement.extend.EntityZombieExtend;
 import net.pottx.mobsenhancement.mixin.EntityLivingAccess;
 
-public class EntityAISmartAttackOnCollide extends EntityAIBase
-{
-    public World worldObj;
-    public EntityLiving attacker;
-    public EntityLiving entityTarget;
+/**
+ * Enhanced attack AI that adds health-based fleeing behavior and respects entity home distances.
+ * Mobs will avoid combat when their health is too low and they're being actively targeted.
+ */
+public class EntityAISmartAttackOnCollide extends EntityAIBase {
 
-    public int attackTick;
-    public float field_75440_e;
-    public boolean field_75437_f;
+    private static final float LOOK_RANGE = 30.0F;
+    private static final int BASE_PATHFIND_DELAY = 4;
+    private static final int PATHFIND_DELAY_VARIANCE = 7;
+    private static final int ATTACK_COOLDOWN_TICKS = 20;
+    private static final double TOOL_REACH_BONUS = 2.0D;
 
-    public PathEntity entityPathEntity;
-    private int field_75445_i;
+    @SuppressWarnings("FieldCanBeLocal") private final World world;
+    private final EntityLiving attacker;
+    private final float moveSpeed;
+    private final boolean hasLongMemory;
+    private final int minHealthThreshold;
 
-    private final int minHealth;
+    private EntityLiving currentTarget;
+    private PathEntity pathToTarget;
+    private int pathfindCooldown;
+    private int attackCooldown;
 
-	public EntityAISmartAttackOnCollide(EntityLiving entityLiving, float par2, boolean par3, int minHealth)
-    {
-        this.attackTick = 0;
-        this.attacker = entityLiving;
-        this.worldObj = entityLiving.worldObj;
-        this.field_75440_e = par2;
-        this.field_75437_f = par3;
-        this.minHealth = minHealth;
-        this.setMutexBits(3);
+    public EntityAISmartAttackOnCollide(EntityLiving attacker, float moveSpeed, boolean hasLongMemory, int minHealthThreshold) {
+        this.attacker = attacker;
+        this.world = attacker.worldObj;
+        this.moveSpeed = moveSpeed;
+        this.hasLongMemory = hasLongMemory;
+        this.minHealthThreshold = minHealthThreshold;
+        this.attackCooldown = 0;
+        this.setMutexBits(3); // Movement and looking
     }
 
-    public boolean shouldExecute()
-    {
-        EntityLivingBase var1 = this.attacker.getAttackTarget();
+    @Override
+    public boolean shouldExecute() {
+        EntityLivingBase potentialTarget = attacker.getAttackTarget();
 
-        if (var1 == null) {
+        if (potentialTarget == null) {
             return false;
-        } else if (this.attacker instanceof EntityZombie && ((EntityZombieExtend)this.attacker).getIsBreakingBlock()){
-            return false;
-        } else {
-	        boolean shouldFlee = var1 instanceof EntityPlayer || ((EntityLiving)var1).getAttackTarget() == this.attacker;
-
-            if (shouldFlee && this.attacker.getHealth() < minHealth) {
-                return false;
-            } else {
-                ((EntityLivingAccess)this).setAttackTarget(var1);
-                this.entityPathEntity = this.attacker.getNavigator().getPathToEntityLiving(this.entityTarget);
-                return this.entityPathEntity != null;
-            }
         }
+
+        if (isAttackerBusy()) {
+            return false;
+        }
+
+        if (shouldFleeFromCombat(potentialTarget)) {
+            return false;
+        }
+
+        currentTarget = (EntityLiving) potentialTarget;
+        pathToTarget = attacker.getNavigator().getPathToEntityLiving(currentTarget);
+
+        return pathToTarget != null;
     }
 
+    @Override
     public boolean continueExecuting() {
-        if (this.attacker.getHealth() < this.minHealth) {
+        if (attacker.getHealth() < minHealthThreshold) {
             return false;
-        } else if (this.attacker instanceof EntityZombie && ((EntityZombieExtend) this.attacker).getIsBreakingBlock()){
+        }
+
+        if (isAttackerBusy()) {
             return false;
-        } else {
-            EntityLiving entity = (EntityLiving) ((EntityLivingAccess)this.attacker).getAttackTarget();
+        }
 
-            if (entity == null || !this.entityTarget.isEntityAlive()) {
-                return false;
-            }
+        EntityLivingBase target = ((EntityLivingAccess) attacker).getAttackTarget();
 
-            // Check if the attacker is within its home distance of the target's position
-            return ((EntityLivingExtend) this.attacker).mea$isWithinMaximumHomeDistance(
-                    MathHelper.floor_double(this.entityTarget.posX),
-                    MathHelper.floor_double(this.entityTarget.posY),
-                    MathHelper.floor_double(this.entityTarget.posZ)
-            );
+        if (target == null || !currentTarget.isEntityAlive()) {
+            return false;
+        }
+
+        return isTargetWithinHomeRange();
+    }
+
+    @Override
+    public void startExecuting() {
+        attacker.getNavigator().setPath(pathToTarget, moveSpeed);
+        pathfindCooldown = 0;
+    }
+
+    @Override
+    public void resetTask() {
+        // Clear target reference if we were attacking this specific entity
+        if (attacker.getAttackTarget() == currentTarget) {
+            attacker.setAttackTarget(null);
+        }
+
+        currentTarget = null;
+        attacker.getNavigator().clearPathEntity();
+    }
+
+    @Override
+    public void updateTask() {
+        lookAtTarget();
+        updatePathfinding();
+        updateAttackCooldown();
+        attemptAttack();
+    }
+
+    private boolean isAttackerBusy() {
+        return attacker instanceof EntityZombie && ((EntityZombieExtend) attacker).getIsBreakingBlock();
+    }
+
+    private boolean shouldFleeFromCombat(EntityLivingBase potentialTarget) {
+        boolean isBeingHunted = potentialTarget instanceof EntityPlayer
+                || ((EntityLiving) potentialTarget).getAttackTarget() == attacker;
+
+        return isBeingHunted && attacker.getHealth() < minHealthThreshold;
+    }
+
+    private boolean isTargetWithinHomeRange() {
+        return ((EntityLivingExtend) attacker).mea$isWithinMaximumHomeDistance(
+                MathHelper.floor_double(currentTarget.posX),
+                MathHelper.floor_double(currentTarget.posY),
+                MathHelper.floor_double(currentTarget.posZ)
+        );
+    }
+
+    private void lookAtTarget() {
+        attacker.getLookHelper().setLookPositionWithEntity(currentTarget, LOOK_RANGE, LOOK_RANGE);
+    }
+
+    private void updatePathfinding() {
+        boolean canSeeTarget = hasLongMemory || attacker.getEntitySenses().canSee(currentTarget);
+
+        if (canSeeTarget && --pathfindCooldown <= 0) {
+            pathfindCooldown = BASE_PATHFIND_DELAY + attacker.getRNG().nextInt(PATHFIND_DELAY_VARIANCE);
+            attacker.getNavigator().tryMoveToEntityLiving(currentTarget, moveSpeed);
         }
     }
 
-    public void startExecuting()
-    {
-        this.attacker.getNavigator().setPath(this.entityPathEntity, this.field_75440_e);
-        this.field_75445_i = 0;
+    private void updateAttackCooldown() {
+        attackCooldown = Math.max(attackCooldown - 1, 0);
     }
 
-    public void resetTask()
-    {
-    	// FCMOD: Added
-    	if (attacker.getAttackTarget() == entityTarget) {
-    		attacker.setAttackTarget(null);
-    	}
-    	// END FCMOD
-        this.entityTarget = null;
-        this.attacker.getNavigator().clearPathEntity();
+    private void attemptAttack() {
+        // Don't attack entities riding the attacker
+        if (currentTarget == attacker.riddenByEntity) {
+            return;
+        }
+
+        if (!canReachTarget()) {
+            return;
+        }
+
+        if (!attacker.getEntitySenses().canSee(currentTarget)) {
+            return;
+        }
+
+        if (attackCooldown <= 0) {
+            performAttack();
+        }
     }
 
-    public void updateTask()
-    {
-        this.attacker.getLookHelper().setLookPositionWithEntity(this.entityTarget, 30.0F, 30.0F);
+    private boolean canReachTarget() {
+        double combinedWidth = attacker.width + currentTarget.width;
+        double reachBonus = calculateReachBonus();
+        double attackRangeSquared = (combinedWidth + reachBonus) * (combinedWidth + reachBonus);
 
-        if ((this.field_75437_f || this.attacker.getEntitySenses().canSee(this.entityTarget)) && --this.field_75445_i <= 0) {
-            this.field_75445_i = 4 + this.attacker.getRNG().nextInt(7);
-            this.attacker.getNavigator().tryMoveToEntityLiving(this.entityTarget, this.field_75440_e);
+        double distanceSquared = attacker.getDistanceSq(
+                currentTarget.posX,
+                currentTarget.boundingBox.minY,
+                currentTarget.posZ
+        );
+
+        return distanceSquared <= attackRangeSquared;
+    }
+
+    private double calculateReachBonus() {
+        ItemStack heldItem = attacker.getHeldItem();
+
+        if (heldItem == null) {
+            return 0.0D;
         }
 
-        this.attackTick = Math.max(this.attackTick - 1, 0);
-        double dCombinedWidth = attacker.width + entityTarget.width;
-        double dToolLength = this.attacker.getHeldItem() == null ? 0.0D : (this.attacker.getHeldItem().getItem().isItemTool(this.attacker.getHeldItem()) ? 2.0D : 0.0D);
-        double var1 = (dCombinedWidth + dToolLength) * (dCombinedWidth + dToolLength);
-        
-        if ( entityTarget == attacker.riddenByEntity ) {
-        	return;
+        return heldItem.getItem().isItemTool(heldItem) ? TOOL_REACH_BONUS : 0.0D;
+    }
+
+    private void performAttack() {
+        attackCooldown = ATTACK_COOLDOWN_TICKS;
+
+        if (attacker.getHeldItem() != null) {
+            attacker.swingItem();
         }
 
-        if (this.attacker.getEntitySenses().canSee(this.entityTarget) &&
-                this.attacker.getDistanceSq(this.entityTarget.posX, this.entityTarget.boundingBox.minY, this.entityTarget.posZ) <= var1) {
-            if (this.attackTick <= 0) {
-                this.attackTick = 20;
-
-                if (this.attacker.getHeldItem() != null) {
-                    this.attacker.swingItem();
-                }
-
-                this.attacker.attackEntityAsMob(this.entityTarget);
-            }
-        }
+        attacker.attackEntityAsMob(currentTarget);
     }
 }
