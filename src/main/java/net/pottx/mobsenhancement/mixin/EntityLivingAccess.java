@@ -8,6 +8,9 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 @Mixin(EntityLiving.class)
 public interface EntityLivingAccess {
 
+    @Accessor("attackTarget")
+    void setAttackTarget(EntityLivingBase attackTarget);
+
     @Invoker("addRandomArmor")
     void invokeAddRandomArmor();
 
@@ -25,4 +28,5 @@ public interface EntityLivingAccess {
 
     @Accessor("tasks")
     EntityAITasks getTasks();
+
 }

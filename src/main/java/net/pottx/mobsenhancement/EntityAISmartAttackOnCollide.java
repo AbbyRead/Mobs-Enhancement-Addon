@@ -2,7 +2,9 @@ package net.pottx.mobsenhancement;
 
 import net.minecraft.src.EntityZombie;
 import net.minecraft.src.*;
+import net.pottx.mobsenhancement.extend.EntityLivingExtend;
 import net.pottx.mobsenhancement.extend.EntityZombieExtend;
+import net.pottx.mobsenhancement.mixin.EntityLivingAccess;
 
 public class EntityAISmartAttackOnCollide extends EntityAIBase
 {
@@ -32,19 +34,19 @@ public class EntityAISmartAttackOnCollide extends EntityAIBase
 
     public boolean shouldExecute()
     {
-        EntityLiving var1 = this.attacker.getAttackTarget();
+        EntityLivingBase var1 = this.attacker.getAttackTarget();
 
         if (var1 == null) {
             return false;
         } else if (this.attacker instanceof EntityZombie && ((EntityZombieExtend)this.attacker).getIsBreakingBlock()){
             return false;
         } else {
-	        boolean shouldFlee = var1 instanceof EntityPlayer || var1.getAttackTarget() == this.attacker;
+	        boolean shouldFlee = var1 instanceof EntityPlayer || ((EntityLiving)var1).getAttackTarget() == this.attacker;
 
             if (shouldFlee && this.attacker.getHealth() < minHealth) {
                 return false;
             } else {
-                this.entityTarget = var1;
+                ((EntityLivingAccess)this).setAttackTarget(var1);
                 this.entityPathEntity = this.attacker.getNavigator().getPathToEntityLiving(this.entityTarget);
                 return this.entityPathEntity != null;
             }
@@ -57,8 +59,18 @@ public class EntityAISmartAttackOnCollide extends EntityAIBase
         } else if (this.attacker instanceof EntityZombie && ((EntityZombieExtend) this.attacker).getIsBreakingBlock()){
             return false;
         } else {
-            EntityLiving var1 = this.attacker.getAttackTarget();
-            return var1 == null ? false : (!this.entityTarget.isEntityAlive() ? false : this.attacker.isWithinHomeDistance(MathHelper.floor_double(this.entityTarget.posX), MathHelper.floor_double(this.entityTarget.posY), MathHelper.floor_double(this.entityTarget.posZ)));
+            EntityLiving entity = (EntityLiving) ((EntityLivingAccess)this.attacker).getAttackTarget();
+
+            if (entity == null || !this.entityTarget.isEntityAlive()) {
+                return false;
+            }
+
+            // Check if the attacker is within its home distance of the target's position
+            return ((EntityLivingExtend) this.attacker).mea$isWithinMaximumHomeDistance(
+                    MathHelper.floor_double(this.entityTarget.posX),
+                    MathHelper.floor_double(this.entityTarget.posY),
+                    MathHelper.floor_double(this.entityTarget.posZ)
+            );
         }
     }
 
