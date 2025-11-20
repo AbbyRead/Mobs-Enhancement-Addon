@@ -3,7 +3,6 @@ package net.pottx.mobsenhancement.mixin;
 import net.minecraft.src.*;
 import net.pottx.mobsenhancement.access.EntityEnderCrystalInterface;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -29,9 +28,6 @@ public abstract class EntityEnderCrystalMixin extends Entity implements EntityEn
 
     @Unique
     private int chargingCounter;
-
-    @Shadow
-    public int health;
 
     public EntityEnderCrystalMixin(World par1World) {
         super(par1World);
