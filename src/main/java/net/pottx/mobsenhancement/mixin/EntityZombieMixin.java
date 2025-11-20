@@ -41,7 +41,7 @@ public abstract class EntityZombieMixin extends EntityMob implements EntityZombi
 
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 24.0F, 0,
                 ((EntityMobAccess)this).getCanXray() == (byte)0));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, VillagerEntity.class, 24.0F, 0, false));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityVillager.class, 24.0F, 0, false));
         this.targetTasks.addTask( 2, new EntityAINearestAttackableTarget(this, EntityCreature.class, 24.0F, 0,
                 false, false, targetEntitySelector));
 
@@ -81,7 +81,7 @@ public abstract class EntityZombieMixin extends EntityMob implements EntityZombi
     @Unique
     public void setIsBreakingBlock(boolean isBreakingBlock) {
         this.isBreakingBlock = isBreakingBlock;
-    };
+    }
 
     @Unique
     public void onKilledBySun()
@@ -90,7 +90,7 @@ public abstract class EntityZombieMixin extends EntityMob implements EntityZombi
         {
             EntitySkeleton skeleton = (EntitySkeleton) EntityList.createEntityOfType(EntitySkeleton.class, this.worldObj);
             skeleton.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
-            skeleton.setEntityHealth(MathHelper.ceiling_float_int((float) skeleton.getMaxHealth() / 2.0F));
+            skeleton.setEntityHealth(MathHelper.ceiling_float_int(skeleton.getMaxHealth() / 2.0F));
             for (int i = 0; i < 5 ; i++) {
                 skeleton.setCurrentItemOrArmor(0, this.getCurrentItemOrArmor(0));
             }
