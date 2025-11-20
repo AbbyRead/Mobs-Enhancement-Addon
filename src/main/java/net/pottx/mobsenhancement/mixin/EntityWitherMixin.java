@@ -1,22 +1,22 @@
 package net.pottx.mobsenhancement.mixin;
 
-import btw.block.BTWBlocks; // Added from Temp_EntityWitherMixin
+import btw.block.BTWBlocks;
 import net.minecraft.src.*;
 import net.pottx.mobsenhancement.EntityAISmartArrowAttack;
-import net.pottx.mobsenhancement.WitherDashBehavior; // Added from Temp_EntityWitherMixin
-import net.pottx.mobsenhancement.WitherSummonMinionBehavior; // Added from Temp_EntityWitherMixin
+import net.pottx.mobsenhancement.WitherDashBehavior;
+import net.pottx.mobsenhancement.WitherSummonMinionBehavior;
 import net.pottx.mobsenhancement.extend.EntityWitherExtend;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject; // Added for task injection
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArgs;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo; // Added for task injection
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
-import java.util.List; // Added from Temp_EntityWitherMixin
+import java.util.List;
 
 @Mixin(EntityWither.class)
 public abstract class EntityWitherMixin extends EntityMob implements IRangedAttackMob, EntityWitherExtend, EntityWitherAccess {
@@ -33,14 +33,13 @@ public abstract class EntityWitherMixin extends EntityMob implements IRangedAtta
         super(par1World);
     }
 
-    // START: Merged from Temp_EntityWitherMixin
     @Inject(
             method = "<init>",
             at = @At(value = "TAIL")
     )
     private void addSpecialAttackTasks(CallbackInfo ci) {
-        this.tasks.addTask(1, new WitherSummonMinionBehavior(self)); // Use self instead of this for clarity/safety
-        this.tasks.addTask(1, new WitherDashBehavior(self)); // Use self instead of this for clarity/safety
+        this.tasks.addTask(1, new WitherSummonMinionBehavior(self)); 
+        this.tasks.addTask(1, new WitherDashBehavior(self)); 
     }
 
     @Override
@@ -106,7 +105,7 @@ public abstract class EntityWitherMixin extends EntityMob implements IRangedAtta
 
                         if (var14 != null && var14.isEntityAlive() && this.getDistanceSqToEntity(var14) <= 900.0D && this.canEntityBeSeen(var14))
                         {
-                            // invokeFireSkullFromHead was likely a typo for invokeFireSkullAtEntity. Target is EntityLiving which extends EntityLivingBase.
+ 
                             this.invokeFireSkullAtEntity(var1 + 1, (EntityLivingBase)var14);
                             this.getNextHeadAttackTime()[var1 - 1] = this.ticksExisted + 40 + this.rand.nextInt(20);
                             this.getIdleHeadTicks()[var1 - 1] = 0;
@@ -247,7 +246,7 @@ public abstract class EntityWitherMixin extends EntityMob implements IRangedAtta
 
         return bAttackSuccess;
     }
-    // END: Merged from Temp_EntityWitherMixin
+ 
 
     @ModifyArgs(
             method = "<init>",
