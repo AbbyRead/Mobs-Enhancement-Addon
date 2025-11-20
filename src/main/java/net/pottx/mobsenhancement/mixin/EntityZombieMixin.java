@@ -41,12 +41,19 @@ public abstract class EntityZombieMixin extends EntityMob implements EntityZombi
         this.tasks.addTask(1, new EntityAIBreakBlock(this));
         this.tasks.addTask(2, new EntityAISmartAttackOnCollide(this, this.getSpeedModifier(), false, 0));
 
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 24.0F, 0,
-                ((EntityMobExtend)this).getCanXray() == (byte)0));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityVillager.class, 24.0F, 0, false));
-        this.targetTasks.addTask( 2, new EntityAINearestAttackableTarget(this, EntityCreature.class, 24.0F, 0,
-                false, false, targetEntitySelector));
-
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(
+                this, EntityPlayer.class, 24.0F, 0,
+                ((EntityMobExtend)this).getCanXray() == (byte)0
+        ));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityVillager.class, 24.0F, 0, false));this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(
+                this,
+                EntityCreature.class,
+                24,       // integer instead of float
+                false,    // par4
+                false,    // par5
+                targetEntitySelector, // par6
+                false     // ignoreOutsideHome
+        ));
     }
 
     @ModifyArgs(
