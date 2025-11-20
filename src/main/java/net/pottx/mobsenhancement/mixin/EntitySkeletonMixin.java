@@ -138,12 +138,12 @@ public abstract class EntitySkeletonMixin extends EntityMob implements IRangedAt
     }
 
     @Unique
-    public boolean getIsBreakingTorch() {
-        return this.isBreakingTorch;
+    public boolean mea$getIsBreakingTorch() {
+        return isBreakingTorch;
     }
 
     @Unique
-    public void setIsBreakingTorch(boolean isBreakingTorch) {
+    public void mea$setIsBreakingTorch(boolean isBreakingTorch) {
         this.isBreakingTorch = isBreakingTorch;
     }
 
@@ -158,7 +158,7 @@ public abstract class EntitySkeletonMixin extends EntityMob implements IRangedAt
 
     @Redirect(
             method = "onLivingUpdate()V",
-            at = @At(value = "INVOKE", target = "Lbtw/entity/mob/EntitySkeleton;checkForCatchFireInSun()V")
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/src/EntitySkeleton;checkForCatchFireInSun()V")
     )
     private void skipSunCheck(EntitySkeleton EntitySkeleton) {
     }

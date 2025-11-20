@@ -62,13 +62,13 @@ public class SkeletonBreakTorchBehavior extends EntityAIBase {
     }
 
     public void resetTask() {
-        ((EntitySkeletonAccess) this.mySkeleton).setIsBreakingTorch(false);
+        ((EntitySkeletonAccess) this.mySkeleton).mea$setIsBreakingTorch(false);
         this.mySkeleton.getNavigator().clearPathEntity();
         this.targetBlock = null;
     }
 
     public void startExecuting() {
-        ((EntitySkeletonAccess) this.mySkeleton).setIsBreakingTorch(true);
+        ((EntitySkeletonAccess) this.mySkeleton).mea$setIsBreakingTorch(true);
     }
 
     public void updateTask() {

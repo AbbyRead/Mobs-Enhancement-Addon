@@ -21,7 +21,7 @@ public abstract class EntityAILookIdleMixin extends EntityAIBase {
     )
     private void shouldNotExecuteIfBreaking(CallbackInfoReturnable<Boolean> cir) {
         if ((this.idleEntity instanceof EntityZombie && ((EntityZombieAccess) this.idleEntity).getIsBreakingBlock()) ||
-                (this.idleEntity instanceof EntitySkeleton && ((EntitySkeletonAccess) this.idleEntity).getIsBreakingTorch())) {
+                (this.idleEntity instanceof EntitySkeleton && ((EntitySkeletonAccess) this.idleEntity).mea$getIsBreakingTorch())) {
             cir.setReturnValue(false);
         }
     }
@@ -33,7 +33,7 @@ public abstract class EntityAILookIdleMixin extends EntityAIBase {
     )
     private void notContinueIfBreaking(CallbackInfoReturnable<Boolean> cir) {
         if ((this.idleEntity instanceof EntityZombie && ((EntityZombieAccess) this.idleEntity).getIsBreakingBlock()) ||
-                (this.idleEntity instanceof EntitySkeleton && ((EntitySkeletonAccess) this.idleEntity).getIsBreakingTorch())) {
+                (this.idleEntity instanceof EntitySkeleton && ((EntitySkeletonAccess) this.idleEntity).mea$getIsBreakingTorch())) {
             cir.setReturnValue(false);
         }
     }

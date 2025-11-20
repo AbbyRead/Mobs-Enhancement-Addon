@@ -24,7 +24,7 @@ public abstract class SimpleWanderBehaviorMixin extends EntityAIBase {
     )
     private void shouldNotExecuteIfBreaking(CallbackInfoReturnable<Boolean> cir) {
         if ((this.myEntity instanceof EntityZombie && ((EntityZombieAccess) this.myEntity).getIsBreakingBlock()) ||
-                (this.myEntity instanceof EntitySkeleton && ((EntitySkeletonAccess) this.myEntity).getIsBreakingTorch())) {
+                (this.myEntity instanceof EntitySkeleton && ((EntitySkeletonAccess) this.myEntity).mea$getIsBreakingTorch())) {
             cir.setReturnValue(false);
         }
     }
@@ -36,7 +36,7 @@ public abstract class SimpleWanderBehaviorMixin extends EntityAIBase {
     )
     private void notContinueIfBreaking(CallbackInfoReturnable<Boolean> cir) {
         if ((this.myEntity instanceof EntityZombie && ((EntityZombieAccess) this.myEntity).getIsBreakingBlock()) ||
-                (this.myEntity instanceof EntitySkeleton && ((EntitySkeletonAccess) this.myEntity).getIsBreakingTorch())) {
+                (this.myEntity instanceof EntitySkeleton && ((EntitySkeletonAccess) this.myEntity).mea$getIsBreakingTorch())) {
             cir.setReturnValue(false);
         }
     }

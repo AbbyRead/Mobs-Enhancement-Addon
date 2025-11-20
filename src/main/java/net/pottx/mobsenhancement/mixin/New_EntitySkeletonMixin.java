@@ -138,12 +138,12 @@ public abstract class New_EntitySkeletonMixin extends EntityMob implements Entit
     }
 
     @Unique
-    public boolean getIsBreakingTorch() {
+    public boolean mea$getIsBreakingTorch() {
         return this.isBreakingTorch;
     }
 
     @Unique
-    public void setIsBreakingTorch(boolean isBreakingTorch) {
+    public void mea$setIsBreakingTorch(boolean isBreakingTorch) {
         this.isBreakingTorch = isBreakingTorch;
     }
 
