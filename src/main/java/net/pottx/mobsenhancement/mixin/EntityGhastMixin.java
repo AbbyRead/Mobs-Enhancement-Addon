@@ -17,9 +17,7 @@ public abstract class EntityGhastMixin extends EntityFlying implements EntityGha
             method = "<init>",
             at = @At(value = "TAIL")
     )
-    private void replaceTexture(CallbackInfo ci) {
-        this.texture = "/meatextures/ghast.png";
-
+    private void progressBasedExplosionStrength(CallbackInfo ci) {
         if (MEAUtils.getGameProgressMobsLevel(this.worldObj) > 1) {
             this.setExplosionStrength(2);
         }

@@ -6,6 +6,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(RenderGhast.class)
 public abstract class RenderGhastMixin extends RenderLiving {
@@ -21,4 +22,16 @@ public abstract class RenderGhastMixin extends RenderLiving {
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
     }
+
+    @Inject(method = "func_110867_a", at = @At("HEAD"), cancellable = true)
+    private void replaceGhastTexture(EntityGhast entityGhast, CallbackInfoReturnable<ResourceLocation> cir) {
+        ResourceLocation customTexture = new ResourceLocation("meatextures/ghast.png");
+        ResourceLocation customFiringTexture = new ResourceLocation("meatextures/ghast_fire.png");
+        if (entityGhast.func_110182_bF()) {
+            cir.setReturnValue(customFiringTexture);
+            return;
+        }
+        cir.setReturnValue(customTexture);
+    }
+
 }
