@@ -8,8 +8,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.util.List;
-
 @Mixin(EntityPlayerMP.class)
 public abstract class EntityPlayerMPMixin extends EntityPlayer {
     public EntityPlayerMPMixin(World par1World) {
