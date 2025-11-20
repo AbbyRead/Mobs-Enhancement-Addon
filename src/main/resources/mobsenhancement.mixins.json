@@ -23,6 +23,7 @@
     "EntityGhastMixin",
     "EntityLivingAccess",
     "EntityLivingMixin",
+    "EntityMixin",
     "EntityMobMixin",
     "EntityPigMixin",
     "EntityPigZombieMixin",

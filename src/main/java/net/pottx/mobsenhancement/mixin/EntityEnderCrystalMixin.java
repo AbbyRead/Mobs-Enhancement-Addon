@@ -1,8 +1,9 @@
 package net.pottx.mobsenhancement.mixin;
 
 import net.minecraft.src.*;
-import net.pottx.mobsenhancement.access.EntityEnderCrystalAccess;
+import net.pottx.mobsenhancement.access.EntityEnderCrystalInterface;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -13,44 +14,51 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.List;
 
 @Mixin(EntityEnderCrystal.class)
-public abstract class EntityEnderCrystalMixin extends Entity implements EntityEnderCrystalAccess {
+public abstract class EntityEnderCrystalMixin extends Entity implements EntityEnderCrystalInterface {
     @Unique
     private static final int IS_DRIED_DATA_WATCHER_ID = 25;
+
     @Unique
     public EntityEnderCrystal chargingEnderCrystal;
+
     @Unique
     public boolean isOccupied;
+
     @Unique
     public boolean isHealing;
+
     @Unique
     private int chargingCounter;
+
+    @Shadow
+    public int health;
 
     public EntityEnderCrystalMixin(World par1World) {
         super(par1World);
     }
 
     @Inject(
-            method = "<init>",
+            method = "<init>(Lnet/minecraft/src/World;)V",
             at = @At(value = "TAIL")
     )
-    private void addIsDriedData(CallbackInfo ci) {
+    private void addIsDriedData(World world, CallbackInfo ci) {
         dataWatcher.addObject(IS_DRIED_DATA_WATCHER_ID, (byte) 0);
     }
 
     @Redirect(
-            method = "attackEntityFrom(Lnet/minecraft/src/DamageSource;I)Z",
+            method = "attackEntityFrom",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/src/EntityEnderCrystal;isEntityInvulnerable()Z")
     )
     private boolean doIsDriedCheck(EntityEnderCrystal entityEnderCrystal) {
-        return ((EntityEnderCrystalAccess) entityEnderCrystal).getIsDried() == (byte) 1 || entityEnderCrystal.isEntityInvulnerable();
+        return ((EntityEnderCrystalInterface) entityEnderCrystal).mea$getIsDried() == (byte) 1 || entityEnderCrystal.isEntityInvulnerable();
     }
 
     @Redirect(
-            method = "onUpdate()V",
+            method = "onUpdate",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/src/World;getBlockId(III)I")
     )
     private int noFireIfDried(World world, int par1, int par2, int par3) {
-        if (this.getIsDried() == (byte) 1) {
+        if (this.mea$getIsDried() == (byte) 1) {
             return Block.fire.blockID;
         } else {
             return this.worldObj.getBlockId(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ));
@@ -58,49 +66,54 @@ public abstract class EntityEnderCrystalMixin extends Entity implements EntityEn
     }
 
     @Inject(
-            method = "onUpdate()V",
+            method = "onUpdate",
             at = @At(value = "TAIL")
     )
-    private void doChargeCycle (CallbackInfo ci) {
-        if (this.getIsDried() == (byte) 1 &&
+    private void doChargeCycle(CallbackInfo ci) {
+        if (this.mea$getIsDried() == (byte) 1 &&
                 this.worldObj.getBlockId(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ)) == Block.fire.blockID) {
             this.worldObj.setBlock(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ), 0);
         }
 
-        if (!this.worldObj.isRemote && this.getIsDried() == (byte) 1 && this.chargingCounter >= 640) {
-            this.setIsDried((byte) 0);
+        if (!this.worldObj.isRemote && this.mea$getIsDried() == (byte) 1 && this.chargingCounter >= 640) {
+            this.mea$setIsDried((byte) 0);
         }
 
         if (this.chargingEnderCrystal != null) {
-            if (this.getIsDried() == (byte) 0 || ((EntityEnderCrystalAccess) this.chargingEnderCrystal).getIsDried() == (byte) 1) {
-                ((EntityEnderCrystalAccess) this.chargingEnderCrystal).setIsOccupied(false);
+            if (this.mea$getIsDried() == (byte) 0 || ((EntityEnderCrystalInterface) this.chargingEnderCrystal).mea$getIsDried() == (byte) 1) {
+                ((EntityEnderCrystalInterface) this.chargingEnderCrystal).mea$setIsOccupied(false);
                 this.chargingEnderCrystal = null;
             } else if (this.chargingCounter < 640) {
                 this.chargingCounter++;
             }
         }
 
-        if (this.getIsDried() == (byte) 1) {
-            @SuppressWarnings("rawtypes") List nearCrystals = this.worldObj.getEntitiesWithinAABB(EntityEnderCrystal.class, this.boundingBox.expand(32D, 32D, 32D));
+        if (this.mea$getIsDried() == (byte) 1) {
+            @SuppressWarnings("rawtypes")
+            List nearCrystals = this.worldObj.getEntitiesWithinAABB(EntityEnderCrystal.class, this.boundingBox.expand(32D, 32D, 32D));
             EntityEnderCrystal nearestChargerCrystal = null;
             double smallestDistance = Double.MAX_VALUE;
 
-	        for (Object nearCrystal : nearCrystals) {
-		        EntityEnderCrystal chargerCrystal = (EntityEnderCrystal) nearCrystal;
-		        double distance = chargerCrystal.getDistanceSqToEntity(this);
+            for (Object nearCrystal : nearCrystals) {
+                EntityEnderCrystal chargerCrystal = (EntityEnderCrystal) nearCrystal;
+                double distance = chargerCrystal.getDistanceSqToEntity(this);
 
-		        if (((EntityEnderCrystalAccess) chargerCrystal).getIsDried() == (byte) 0 &&
-				        (chargerCrystal == this.chargingEnderCrystal || !((EntityEnderCrystalAccess) chargerCrystal).getIsOccupied()) &&
-				        !((EntityEnderCrystalAccess) chargerCrystal).getIsHealing() &&
-				        distance < smallestDistance) {
-			        smallestDistance = distance;
-			        nearestChargerCrystal = chargerCrystal;
-		        }
-	        }
+                if (((EntityEnderCrystalInterface) chargerCrystal).mea$getIsDried() == (byte) 0 &&
+                        (chargerCrystal == this.chargingEnderCrystal || !((EntityEnderCrystalInterface) chargerCrystal).mea$getIsOccupied()) &&
+                        !((EntityEnderCrystalInterface) chargerCrystal).mea$getIsHealing() &&
+                        distance < smallestDistance) {
+                    smallestDistance = distance;
+                    nearestChargerCrystal = chargerCrystal;
+                }
+            }
 
             if (nearestChargerCrystal != this.chargingEnderCrystal) {
-                if (this.chargingEnderCrystal != null) ((EntityEnderCrystalAccess) this.chargingEnderCrystal).setIsOccupied(false);
-                if (nearestChargerCrystal != null) ((EntityEnderCrystalAccess) nearestChargerCrystal).setIsOccupied(true);
+                if (this.chargingEnderCrystal != null) {
+                    ((EntityEnderCrystalInterface) this.chargingEnderCrystal).mea$setIsOccupied(false);
+                }
+                if (nearestChargerCrystal != null) {
+                    ((EntityEnderCrystalInterface) nearestChargerCrystal).mea$setIsOccupied(true);
+                }
 
                 this.chargingEnderCrystal = nearestChargerCrystal;
             }
@@ -108,10 +121,10 @@ public abstract class EntityEnderCrystalMixin extends Entity implements EntityEn
     }
 
     @Inject(
-            method = "attackEntityFrom(Lnet/minecraft/src/DamageSource;I)Z",
+            method = "attackEntityFrom",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/src/EntityEnderCrystal;setDead()V")
     )
-    private void avengeDestroyer(DamageSource par1DamageSource, int par2, CallbackInfoReturnable<Boolean> cir) {
+    private void avengeDestroyer(DamageSource par1DamageSource, float par2, CallbackInfoReturnable<Boolean> cir) {
         Entity destroyer = par1DamageSource.getSourceOfDamage();
         if (destroyer instanceof EntityArrow) {
             destroyer = ((EntityArrow) destroyer).shootingEntity;
@@ -119,71 +132,81 @@ public abstract class EntityEnderCrystalMixin extends Entity implements EntityEn
             destroyer = ((EntityThrowable) destroyer).getThrower();
         }
 
-        if (destroyer instanceof EntityLiving) {
-            this.worldObj.addWeatherEffect(EntityList.createEntityOfType(EntityLightningBolt.class, this.worldObj,
-                    destroyer.posX, destroyer.posY, destroyer.posZ));
+        if (destroyer instanceof EntityLivingBase) {
+            EntityLightningBolt lightningBolt = new EntityLightningBolt(this.worldObj, destroyer.posX, destroyer.posY, destroyer.posZ);
+            this.worldObj.addWeatherEffect(lightningBolt);
         }
-    }
-
-    @Override
-    public void setDead() {
-        this.setIsDried((byte) 1);
-        this.chargingCounter = 0;
-    }
-
-    @Override
-    public boolean isBurning() {
-        return false;
     }
 
     @Inject(
             method = "writeEntityToNBT(Lnet/minecraft/src/NBTTagCompound;)V",
-            at = @At(value = "HEAD")
+            at = @At(value = "TAIL")
     )
     private void writeIsDried(NBTTagCompound par1NBTTagCompound, CallbackInfo ci) {
-        par1NBTTagCompound.setByte("IsDried", this.getIsDried());
+        par1NBTTagCompound.setByte("IsDried", this.mea$getIsDried());
+        par1NBTTagCompound.setInteger("ChargingCounter", this.chargingCounter);
     }
 
     @Inject(
             method = "readEntityFromNBT(Lnet/minecraft/src/NBTTagCompound;)V",
-            at = @At(value = "HEAD")
+            at = @At(value = "TAIL")
     )
     private void readIsDried(NBTTagCompound par1NBTTagCompound, CallbackInfo ci) {
-        this.setIsDried(par1NBTTagCompound.getByte("IsDried"));
+        if (par1NBTTagCompound.hasKey("IsDried")) {
+            this.mea$setIsDried(par1NBTTagCompound.getByte("IsDried"));
+        }
+        if (par1NBTTagCompound.hasKey("ChargingCounter")) {
+            this.chargingCounter = par1NBTTagCompound.getInteger("ChargingCounter");
+        }
     }
 
-    @Unique
-    public byte getIsDried() {
+    @Override
+    public void mea$setRespawnCounter(int respawnCounter) {
+        this.chargingCounter = respawnCounter;
+    }
+
+    @Override
+    public byte mea$getIsDried() {
         return this.dataWatcher.getWatchableObjectByte(IS_DRIED_DATA_WATCHER_ID);
     }
 
-    @Unique
-    public void setIsDried(byte isDried) {
+    @Override
+    public void mea$setIsDried(byte isDried) {
         this.dataWatcher.updateObject(IS_DRIED_DATA_WATCHER_ID, isDried);
     }
 
-    @Unique
-    public EntityEnderCrystal getChargingEnderCrystal() {
+    @Override
+    public EntityEnderCrystal mea$getChargingEnderCrystal() {
         return this.chargingEnderCrystal;
     }
 
-    @Unique
-    public boolean getIsOccupied() {
+    @Override
+    public boolean mea$getIsOccupied() {
         return this.isOccupied;
     }
 
-    @Unique
-    public void setIsOccupied(boolean isOccupied) {
+    @Override
+    public void mea$setIsOccupied(boolean isOccupied) {
         this.isOccupied = isOccupied;
     }
 
-    @Unique
-    public boolean getIsHealing() {
+    @Override
+    public boolean mea$getIsHealing() {
         return this.isHealing;
     }
 
-    @Unique
-    public void setIsHealing(boolean isHealing) {
+    @Override
+    public void mea$setIsHealing(boolean isHealing) {
         this.isHealing = isHealing;
+    }
+
+    @Override
+    public void mea$setChargingCounter(int counter) {
+        this.chargingCounter = counter;
+    }
+
+    @Override
+    public int mea$getChargingCounter() {
+        return this.chargingCounter;
     }
 }
