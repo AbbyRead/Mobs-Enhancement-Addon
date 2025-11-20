@@ -13,11 +13,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.List;
 
 @Mixin(EntityWither.class)
-public abstract class New_EntityWitherMixin extends EntityMob implements EntityWitherAccess {
+public abstract class Temp_EntityWitherMixin extends EntityMob implements EntityWitherAccess {
     @Unique
     public boolean isDoingSpecialAttack;
 
-    public New_EntityWitherMixin(World par1World) {
+    public Temp_EntityWitherMixin(World par1World) {
         super(par1World);
     }
 
@@ -33,11 +33,6 @@ public abstract class New_EntityWitherMixin extends EntityMob implements EntityW
     @Unique
     public boolean getIsDoingSpecialAttack() {
         return this.isDoingSpecialAttack;
-    }
-
-    @Unique
-    public void setIsDoingSpecialAttack(boolean isDoingSpecialAttack) {
-        this.isDoingSpecialAttack = isDoingSpecialAttack;
     }
 
     @Override

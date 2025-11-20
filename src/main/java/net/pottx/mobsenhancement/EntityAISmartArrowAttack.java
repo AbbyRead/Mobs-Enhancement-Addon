@@ -2,7 +2,7 @@ package net.pottx.mobsenhancement;
 
 import net.minecraft.src.*;
 import net.pottx.mobsenhancement.mixin.EntityLivingAccess;
-import net.pottx.mobsenhancement.extend.EntityWitherAccess;
+import net.pottx.mobsenhancement.mixin.EntityWitherAccess;
 
 public class EntityAISmartArrowAttack extends EntityAIBase
 {
@@ -46,10 +46,10 @@ public class EntityAISmartArrowAttack extends EntityAIBase
 
             if (target == null) {
                 return false;
-            } else if (this.entityWielding instanceof EntityWither && ((EntityWitherAccess) this.entityWielding).getIsDoingSpecialAttack()) {
+            } else if (this.entityWielding instanceof EntityWither wither && ((EntityWitherAccess)wither).getIsDoingSpecialAttack()) {
                 return false;
             } else {
-                shouldFlee = target instanceof EntityPlayer || ((EntityLivingAccess)target).getAttackTarget() == entityWielding;
+                shouldFlee = target instanceof EntityPlayer || ((EntityLiving)target).getAttackTarget() == entityWielding;
                 if (shouldFlee && entityWielding.getHealth() < minHealth) {
                     return false;
                 } else {
@@ -62,7 +62,7 @@ public class EntityAISmartArrowAttack extends EntityAIBase
     }
 
     public boolean continueExecuting() {
-        return this.shouldExecute() || !((EntityLivingAccess)entityWielding).getNavigator().noPath();
+        return this.shouldExecute() || !((EntityLiving)entityWielding).getNavigator().noPath();
     }
 
     public void resetTask() {

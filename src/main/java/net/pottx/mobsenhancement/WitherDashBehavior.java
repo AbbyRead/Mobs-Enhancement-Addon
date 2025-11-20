@@ -2,7 +2,7 @@ package net.pottx.mobsenhancement;
 
 import btw.block.BTWBlocks;
 import net.minecraft.src.*;
-import net.pottx.mobsenhancement.extend.EntityWitherAccess;
+import net.pottx.mobsenhancement.mixin.EntityWitherAccess;
 
 import java.util.List;
 
@@ -39,11 +39,11 @@ public class WitherDashBehavior extends EntityAIBase {
         super.resetTask();
 
         this.dashCooldownCounter = (this.myWither.posY > 256D ? 40 : 80) + this.myWither.rand.nextInt(40);
-        ((EntityWitherAccess) this.myWither).setIsDoingSpecialAttack(false);
+        ((EntityWitherAccess) this.myWither).mea$setIsDoingSpecialAttack(false);
     }
 
     public void startExecuting() {
-        ((EntityWitherAccess) this.myWither).setIsDoingSpecialAttack(true);
+        this.myWither.setIsDoingSpecialAttack(true);
         this.dashTarget = (EntityLiving) this.myWither.getAttackTarget();
         this.dashProcessCounter = 40;
     }

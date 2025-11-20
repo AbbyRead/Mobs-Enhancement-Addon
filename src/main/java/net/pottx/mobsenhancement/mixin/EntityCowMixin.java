@@ -4,6 +4,7 @@ import btw.entity.mob.KickingAnimal;
 import btw.entity.mob.behavior.AnimalFleeBehavior;
 import net.minecraft.src.*;
 import net.pottx.mobsenhancement.AnimalCombatBehavior;
+import net.pottx.mobsenhancement.extend.EntityLivingBaseExtend;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -11,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(EntityCow.class)
-public abstract class EntityCowMixin extends KickingAnimal implements EntityLivingAccess {
+public abstract class EntityCowMixin extends KickingAnimal implements EntityLivingBaseExtend {
 
     @Unique
     private EntityCow self = (EntityCow) (Object) this;

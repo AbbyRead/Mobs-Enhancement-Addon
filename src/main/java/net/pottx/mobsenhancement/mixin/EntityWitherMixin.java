@@ -2,15 +2,29 @@ package net.pottx.mobsenhancement.mixin;
 
 import net.minecraft.src.*;
 import net.pottx.mobsenhancement.EntityAISmartArrowAttack;
+import net.pottx.mobsenhancement.extend.EntityWitherExtend;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArgs;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
 @Mixin(EntityWither.class)
-public abstract class EntityWitherMixin extends EntityMob implements IRangedAttackMob, EntityWitherAccess {
+public abstract class EntityWitherMixin extends EntityMob implements IRangedAttackMob, EntityWitherExtend {
+    @Unique
+    EntityWither self = (EntityWither) (Object) this;
+
+    @Unique
+    public boolean isDoingSpecialAttack;
+
+    @Unique
+    public boolean mea$getIsDoingSpecialAttack() {
+        return this.isDoingSpecialAttack;
+    }
+
+
     @Shadow
     public abstract int getWatchedTargetId(int par1);
     public EntityWitherMixin(World par1World) {
@@ -22,7 +36,7 @@ public abstract class EntityWitherMixin extends EntityMob implements IRangedAtta
             at = @At(value = "INVOKE", target = "Lnet/minecraft/src/EntityAITasks;addTask(ILnet/minecraft/src/EntityAIBase;)V", ordinal = 1)
     )
     private void modifyArrowAttackTask(Args args) {
-        args.set(1, new EntityAISmartArrowAttack(this, this.moveSpeed, 40, 0, 30.0F, 0.0F));
+        args.set(1, new EntityAISmartArrowAttack(this, getAIMoveSpeed(), 40, 0, 30.0F, 0.0F));
     }
 
     @Redirect(
@@ -30,7 +44,7 @@ public abstract class EntityWitherMixin extends EntityMob implements IRangedAtta
             at = @At(value = "INVOKE", target = "Lnet/minecraft/src/World;getEntityByID(I)Lnet/minecraft/src/Entity;", ordinal = 0)
     )
     private Entity stayStillWhenDoingSpecialAttack(World world, int var1) {
-        if (((EntityWitherAccess) this).getIsDoingSpecialAttack()) {
+        if (this.mea$getIsDoingSpecialAttack()) {
             return null;
         } else {
             return this.worldObj.getEntityByID(this.getWatchedTargetId(0));
@@ -42,10 +56,14 @@ public abstract class EntityWitherMixin extends EntityMob implements IRangedAtta
             at = @At(value = "INVOKE", target = "Lnet/minecraft/src/MathHelper;sqrt_double(D)F", ordinal = 0)
     )
     private float keepFartherDistance(double var6) {
-        if (var6 > 64D && !((EntityWitherAccess) this).getIsDoingSpecialAttack()) {
+        if (var6 > 64D && !(this.mea$getIsDoingSpecialAttack())) {
             return 1.5F * MathHelper.sqrt_double(var6);
         } else {
             return Float.MAX_VALUE;
         }
+    }
+
+    public void mea$setIsDoingSpecialAttack(boolean isDoingSpecialAttack) {
+        this.isDoingSpecialAttack = isDoingSpecialAttack;
     }
 }
