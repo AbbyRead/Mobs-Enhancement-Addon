@@ -1,5 +1,6 @@
 package net.pottx.mobsenhancement.mixin;
 
+import com.llamalad7.mixinextras.sugar.Local;
 import net.pottx.mobsenhancement.*;
 import net.pottx.mobsenhancement.access.EntityArrowAccess;
 import net.minecraft.src.*;
@@ -9,7 +10,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
 @Mixin(EntitySkeleton.class)
@@ -35,9 +36,11 @@ public abstract class EntitySkeletonMixin extends EntityMob implements IRangedAt
             at = @At(value = "TAIL")
     )
     private void addExtraTasks(CallbackInfo ci) {
+        // Remove EntityAIFleeSun and EntityAIWatchClosest if they exist
         this.tasks.removeAllTasksOfClass(EntityAIWatchClosest.class);
         this.tasks.removeAllTasksOfClass(EntityAIFleeSun.class);
 
+        // Add custom behaviors
         tasks.addTask(2, new EntityAIFleeFromExplosion(this, 0.375F, 4.0F));
         tasks.addTask(3, new EntityAIFleeFromEnemy(this, EntityPlayer.class, 0.375F, 24.0F, 5));
         this.targetTasks.addTask(4, new SkeletonBreakTorchBehavior(self));
@@ -45,40 +48,39 @@ public abstract class EntitySkeletonMixin extends EntityMob implements IRangedAt
     }
 
     @Inject(
-            method = "entityInit()V",
+            method = "<init>",
             at = @At(value = "TAIL")
     )
     private void setSmartAttackAI(CallbackInfo ci) {
-        this.aiSmartRangedAttack = new EntityAISmartArrowAttack(this, 0.375F, 60, 6, 20F , 6F);
+        this.aiSmartRangedAttack = new EntityAISmartArrowAttack(this, 0.375F, 60, 6, 20F, 6F);
         this.aiSmartMeleeAttack = new EntityAISmartAttackOnCollide(this, 0.375F, false, 6);
     }
 
     @Inject(
-            method = {"attackEntityWithRangedAttack(Lnet/minecraft/src/EntityLiving;F)V", "method_4552"},
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/src/EnchantmentHelper;getEnchantmentLevel(ILnet/minecraft/src/ItemStack;)I"),
-            locals = LocalCapture.CAPTURE_FAILHARD
+            method = "attackEntityWithRangedAttack(Lnet/minecraft/src/EntityLivingBase;F)V",
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/src/EnchantmentHelper;getEnchantmentLevel(ILnet/minecraft/src/ItemStack;)I", ordinal = 0)
     )
-    private void resetArrowForPrediction(EntityLiving target, float fDamageModifier, CallbackInfo ci, EntityArrow arrow) {
+    private void resetArrowForPrediction(EntityLivingBase target, float fDamageModifier, CallbackInfo ci, @Local EntityArrow arrow) {
         int i = MEAUtils.getGameProgressMobsLevel(this.worldObj);
         float f = i > 2 ? 2F : (i > 1 ? 4F : (i > 0 ? 6F : 8F));
-        // use the updated accessor method name resetForPrediction (adjust if your access interface still uses mea$ prefix)
         ((EntityArrowAccess)arrow).resetForPrediction(this, target, 1.6F, f);
     }
 
     @Inject(
-            method = {"attackEntityWithRangedAttack(Lnet/minecraft/src/EntityLiving;F)V", "method_4552"},
+            method = "attackEntityWithRangedAttack(Lnet/minecraft/src/EntityLivingBase;F)V",
             at = @At(value = "TAIL")
     )
-    private void damageBow(EntityLiving target, float fDamageModifier, CallbackInfo ci) {
+    private void damageBow(EntityLivingBase target, float fDamageModifier, CallbackInfo ci) {
         ItemStack itemStack = this.getHeldItem();
-        if (itemStack.getItem() == Item.bow) {
+        if (itemStack != null && itemStack.getItem() == Item.bow) {
             itemStack.damageItem(1, this);
             if (itemStack.stackSize <= 0) {
-                EntitySkeleton skeleton = (EntitySkeleton) EntityList.createEntityOfType(EntitySkeleton.class, this.worldObj);
-                skeleton.setSkeletonType(this.getSkeletonType());
+                // Replace the skeleton with one that has no bow
+                EntitySkeleton skeleton = new EntitySkeleton(this.worldObj);
+                skeleton.setSkeletonType(this.self.getSkeletonType().id());
                 skeleton.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
                 skeleton.setRotationYawHead(this.rotationYawHead);
-                skeleton.setEntityHealth(this.health);
+                skeleton.setHealth(this.getHealth());
                 skeleton.setCurrentItemOrArmor(0, null);
                 this.setDead();
                 this.worldObj.spawnEntityInWorld(skeleton);
@@ -86,13 +88,15 @@ public abstract class EntitySkeletonMixin extends EntityMob implements IRangedAt
         }
     }
 
+    // onSpawnWithEgg is called for natural spawns (not from a spawner block)
     @Inject(
-            method = "initCreature()V",
+            method = "onSpawnWithEgg(Lnet/minecraft/src/EntityLivingData;)Lnet/minecraft/src/EntityLivingData;",
             at = @At(value = "TAIL")
     )
-    private void witherChanceAfterNether(CallbackInfo ci) {
+    private void witherChanceAfterNether(EntityLivingData data, CallbackInfoReturnable<EntityLivingData> cir) {
+        // Additional underground wither skeleton spawning logic
         if (this.worldObj.provider.dimensionId == 0 && this.posY < 32 && getRNG().nextInt(4) == 0) {
-            setSkeletonType(1);
+            self.setSkeletonType(1); // WITHER_TYPE
         }
     }
 
@@ -151,7 +155,7 @@ public abstract class EntitySkeletonMixin extends EntityMob implements IRangedAt
     public void addRandomArmor() {
         super.addRandomArmor();
 
-        if (getHeldItem().itemID != Item.bow.itemID) {
+        if (getHeldItem() != null && getHeldItem().itemID != Item.bow.itemID) {
             equipmentDropChances[0] = 0.99F;
         }
     }
