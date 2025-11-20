@@ -72,8 +72,12 @@ public abstract class RenderEnderCrystalMixin extends Render {
     }
 
     @Unique
-    private void renderChargingBeam(EntityEnderCrystal crystal, double renderX, double renderY,
-                                    double renderZ, float yaw, float partialTicks) {
+    private void renderChargingBeam(EntityEnderCrystal crystal,
+                                    double renderX,
+                                    double renderY,
+                                    double renderZ,
+                                    @SuppressWarnings("unused") float yaw,
+                                    float partialTicks) {
         EntityEnderCrystal target = getChargingTarget(crystal);
         if (target == null) {
             return;
@@ -142,7 +146,10 @@ public abstract class RenderEnderCrystalMixin extends Render {
 
     @Unique
     private void drawBeamGeometry(EntityEnderCrystal crystal, float partialTicks,
-                                  float deltaX, float deltaY, float deltaZ, float distance) {
+                                  @SuppressWarnings("unused") float deltaX,
+                                  @SuppressWarnings("unused") float deltaY,
+                                  @SuppressWarnings("unused") float deltaZ,
+                                  float distance) {
         Tessellator tessellator = Tessellator.instance;
 
         float textureOffsetStart = calculateTextureOffset(crystal, partialTicks, 0.0F);

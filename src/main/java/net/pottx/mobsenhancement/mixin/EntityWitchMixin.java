@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(EntityWitch.class)
 public abstract class EntityWitchMixin extends EntityMob implements IRangedAttackMob {
-    public EntityWitchMixin(World par1World) {
+    private EntityWitchMixin(World par1World) {
         super(par1World);
     }
 
@@ -28,7 +28,7 @@ public abstract class EntityWitchMixin extends EntityMob implements IRangedAttac
                 EntityVillager.class,
                 24.0F,
                 0,
-                ((EntityMobExtend)this).getCanXray() == (byte)0
+                ((EntityMobExtend)this).mea$getCanXray() == (byte)0
         ));
     }
 

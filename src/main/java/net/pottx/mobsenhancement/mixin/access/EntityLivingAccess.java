@@ -8,6 +8,7 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 @Mixin(EntityLiving.class)
 public interface EntityLivingAccess {
 
+    @SuppressWarnings("unused")
     @Accessor("attackTarget")
     void setAttackTarget(EntityLivingBase attackTarget);
 
@@ -26,6 +27,7 @@ public interface EntityLivingAccess {
     @Accessor("lookHelper")
     EntityLookHelper getLookHelper();
 
+    @SuppressWarnings("unused")
     @Accessor("tasks")
     EntityAITasks getTasks();
 

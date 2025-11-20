@@ -9,7 +9,8 @@ import org.spongepowered.asm.mixin.Unique;
 
 @Mixin(EntityLiving.class)
 public class EntityLivingMixin implements EntityLivingExtend {
-	@Unique EntityLiving self = (EntityLiving) (Object) this;
+	@Unique
+	final EntityLiving self = (EntityLiving) (Object) this;
 
 	public boolean mea$isWithinMaximumHomeDistance(int x, int y, int z) {
 		if (!(self instanceof EntityCreature creature)) return true;

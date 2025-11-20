@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(EntityGhast.class)
 public abstract class EntityGhastMixin extends EntityFlying implements EntityGhastAccess {
 
-    public EntityGhastMixin(World world) {
+    private EntityGhastMixin(World world) {
         super(world);
     }
 

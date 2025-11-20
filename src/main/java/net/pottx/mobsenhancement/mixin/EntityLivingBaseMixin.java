@@ -15,7 +15,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(EntityLivingBase.class)
 public class EntityLivingBaseMixin implements EntityLivingBaseExtend {
-	@Unique EntityLivingBase self = (EntityLivingBase) (Object) this;
+	@Unique
+	final EntityLivingBase self = (EntityLivingBase) (Object) this;
 
 	@Inject(
 			method = "canEntityBeSeen",

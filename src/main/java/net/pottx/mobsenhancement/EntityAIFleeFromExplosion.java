@@ -1,7 +1,6 @@
 package net.pottx.mobsenhancement;
 
 import btw.entity.MiningChargeEntity;
-import net.minecraft.src.EntityCreeper;
 import net.minecraft.src.*;
 
 import java.util.ArrayList;

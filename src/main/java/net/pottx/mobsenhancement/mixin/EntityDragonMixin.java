@@ -16,7 +16,7 @@ public abstract class EntityDragonMixin extends EntityLiving
     @Shadow public EntityEnderCrystal healingEnderCrystal;
     @Shadow public EntityDragonPart dragonPartHead;
 
-    public EntityDragonMixin(World world) {
+    private EntityDragonMixin(World world) {
         super(world);
     }
 

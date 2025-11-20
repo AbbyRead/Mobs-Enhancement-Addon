@@ -3,6 +3,7 @@ package net.pottx.mobsenhancement.extend;
 import net.minecraft.src.EntityEnderCrystal;
 
 public interface EntityEnderCrystalExtend {
+    @SuppressWarnings("unused")
     void mea$setRespawnCounter(int respawnCounter);
 
     byte mea$getIsDried();
@@ -21,5 +22,8 @@ public interface EntityEnderCrystalExtend {
     
     void mea$setChargingCounter(int counter);
 
-    int mea$getChargingCounter();
+	@SuppressWarnings("unused")
+	default int mea$getChargingCounter() {
+		return 0;
+	}
 }

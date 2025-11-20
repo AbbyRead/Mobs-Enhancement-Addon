@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(RenderGhast.class)
 public abstract class RenderGhastMixin extends RenderLiving {
-    public RenderGhastMixin(ModelBase par1ModelBase, float par2) {
+    private RenderGhastMixin(ModelBase par1ModelBase, float par2) {
         super(par1ModelBase, par2);
     }
 

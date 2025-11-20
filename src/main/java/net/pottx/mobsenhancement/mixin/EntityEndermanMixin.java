@@ -13,7 +13,7 @@ public class EntityEndermanMixin extends EntityMob {
     @Shadow
     private int teleportDelay;
 
-    public EntityEndermanMixin(World par1World) {
+    private EntityEndermanMixin(World par1World) {
         super(par1World);
     }
 

@@ -5,8 +5,6 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.src.MathHelper;
 
-import java.util.Random;
-
 @Environment(EnvType.CLIENT)
 public class MEAEffectManager {
     public static final int SLIME_MERGE_EFFECT_ID = 4095;

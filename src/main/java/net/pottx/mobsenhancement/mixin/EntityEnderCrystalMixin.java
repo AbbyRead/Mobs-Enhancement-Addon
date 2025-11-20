@@ -29,7 +29,7 @@ public abstract class EntityEnderCrystalMixin extends Entity implements EntityEn
     @Unique
     private int chargingCounter;
 
-    public EntityEnderCrystalMixin(World par1World) {
+    private EntityEnderCrystalMixin(World par1World) {
         super(par1World);
     }
 

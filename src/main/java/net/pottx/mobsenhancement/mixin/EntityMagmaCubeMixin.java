@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(EntityMagmaCube.class)
 public abstract class EntityMagmaCubeMixin extends EntitySlime {
-    public EntityMagmaCubeMixin(World par1World) {
+    private EntityMagmaCubeMixin(World par1World) {
         super(par1World);
     }
 

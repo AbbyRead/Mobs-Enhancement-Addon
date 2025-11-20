@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(EntityThrowable.class)
 public abstract class EntityThrowableMixin extends Entity {
-    public EntityThrowableMixin(World par1World) {
+    private EntityThrowableMixin(World par1World) {
         super(par1World);
     }
 

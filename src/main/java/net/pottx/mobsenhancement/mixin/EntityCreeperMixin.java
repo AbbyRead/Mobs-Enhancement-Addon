@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
 @Mixin(EntityCreeper.class)
 public abstract class EntityCreeperMixin extends EntityMob {
-    public EntityCreeperMixin(World par1World) {
+    private EntityCreeperMixin(World par1World) {
         super(par1World);
     }
 
@@ -39,8 +39,8 @@ public abstract class EntityCreeperMixin extends EntityMob {
         ((EntityCreeperAccess)this).setFuseTime(i > 0 ? 20 : 25);
 
         // Reduce xray chance
-        if (((EntityMobExtend)this).getCanXray() == (byte)1 && this.rand.nextInt(2) == 0) {
-            ((EntityMobExtend)this).setCanXray((byte)0);
+        if (((EntityMobExtend)this).mea$getCanXray() == (byte)1 && this.rand.nextInt(2) == 0) {
+            ((EntityMobExtend)this).mea$setCanXray((byte)0);
         }
 
         // Random powered creeper chance
@@ -57,7 +57,7 @@ public abstract class EntityCreeperMixin extends EntityMob {
             at = @At(value = "INVOKE", target = "Lnet/minecraft/src/EntityAITasks;addTask(ILnet/minecraft/src/EntityAIBase;)V", ordinal = 7)
     )
     private void modifyNearestAttackablePlayerTask(Args args) {
-        args.set(1, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 32.0F, 0, ((EntityMobExtend)this).getCanXray() == (byte)0));
+        args.set(1, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 32.0F, 0, ((EntityMobExtend)this).mea$getCanXray() == (byte)0));
     }
 
     @ModifyArgs(

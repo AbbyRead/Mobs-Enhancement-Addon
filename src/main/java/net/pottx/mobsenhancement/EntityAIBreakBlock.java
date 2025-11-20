@@ -1,7 +1,5 @@
 package net.pottx.mobsenhancement;
 
-import net.minecraft.src.EntitySkeleton;
-import net.minecraft.src.EntityZombie;
 import net.minecraft.src.*;
 import net.pottx.mobsenhancement.extend.EntityZombieExtend;
 import org.jetbrains.annotations.NotNull;

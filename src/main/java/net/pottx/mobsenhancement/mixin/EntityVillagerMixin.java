@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class EntityVillagerMixin extends EntityAgeable implements IMerchant, INpc {
     @Shadow public Village villageObj;
 
-    public EntityVillagerMixin(World par1World) {
+    private EntityVillagerMixin(World par1World) {
         super(par1World);
     }
 

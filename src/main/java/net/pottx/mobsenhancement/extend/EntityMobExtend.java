@@ -1,7 +1,7 @@
 package net.pottx.mobsenhancement.extend;
 
 public interface EntityMobExtend {
-    byte getCanXray();
+    byte mea$getCanXray();
 
-    void setCanXray(byte canXray);
+    void mea$setCanXray(byte canXray);
 }

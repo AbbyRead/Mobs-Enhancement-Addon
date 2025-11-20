@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(EntityArrow.class)
 public abstract class EntityArrowMixin extends Entity implements IProjectile, EntityArrowExtend {
-    public EntityArrowMixin(World world) {
+    private EntityArrowMixin(World world) {
         super(world);
     }
 
@@ -22,6 +22,7 @@ public abstract class EntityArrowMixin extends Entity implements IProjectile, En
         return var10.canBeCollidedWith() && !(var10 instanceof EntityGhast);
     }
 
+    @SuppressWarnings("unused")
     @Unique
     public void mea$resetForPrediction(EntityLiving owner, EntityLiving target, float arrowVelocity, float deviation) {
         double initRelativeX = target.posX - owner.posX;

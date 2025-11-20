@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(EntityBlaze.class)
 public abstract class EntityBlazeMixin extends EntityLivingBase {
 
-    public EntityBlazeMixin(World world) {
+    private EntityBlazeMixin(World world) {
         super(world);
     }
 

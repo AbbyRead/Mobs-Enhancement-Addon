@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(EntitySpider.class)
 public abstract class EntitySpiderMixin extends EntityMob
 {
-    public EntitySpiderMixin(World par1World) {
+    private EntitySpiderMixin(World par1World) {
         super(par1World);
     }
 

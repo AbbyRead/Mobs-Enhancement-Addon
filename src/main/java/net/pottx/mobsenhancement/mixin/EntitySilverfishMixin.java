@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(EntitySilverfish.class)
 public abstract class EntitySilverfishMixin extends EntityMob implements EntitySilverfishExtend {
-    public EntitySilverfishMixin(World par1World) {
+    private EntitySilverfishMixin(World par1World) {
         super(par1World);
     }
 

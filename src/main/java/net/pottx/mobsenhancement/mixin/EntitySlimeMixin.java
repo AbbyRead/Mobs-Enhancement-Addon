@@ -13,6 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
 
+// TODO: Update this
 @Mixin(EntitySlime.class)
 public abstract class EntitySlimeMixin extends EntityLiving implements EntitySlimeExtend {
     @Unique
@@ -24,7 +25,7 @@ public abstract class EntitySlimeMixin extends EntityLiving implements EntitySli
     @Unique
     public boolean isMerging = false;
 
-    public EntitySlimeMixin(World par1World) {
+    private EntitySlimeMixin(World par1World) {
         super(par1World);
     }
 
@@ -184,6 +185,7 @@ public abstract class EntitySlimeMixin extends EntityLiving implements EntitySli
         this.setIsCore(par1NBTTagCompound.getByte("IsCore"));
     }
 
+    // TODO: Set in RenderEntitySlime
     @Override
     public String getTexture() {
         if (!this.isMagma) {

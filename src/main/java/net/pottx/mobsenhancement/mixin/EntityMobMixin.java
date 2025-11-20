@@ -16,7 +16,7 @@ public abstract class EntityMobMixin extends EntityCreature implements EntityMob
     @Unique
     private static final int CAN_XRAY_DATA_WATCHER_ID = 31;
 
-    public EntityMobMixin(World par1World) {
+    private EntityMobMixin(World par1World) {
         super(par1World);
     }
 
@@ -26,16 +26,16 @@ public abstract class EntityMobMixin extends EntityCreature implements EntityMob
     )
     private void addXrayData(CallbackInfo ci) {
         dataWatcher.addObject(CAN_XRAY_DATA_WATCHER_ID, (byte)0);
-        if (this.rand.nextInt(4) == 0) this.setCanXray((byte)1);
+        if (this.rand.nextInt(4) == 0) this.mea$setCanXray((byte)1);
     }
 
     @Unique
-    public byte getCanXray() {
+    public byte mea$getCanXray() {
         return this.dataWatcher.getWatchableObjectByte(CAN_XRAY_DATA_WATCHER_ID);
     }
 
     @Unique
-    public void setCanXray(byte canXray) {
+    public void mea$setCanXray(byte canXray) {
         this.dataWatcher.updateObject(CAN_XRAY_DATA_WATCHER_ID, canXray);
     }
 
@@ -43,13 +43,13 @@ public abstract class EntityMobMixin extends EntityCreature implements EntityMob
     public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
         super.writeEntityToNBT(par1NBTTagCompound);
 
-        par1NBTTagCompound.setByte("CanXray", this.getCanXray());
+        par1NBTTagCompound.setByte("CanXray", this.mea$getCanXray());
     }
 
     @Override
     public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
         super.readEntityFromNBT(par1NBTTagCompound);
 
-        this.setCanXray(par1NBTTagCompound.getByte("CanXray"));
+        this.mea$setCanXray(par1NBTTagCompound.getByte("CanXray"));
     }
 }

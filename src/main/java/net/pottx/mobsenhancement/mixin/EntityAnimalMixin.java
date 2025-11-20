@@ -14,9 +14,9 @@ import java.util.List;
 public abstract class EntityAnimalMixin extends EntityAgeable {
 
     @Unique
-    private EntityAnimal self = (EntityAnimal) (Object) this;
+    private final EntityAnimal self = (EntityAnimal) (Object) this;
 
-    @Unique
+	@Unique
     private int pushedCounter = 0;
 
     public EntityAnimalMixin(World world) {

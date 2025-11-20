@@ -46,12 +46,9 @@ public abstract class BiomeDecoratorMixin {
             at = @At(value = "HEAD")
     )
     private void addSilverfishGenToDecoration(CallbackInfo ci) {
-        this.genSilverfish(9, 64);
-    }
-
-    @Unique
-    protected void genSilverfish(int numClusters, int maxY) {
-        for (int i=0; i<numClusters; i++) {
+        int numClusters = 9;
+        int maxY = 64;
+        for (int i=0; i < numClusters; i++) {
             int x = this.chunk_X + this.randomGenerator.nextInt(16);
             int y = this.randomGenerator.nextInt(maxY);
             int z = this.chunk_Z + this.randomGenerator.nextInt(16);

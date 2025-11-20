@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(EntityWither.class)
 public abstract class EntityWitherMixin extends EntityMob implements EntityWitherExtend {
 
-    public EntityWitherMixin(World world) { super(world); }
+    private EntityWitherMixin(World world) { super(world); }
 
     // --------------------------------------------------------------------
     // Unique reference to avoid repeated casting

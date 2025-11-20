@@ -13,7 +13,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(Entity.class)
 public class EntityMixin {
 
-	@Unique Entity self = (Entity) (Object) this;
+	@Unique
+	final Entity self = (Entity) (Object) this;
 
 	// Prevent ender crystal burning
 	@Inject(method = "isBurning", at = @At("HEAD"), cancellable = true)

@@ -1,11 +1,11 @@
 package net.pottx.mobsenhancement.extend;
 
 public interface EntityPlayerExtend {
-    double getRealMotionX();
+    double mea$getRealMotionX();
 
-    double getRealMotionY();
+    double mea$getRealMotionY();
 
-    double getRealMotionZ();
+    double mea$getRealMotionZ();
 
-    boolean isCloseToEnd();
+    boolean mea$isCloseToEnd();
 }

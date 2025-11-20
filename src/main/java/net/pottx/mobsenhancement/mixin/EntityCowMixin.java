@@ -15,12 +15,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class EntityCowMixin extends KickingAnimal implements EntityLivingBaseExtend {
 
     @Unique
-    private EntityCow self = (EntityCow) (Object) this;
+    private final EntityCow self = (EntityCow) (Object) this;
 
     @Unique
     private static final int IS_AGGRESSIVE_DATA_WATCHER_ID = 31;
 
-    public EntityCowMixin(World par1World) {
+    private EntityCowMixin(World par1World) {
         super(par1World);
     }
 

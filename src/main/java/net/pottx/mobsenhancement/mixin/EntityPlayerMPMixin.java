@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(EntityPlayerMP.class)
 public abstract class EntityPlayerMPMixin extends EntityPlayer {
-    public EntityPlayerMPMixin(World world, String username) {
+    private EntityPlayerMPMixin(World world, String username) {
         super(world, username);
     }
 
@@ -20,7 +20,7 @@ public abstract class EntityPlayerMPMixin extends EntityPlayer {
             cancellable = true
     )
     private void gloomIfStarringAtEnd(CallbackInfoReturnable<Boolean> cir) {
-        if (((EntityPlayerExtend)this).isCloseToEnd()) {
+        if (((EntityPlayerExtend)this).mea$isCloseToEnd()) {
             cir.setReturnValue(true);
         }
     }
@@ -30,7 +30,7 @@ public abstract class EntityPlayerMPMixin extends EntityPlayer {
             at = @At("HEAD")
     )
     private void fasterInGloomCountWhenCloseToEnd(CallbackInfo ci) {
-        if (!this.isDead && ((EntityPlayerExtend)this).isCloseToEnd()) {
+        if (!this.isDead && ((EntityPlayerExtend)this).mea$isCloseToEnd()) {
             inGloomCounter += 3;
         }
     }

@@ -192,4 +192,8 @@ public class EntityAISmartAttackOnCollide extends EntityAIBase {
 
         attacker.attackEntityAsMob(currentTarget);
     }
+
+	public World getWorld() {
+		return world;
+	}
 }

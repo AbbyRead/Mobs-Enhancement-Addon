@@ -12,7 +12,7 @@ import java.util.List;
 
 @Mixin(EntityPlayer.class)
 public abstract class EntityPlayerMixin extends EntityLivingBase implements ICommandSender, EntityPlayerExtend {
-    public EntityPlayerMixin(World par1World) {
+    private EntityPlayerMixin(World par1World) {
         super(par1World);
     }
 
@@ -43,16 +43,12 @@ public abstract class EntityPlayerMixin extends EntityLivingBase implements ICom
         this.realPrevPosZ = this.posZ;
     }
 
-    @Override
-    public double getRealMotionX() {return this.realMotionX;}
-    @Override
-    public double getRealMotionY() {return this.realMotionY;}
-    @Override
-    public double getRealMotionZ() {return this.realMotionZ;}
+    public double mea$getRealMotionX() {return this.realMotionX;}
+    public double mea$getRealMotionY() {return this.realMotionY;}
+    public double mea$getRealMotionZ() {return this.realMotionZ;}
 
     @SuppressWarnings("rawtypes")
-    @Unique
-    public boolean isCloseToEnd() {
+    public boolean mea$isCloseToEnd() {
         List veryCloseDragons = this.worldObj.selectEntitiesWithinAABB(EntityDragon.class, this.boundingBox.expand(8.0D, 8.0D, 8.0D), IEntitySelector.selectAnything);
 
         List veryCloseEndermen = this.worldObj.selectEntitiesWithinAABB(EntityEnderman.class, this.boundingBox.expand(4.0D, 4.0D, 4.0D), IEntitySelector.selectAnything);

@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(EntitySmallFireball.class)
 public abstract class EntitySmallFireballMixin extends EntityFireball {
-    public EntitySmallFireballMixin(World par1World) {
+    private EntitySmallFireballMixin(World par1World) {
         super(par1World);
     }
 
@@ -19,7 +19,7 @@ public abstract class EntitySmallFireballMixin extends EntityFireball {
     )
     private void explodeAfterWither(MovingObjectPosition par1MovingObjectPosition, CallbackInfo ci) {
         if (MEAUtils.getGameProgressMobsLevel(this.worldObj) > 1) {
-            this.worldObj.newExplosion((Entity) null, this.posX, this.posY, this.posZ, 1, true, this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing"));
+            this.worldObj.newExplosion(null, this.posX, this.posY, this.posZ, 1, true, this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing"));
         }
     }
 }
