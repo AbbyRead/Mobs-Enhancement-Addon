@@ -13,13 +13,14 @@ import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
 @Mixin(RenderEnderCrystal.class)
 public abstract class RenderEnderCrystalMixin extends Render {
+
     @ModifyArgs(
             method = "doRenderEnderCrystal(Lnet/minecraft/src/EntityEnderCrystal;DDDFF)V",
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/src/RenderEnderCrystal;loadTexture(Ljava/lang/String;)V")
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/src/RenderEnderCrystal;bindTexture(Lnet/minecraft/src/ResourceLocation;)V")
     )
-    private void changeTextureIfDried(Args args, EntityEnderCrystal par1EntityEnderCrystal, double par2, double par4, double par6, float par8, float par9) {
+    private void changeTextureIfDried(Args args, EntityEnderCrystal par1EntityEnderCrystal) {
         if (((EntityEnderCrystalExtend) par1EntityEnderCrystal).mea$getIsDried() == (byte) 1) {
-            args.set(0, "/meatextures/crystal_dried.png");
+            args.set(0, new ResourceLocation("meatextures/crystal_dried.png"));
         }
     }
 
@@ -27,25 +28,24 @@ public abstract class RenderEnderCrystalMixin extends Render {
             method = "doRenderEnderCrystal(Lnet/minecraft/src/EntityEnderCrystal;DDDFF)V",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/src/ModelBase;render(Lnet/minecraft/src/Entity;FFFFFF)V")
     )
-    private void renderStillIfDried(Args args, EntityEnderCrystal par1EntityEnderCrystal, double par2, double par4, double par6, float par8, float par9) {
+    private void renderStillIfDried(Args args, EntityEnderCrystal par1EntityEnderCrystal) {
         if (((EntityEnderCrystalExtend) par1EntityEnderCrystal).mea$getIsDried() == (byte) 1) {
-            args.set(2, 0.0F);
-            args.set(3, 0.0F);
+            args.set(2, 0.0F); // Sets f2 * 3.0f parameter to 0
+            args.set(3, 0.0F); // Sets f3 * 0.2f parameter to 0
         }
     }
 
     @Inject(
-            method = "doRender(Lnet/minecraft/src/Entity;DDDFF)V",
-            at = @At(value = "TAIL")
+            method = "doRenderEnderCrystal(Lnet/minecraft/src/EntityEnderCrystal;DDDFF)V",
+            at = @At("TAIL")
     )
-    private void renderChargingBeam(Entity par1Entity, double par2, double par4, double par6, float par8, float par9, CallbackInfo ci) {
-        this.doRenderChargingBeam((EntityEnderCrystal) par1Entity, par2, par4, par6, par8, par9);
+    private void renderChargingBeam(EntityEnderCrystal par1EntityEnderCrystal, double par2, double par4, double par6, float par8, float par9, CallbackInfo ci) {
+        this.doRenderChargingBeam(par1EntityEnderCrystal, par2, par4, par6, par8, par9);
     }
-    
+
     @Unique
     public void doRenderChargingBeam(EntityEnderCrystal par1EntityEnderCrystal, double par2, double par4, double par6, float par8, float par9) {
-        if (((EntityEnderCrystalExtend) par1EntityEnderCrystal).mea$getChargingEnderCrystal() != null)
-        {
+        if (((EntityEnderCrystalExtend) par1EntityEnderCrystal).mea$getChargingEnderCrystal() != null) {
             float var10 = (float)((EntityEnderCrystalExtend) par1EntityEnderCrystal).mea$getChargingEnderCrystal().innerRotation + par9;
             float var11 = MathHelper.sin(var10 * 0.2F) / 2.0F + 0.5F;
             var11 = (var11 * var11 + var11) * 0.2F;
@@ -61,15 +61,14 @@ public abstract class RenderEnderCrystalMixin extends Render {
             Tessellator var17 = Tessellator.instance;
             RenderHelper.disableStandardItemLighting();
             GL11.glDisable(GL11.GL_CULL_FACE);
-            this.loadTexture("/mob/enderdragon/beam.png");
+            this.bindTexture(new ResourceLocation("textures/entity/enderdragon/beam.png"));
             GL11.glShadeModel(GL11.GL_SMOOTH);
             float var18 = 0.0F - ((float)par1EntityEnderCrystal.ticksExisted + par9) * 0.01F;
             float var19 = MathHelper.sqrt_float(var12 * var12 + var13 * var13 + var14 * var14) / 32.0F - ((float)par1EntityEnderCrystal.ticksExisted + par9) * 0.01F;
             var17.startDrawing(5);
             byte var20 = 8;
 
-            for (int var21 = 0; var21 <= var20; ++var21)
-            {
+            for (int var21 = 0; var21 <= var20; ++var21) {
                 float var22 = MathHelper.sin((float)(var21 % var20) * (float)Math.PI * 2.0F / (float)var20) * 0.75F;
                 float var23 = MathHelper.cos((float)(var21 % var20) * (float)Math.PI * 2.0F / (float)var20) * 0.75F;
                 float var24 = (float)(var21 % var20) * 1.0F / (float)var20;
