@@ -98,7 +98,7 @@ public class MEAUtils {
 
             int iIncrementI = -1;
 
-            double dNextBlockBoundaryX = (double)iCurrentPosI;
+            double dNextBlockBoundaryX = iCurrentPosI;
             double dBlockBoundaryIncrementX = -1D;
 
             if ( iEndPosI > iCurrentPosI )
@@ -117,7 +117,7 @@ public class MEAUtils {
 
             int iIncrementJ = -1;
 
-            double dNextBlockBoundaryY = (double)iCurrentPosJ;
+            double dNextBlockBoundaryY = iCurrentPosJ;
             double dBlockBoundaryIncrementY = -1D;
 
             if ( iEndPosJ > iCurrentPosJ )
@@ -136,7 +136,7 @@ public class MEAUtils {
 
             int iIncrementK = -1;
 
-            double dNextBlockBoundaryZ = (double)iCurrentPosK;
+            double dNextBlockBoundaryZ = iCurrentPosK;
             double dBlockBoundaryIncrementZ = -1D;
 
             if ( iEndPosK > iCurrentPosK )
