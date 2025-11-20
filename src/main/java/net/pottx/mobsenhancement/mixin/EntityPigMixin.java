@@ -10,7 +10,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.util.Iterator;
 import java.util.List;
 
 @Mixin(EntityPig.class)
@@ -19,6 +18,7 @@ public abstract class EntityPigMixin extends EntityAnimal {
         super(par1World);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public int getMeleeAttackStrength(Entity target) {
         return 3;
@@ -41,8 +41,8 @@ public abstract class EntityPigMixin extends EntityAnimal {
             method = "attackEntityFrom",
             at = @At(value = "RETURN")
     )
-    private void setAttackTargetWhenAttacked(DamageSource par1DamageSource, int par2, CallbackInfoReturnable<Boolean> cir) {
-        Entity attacker = par1DamageSource.getEntity();
+    private void setAttackTargetWhenAttacked(DamageSource damageSource, float par2, CallbackInfoReturnable<Boolean> cir) {
+        Entity attacker = damageSource.getEntity();
         if (attacker instanceof EntityLiving) {
             this.setAttackTarget((EntityLiving)attacker);
 
