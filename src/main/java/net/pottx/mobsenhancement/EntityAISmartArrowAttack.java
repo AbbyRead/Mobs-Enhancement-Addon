@@ -1,17 +1,18 @@
 package net.pottx.mobsenhancement;
 
 import net.minecraft.src.*;
+import net.pottx.mobsenhancement.mixin.EntityLivingAccess;
 import net.pottx.mobsenhancement.access.EntityWitherAccess;
 
 public class EntityAISmartArrowAttack extends EntityAIBase
 {
-    private final EntityLivingBase entityOwner;
-    private final IRangedAttackMob entityRangedAttackOwner;
+    private final EntityLivingBase entityWielding;
+    private final IRangedAttackMob rangedAttackMob;
 
-    private EntityLivingBase entityAttackTarget;
+    private EntityLivingBase entityTarget;
 
     private int attackCooldownCounter;
-    private final float entityMoveSpeed;
+    private final float targetMoveSpeed;
 
     private int canSeeTargetCounter;
 
@@ -27,9 +28,9 @@ public class EntityAISmartArrowAttack extends EntityAIBase
 	public EntityAISmartArrowAttack(IRangedAttackMob rangedAttackMob, float moveSpeed, int attackInterval, int minHealth, float attackRange, float fleeRange) {
         canSeeTargetCounter = 0;
 
-        entityRangedAttackOwner = rangedAttackMob;
-        entityOwner = (EntityLivingBase) rangedAttackMob;
-        entityMoveSpeed = moveSpeed;
+        this.rangedAttackMob = rangedAttackMob;
+        entityWielding = (EntityLivingBase) rangedAttackMob;
+        targetMoveSpeed = moveSpeed;
         this.attackInterval = attackInterval;
         attackCooldownCounter = attackInterval >> 1;
         this.minHealth = minHealth;
@@ -40,31 +41,32 @@ public class EntityAISmartArrowAttack extends EntityAIBase
     }
 
     public boolean shouldExecute() {
-        if (entityOwner instanceof EntityLiving livingOwner) {
+        if (entityWielding instanceof EntityLiving livingOwner) {
             EntityLivingBase target = livingOwner.getAttackTarget();
 
             if (target == null) {
                 return false;
-            } else if (this.entityOwner instanceof EntityWither && ((EntityWitherAccess) this.entityOwner).getIsDoingSpecialAttack()) {
+            } else if (this.entityWielding instanceof EntityWither && ((EntityWitherAccess) this.entityWielding).getIsDoingSpecialAttack()) {
                 return false;
             } else {
-                shouldFlee = target instanceof EntityPlayer || target.getAttackTarget() == entityOwner;
-                if (shouldFlee && entityOwner.getHealth() < minHealth) {
+                shouldFlee = target instanceof EntityPlayer || ((EntityLivingAccess)target).getAttackTarget() == entityWielding;
+                if (shouldFlee && entityWielding.getHealth() < minHealth) {
                     return false;
                 } else {
-                    entityAttackTarget = target;
+                    entityTarget = target;
                     return true;
                 }
             }
         }
+        return false;
     }
 
     public boolean continueExecuting() {
-        return this.shouldExecute() || !entityOwner.getNavigator().noPath();
+        return this.shouldExecute() || !((EntityLivingAccess)entityWielding).getNavigator().noPath();
     }
 
     public void resetTask() {
-        entityAttackTarget = null;
+        entityTarget = null;
         canSeeTargetCounter = 0;
         attackCooldownCounter = attackInterval;
     }
@@ -74,9 +76,9 @@ public class EntityAISmartArrowAttack extends EntityAIBase
     }
 
     public void updateTask() {
-        double dDistSqToTarget = entityOwner.getDistanceSq(entityAttackTarget.posX, entityAttackTarget.boundingBox.minY, entityAttackTarget.posZ);
+        double dDistSqToTarget = entityWielding.getDistanceSq(entityTarget.posX, entityTarget.boundingBox.minY, entityTarget.posZ);
 
-        boolean bCanSeeTarget = entityOwner.getEntitySenses().canSee(entityAttackTarget);
+        boolean bCanSeeTarget = ((EntityLivingAccess)entityWielding).getSenses().canSee(entityTarget);
 
         if (bCanSeeTarget) {
             ++canSeeTargetCounter;
@@ -87,25 +89,25 @@ public class EntityAISmartArrowAttack extends EntityAIBase
         if (shouldFlee && dDistSqToTarget <= fleeRangeSq && canSeeTargetCounter >= 10) {
             if (attackCooldownCounter <= 5) {
                 isFleeing = false;
-                entityOwner.getNavigator().tryMoveToEntityLiving(entityAttackTarget, 0.25F);
+                ((EntityLivingAccess)entityWielding).getNavigator().tryMoveToEntityLiving(entityTarget, 0.25F);
             } else {
                 fleeFromTarget();
             }
         } else if (dDistSqToTarget <= attackRangeSq && canSeeTargetCounter >= 20) {
             isFleeing = false;
-            entityOwner.getNavigator().clearPathEntity();
+            ((EntityLivingAccess)entityWielding).getNavigator().clearPathEntity();
         } else {
             isFleeing = false;
-            entityOwner.getNavigator().tryMoveToEntityLiving(entityAttackTarget, entityMoveSpeed);
+            ((EntityLivingAccess)entityWielding).getNavigator().tryMoveToEntityLiving(entityTarget, targetMoveSpeed);
         }
 
-        entityOwner.getLookHelper().setLookPositionWithEntity(entityAttackTarget, 30.0F, 30.0F);
+        ((EntityLivingAccess)entityWielding).getLookHelper().setLookPositionWithEntity(entityTarget, 30.0F, 30.0F);
 
         if (attackCooldownCounter > 1) {
             attackCooldownCounter--;
         } else {
             if (dDistSqToTarget <= attackRangeSq && bCanSeeTarget) {
-                entityRangedAttackOwner.attackEntityWithRangedAttack(entityAttackTarget, 1F);
+                rangedAttackMob.attackEntityWithRangedAttack(entityTarget, 1F);
                 attackCooldownCounter = attackInterval;
             }
         }
@@ -114,15 +116,15 @@ public class EntityAISmartArrowAttack extends EntityAIBase
     private void fleeFromTarget() {
         Vec3 destination = null;
 
-        if (!isFleeing || entityOwner.getNavigator().noPath() || entityOwner.getNavigator().getPath().isFinished()) {
+        if (!isFleeing || ((EntityLivingAccess)entityWielding).getNavigator().noPath() || ((EntityLivingAccess)entityWielding).getNavigator().getPath().isFinished()) {
             isFleeing = true;
             for (int i=0; i<8; i++) {
-                if (destination == null || entityAttackTarget.getDistanceSq(destination.xCoord, destination.yCoord, destination.zCoord) <= entityAttackTarget.getDistanceSqToEntity(entityOwner)) {
+                if (destination == null || entityTarget.getDistanceSq(destination.xCoord, destination.yCoord, destination.zCoord) <= entityTarget.getDistanceSqToEntity(entityWielding)) {
                     destination = RandomPositionGenerator.findRandomTargetBlockAwayFrom(
-                            (EntityCreature) entityOwner,
+                            (EntityCreature) entityWielding,
                             16,
                             7,
-                            entityOwner.worldObj.getWorldVec3Pool().getVecFromPool(entityAttackTarget.posX, entityAttackTarget.posY, entityAttackTarget.posZ)
+                            entityWielding.worldObj.getWorldVec3Pool().getVecFromPool(entityTarget.posX, entityTarget.posY, entityTarget.posZ)
                     );
                 } else {
                     break;
@@ -131,9 +133,9 @@ public class EntityAISmartArrowAttack extends EntityAIBase
         }
 
         if (destination != null) {
-            entityOwner.getNavigator().setPath(
-                    entityOwner.getNavigator().getPathToXYZ(destination.xCoord, destination.yCoord, destination.zCoord),
-                    entityMoveSpeed
+            ((EntityLivingAccess)entityWielding).getNavigator().setPath(
+                    ((EntityLivingAccess)entityWielding).getNavigator().getPathToXYZ(destination.xCoord, destination.yCoord, destination.zCoord),
+                    targetMoveSpeed
             );
         }
     }

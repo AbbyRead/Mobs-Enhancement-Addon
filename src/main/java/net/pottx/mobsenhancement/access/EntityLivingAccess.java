@@ -6,4 +6,5 @@ public interface EntityLivingAccess {
     boolean realisticCanEntityBeSeen(Entity entity, double absDist);
 
     boolean realisticCanEntityBeSensed(Entity entity);
+
 }
