@@ -13,7 +13,7 @@ public abstract class EntityAITargetMixin extends EntityAIBase {
     protected EntityLiving taskOwner;
 
     @Redirect(
-            method = "isSuitableTarget(Lnet/minecraft/src/EntityLiving;Z)Z",
+            method = "isSuitableTarget",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/src/EntitySenses;canSee(Lnet/minecraft/src/Entity;)Z")
     )
     private boolean doRealisticCanSeeCheck(EntitySenses entitySenses, Entity par1Entity) {
