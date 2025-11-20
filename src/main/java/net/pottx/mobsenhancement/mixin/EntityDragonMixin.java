@@ -13,13 +13,11 @@ public abstract class EntityDragonMixin extends EntityLiving
         implements IBossDisplayData,
         IEntityMultiPart,
         IMob {
-    @Shadow
-    public EntityEnderCrystal healingEnderCrystal;
-    @Shadow
-    public EntityDragonPart dragonPartHead;
+    @Shadow public EntityEnderCrystal healingEnderCrystal;
+    @Shadow public EntityDragonPart dragonPartHead;
 
-    public EntityDragonMixin(World par1World) {
-        super(par1World);
+    public EntityDragonMixin(World world) {
+        super(world);
     }
 
     /**
@@ -27,51 +25,52 @@ public abstract class EntityDragonMixin extends EntityLiving
      * @reason I didn't come up with a way to inject.
      */
     @Overwrite
-    public void updateDragonEnderCrystal()
-    {
-        if (this.healingEnderCrystal != null)
-        {
-            if (this.healingEnderCrystal.isDead)
-            {
-                if (!this.worldObj.isRemote)
-                {
-                    this.attackEntityFromPart(this.dragonPartHead, DamageSource.setExplosionSource((Explosion)null), 10);
+    public void updateDragonEnderCrystal() {
+        // Handle existing healing crystal
+        if (this.healingEnderCrystal != null) {
+            if (this.healingEnderCrystal.isDead) {
+                if (!this.worldObj.isRemote) {
+                    this.attackEntityFromPart(this.dragonPartHead, DamageSource.setExplosionSource(null), 10);
                 }
-
                 this.healingEnderCrystal = null;
-            }
-            else if (this.ticksExisted % 10 == 0 && this.getHealth() < this.getMaxHealth())
-            {
+            } else if (this.ticksExisted % 10 == 0 && this.getHealth() < this.getMaxHealth()) {
                 this.setHealth(this.getHealth() + 1);
             }
         }
 
-        if (this.rand.nextInt(10) == 0)
-        {
-            float var1 = 32.0F;
+        // Occasionally search for a new Ender Crystal to heal from
+        if (this.rand.nextInt(10) == 0) {
+            float searchRadius = 32.0F;
+
             @SuppressWarnings("unchecked")
-            List<EntityEnderCrystal> var2 = (List<EntityEnderCrystal>) (List<?>) this.worldObj.getEntitiesWithinAABB(
-                    EntityEnderCrystal.class, this.boundingBox.expand((double)var1, (double)var1, (double)var1)
+            List<EntityEnderCrystal> nearbyCrystals = (List<EntityEnderCrystal>) (List<?>) this.worldObj.getEntitiesWithinAABB(
+                    EntityEnderCrystal.class,
+                    this.boundingBox.expand(searchRadius, searchRadius, searchRadius)
             );
 
-            EntityEnderCrystal var3 = null;
-            double var4 = Double.MAX_VALUE;
+            EntityEnderCrystal closestCrystal = null;
+            double closestDistanceSq = Double.MAX_VALUE;
 
-            for (EntityEnderCrystal var7 : var2) {
-                double var8 = var7.getDistanceSqToEntity(this);
+            // Find the nearest valid Ender Crystal
+            for (EntityEnderCrystal crystal : nearbyCrystals) {
+                double distanceSq = crystal.getDistanceSqToEntity(this);
 
-                if (((EntityEnderCrystalAccess) var7).getIsDried() == (byte) 0 && var8 < var4) {
-                    var4 = var8;
-                    var3 = var7;
+                if (((EntityEnderCrystalAccess) crystal).getIsDried() == (byte) 0 && distanceSq < closestDistanceSq) {
+                    closestDistanceSq = distanceSq;
+                    closestCrystal = crystal;
                 }
             }
 
-            if (var3 != this.healingEnderCrystal) {
-                if (this.healingEnderCrystal != null) ((EntityEnderCrystalAccess) this.healingEnderCrystal).setIsHealing(false);
-                if (var3 != null) ((EntityEnderCrystalAccess) var3).setIsHealing(true);
+            // Update healing crystal state
+            if (closestCrystal != this.healingEnderCrystal) {
+                if (this.healingEnderCrystal != null) {
+                    ((EntityEnderCrystalAccess) this.healingEnderCrystal).setIsHealing(false);
+                }
+                if (closestCrystal != null) {
+                    ((EntityEnderCrystalAccess) closestCrystal).setIsHealing(true);
+                }
+                this.healingEnderCrystal = closestCrystal;
             }
-
-            this.healingEnderCrystal = var3;
         }
     }
 
