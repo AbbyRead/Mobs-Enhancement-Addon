@@ -1,7 +1,7 @@
 package net.pottx.mobsenhancement.extend;
 
 public interface EntityZombieExtend {
-    boolean getIsBreakingBlock();
+    boolean mea$getIsBreakingBlock();
 
-    void setIsBreakingBlock(boolean isBreakingBlock);
+    void mea$setIsBreakingBlock(boolean isBreakingBlock);
 }

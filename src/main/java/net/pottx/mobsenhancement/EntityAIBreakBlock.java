@@ -102,7 +102,7 @@ public class EntityAIBreakBlock extends EntityAIBase {
         super.resetTask();
 
         if (this.theEntity instanceof EntityZombie) {
-            ((EntityZombieExtend) this.theEntity).setIsBreakingBlock(false);
+            ((EntityZombieExtend) this.theEntity).mea$setIsBreakingBlock(false);
         }
 
         this.breakingCooldownCounter = 20;
@@ -111,7 +111,7 @@ public class EntityAIBreakBlock extends EntityAIBase {
 
     public void startExecuting() {
         if (this.theEntity instanceof EntityZombie) {
-            ((EntityZombieExtend) this.theEntity).setIsBreakingBlock(true);
+            ((EntityZombieExtend) this.theEntity).mea$setIsBreakingBlock(true);
         }
 
         this.hasStoppedBlockBreaking = false;

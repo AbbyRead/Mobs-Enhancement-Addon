@@ -74,12 +74,12 @@ public abstract class EntityZombieMixin extends EntityMob implements EntityZombi
     }
 
     @Unique
-    public boolean getIsBreakingBlock() {
+    public boolean mea$getIsBreakingBlock() {
         return this.isBreakingBlock;
     }
 
     @Unique
-    public void setIsBreakingBlock(boolean isBreakingBlock) {
+    public void mea$setIsBreakingBlock(boolean isBreakingBlock) {
         this.isBreakingBlock = isBreakingBlock;
     }
 

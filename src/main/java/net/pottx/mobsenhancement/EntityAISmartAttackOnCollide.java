@@ -105,7 +105,7 @@ public class EntityAISmartAttackOnCollide extends EntityAIBase {
     }
 
     private boolean isAttackerBusy() {
-        return attacker instanceof EntityZombie && ((EntityZombieExtend) attacker).getIsBreakingBlock();
+        return attacker instanceof EntityZombie && ((EntityZombieExtend) attacker).mea$getIsBreakingBlock();
     }
 
     private boolean shouldFleeFromCombat(EntityLivingBase potentialTarget) {
