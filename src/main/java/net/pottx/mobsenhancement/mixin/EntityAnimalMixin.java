@@ -2,7 +2,6 @@ package net.pottx.mobsenhancement.mixin;
 
 import net.minecraft.src.*;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -10,13 +9,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(EntityAnimal.class)
 public abstract class EntityAnimalMixin extends EntityAgeable {
-    @Shadow public abstract void setRevengeTarget(EntityLiving targetEntity);
 
     @Unique
     private int pushedCounter = 0;
 
-    public EntityAnimalMixin(World par1World) {
-        super(par1World);
+    public EntityAnimalMixin(World world) {
+        super(world);
     }
 
     @Inject(
