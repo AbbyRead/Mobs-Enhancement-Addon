@@ -6,7 +6,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 
-import java.util.Iterator;
 import java.util.List;
 
 @Mixin(EntityDragon.class)
@@ -50,19 +49,22 @@ public abstract class EntityDragonMixin extends EntityLiving
         if (this.rand.nextInt(10) == 0)
         {
             float var1 = 32.0F;
-            List var2 = this.worldObj.getEntitiesWithinAABB(EntityEnderCrystal.class, this.boundingBox.expand((double)var1, (double)var1, (double)var1));
+            @SuppressWarnings("unchecked")
+            List<EntityEnderCrystal> var2 = (List<EntityEnderCrystal>) (List<?>) this.worldObj.getEntitiesWithinAABB(
+                    EntityEnderCrystal.class, this.boundingBox.expand((double)var1, (double)var1, (double)var1)
+            );
+
             EntityEnderCrystal var3 = null;
             double var4 = Double.MAX_VALUE;
 
-	        for (Object o : var2) {
-		        EntityEnderCrystal var7 = (EntityEnderCrystal) o;
-		        double var8 = var7.getDistanceSqToEntity(this);
+            for (EntityEnderCrystal var7 : var2) {
+                double var8 = var7.getDistanceSqToEntity(this);
 
-		        if (((EntityEnderCrystalAccess) var7).getIsDried() == (byte) 0 && var8 < var4) {
-			        var4 = var8;
-			        var3 = var7;
-		        }
-	        }
+                if (((EntityEnderCrystalAccess) var7).getIsDried() == (byte) 0 && var8 < var4) {
+                    var4 = var8;
+                    var3 = var7;
+                }
+            }
 
             if (var3 != this.healingEnderCrystal) {
                 if (this.healingEnderCrystal != null) ((EntityEnderCrystalAccess) this.healingEnderCrystal).setIsHealing(false);
@@ -72,4 +74,5 @@ public abstract class EntityDragonMixin extends EntityLiving
             this.healingEnderCrystal = var3;
         }
     }
+
 }
