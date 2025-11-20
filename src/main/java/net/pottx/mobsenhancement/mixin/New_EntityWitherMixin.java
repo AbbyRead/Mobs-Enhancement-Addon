@@ -75,7 +75,7 @@ public abstract class New_EntityWitherMixin extends EntityMob implements EntityW
 
             for (var1 = 1; var1 < 3; ++var1)
             {
-                if (!((EntityWitherAccess) this).getIsDoingSpecialAttack() && this.ticksExisted >= ((net.pottx.mobsenhancement.mixin.EntityWitherAccess) this).getField_82223_h()[var1 - 1])
+                if (!this.getIsDoingSpecialAttack() && this.ticksExisted >= ((net.pottx.mobsenhancement.mixin.EntityWitherAccess) this).getField_82223_h()[var1 - 1])
                 {
                     ((net.pottx.mobsenhancement.mixin.EntityWitherAccess) this).getField_82223_h()[var1 - 1] = this.ticksExisted + 10 + this.rand.nextInt(10);
 
@@ -115,7 +115,7 @@ public abstract class New_EntityWitherMixin extends EntityMob implements EntityW
                     }
                     else
                     {
-                        List var13 = this.worldObj.selectEntitiesWithinAABB(EntityLiving.class, this.boundingBox.expand(20.0D, 8.0D, 20.0D), net.pottx.mobsenhancement.mixin.EntityWitherAccess.getAttackEntitySelector());
+                        @SuppressWarnings("rawtypes") List var13 = this.worldObj.selectEntitiesWithinAABB(EntityLiving.class, this.boundingBox.expand(20.0D, 8.0D, 20.0D), net.pottx.mobsenhancement.mixin.EntityWitherAccess.getAttackEntitySelector());
 
                         for (int var16 = 0; var16 < 10 && !var13.isEmpty(); ++var16)
                         {
@@ -153,7 +153,7 @@ public abstract class New_EntityWitherMixin extends EntityMob implements EntityW
                 this.func_82211_c(0, 0);
             }
 
-            if (!((EntityWitherAccess) this).getIsDoingSpecialAttack() && ((net.pottx.mobsenhancement.mixin.EntityWitherAccess) this).getField_82222_j() > 0)
+            if (!this.getIsDoingSpecialAttack() && ((net.pottx.mobsenhancement.mixin.EntityWitherAccess) this).getField_82222_j() > 0)
             {
                 ((net.pottx.mobsenhancement.mixin.EntityWitherAccess) this).setField_82222_j(((net.pottx.mobsenhancement.mixin.EntityWitherAccess) this).getField_82222_j() - 1);
 
@@ -186,7 +186,7 @@ public abstract class New_EntityWitherMixin extends EntityMob implements EntityW
 
                     if (var18)
                     {
-                        this.worldObj.playAuxSFXAtEntity((EntityPlayer)null, 1012, (int)this.posX, (int)this.posY, (int)this.posZ, 0);
+                        this.worldObj.playAuxSFXAtEntity(null, 1012, (int)this.posX, (int)this.posY, (int)this.posZ, 0);
                     }
                 }
             }
