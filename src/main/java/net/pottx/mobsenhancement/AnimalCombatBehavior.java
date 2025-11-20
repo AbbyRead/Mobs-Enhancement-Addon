@@ -7,19 +7,20 @@ public class AnimalCombatBehavior extends EntityAIBase {
     private final EntityAnimal theAnimal;
     private EntityLiving targetEntity;
     private PathEntity animalPathEntity;
-    private float distanceFromTarget;
     private final float animalApproachSpeed;
     private final float animalFleeSpeed;
 	private boolean aggressiveMode;
     private int attackTimer;
     private int pathTimer;
-    private final int healthBoundary;
+	private final Class fearedEntityClass;
+	private final int healthBoundary;
 
     public AnimalCombatBehavior(EntityAnimal theAnimal, float animalApproachSpeed, float animalFleeSpeed, @SuppressWarnings("rawtypes") Class fearedEntityClass, int healthBoundary)
     {
         this.theAnimal = theAnimal;
         this.animalApproachSpeed = animalApproachSpeed;
         this.animalFleeSpeed = animalFleeSpeed;
+	    this.fearedEntityClass = fearedEntityClass;
 	    this.healthBoundary = healthBoundary;
         this.pathTimer = 8;
         this.attackTimer = 5;
