@@ -10,8 +10,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(EntityPlayerMP.class)
 public abstract class EntityPlayerMPMixin extends EntityPlayer {
-    public EntityPlayerMPMixin(World par1World) {
-        super(par1World);
+    public EntityPlayerMPMixin(World world, String username) {
+        super(world, username);
     }
 
     @Inject(
