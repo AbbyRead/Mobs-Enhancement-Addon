@@ -13,10 +13,6 @@ public abstract class CreeperSwellBehaviorMixin extends EntityAIBase {
     @Shadow public EntityCreeper swellingCreeper;
     @Shadow public EntityLivingBase creeperAttackTarget;
 
-    public CreeperSwellBehaviorMixin(EntityCreeper par1EntityCreeper) {
-        super();
-    }
-
     @Inject(
             method = "shouldExecute()Z",
             at = @At(value = "RETURN"),
