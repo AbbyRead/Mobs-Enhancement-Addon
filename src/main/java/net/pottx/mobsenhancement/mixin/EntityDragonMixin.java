@@ -10,7 +10,10 @@ import java.util.Iterator;
 import java.util.List;
 
 @Mixin(EntityDragon.class)
-public abstract class EntityDragonMixin extends EntityLiving {
+public abstract class EntityDragonMixin extends EntityLiving
+        implements IBossDisplayData,
+        IEntityMultiPart,
+        IMob {
     @Shadow
     public EntityEnderCrystal healingEnderCrystal;
     @Shadow
@@ -19,9 +22,6 @@ public abstract class EntityDragonMixin extends EntityLiving {
     public EntityDragonMixin(World par1World) {
         super(par1World);
     }
-
-    @Shadow
-    public abstract boolean attackEntityFromPart(EntityDragonPart par1EntityDragonPart, DamageSource par2DamageSource, int par3);
 
     /**
      * @author Pot_Tx
@@ -43,7 +43,7 @@ public abstract class EntityDragonMixin extends EntityLiving {
             }
             else if (this.ticksExisted % 10 == 0 && this.getHealth() < this.getMaxHealth())
             {
-                this.setEntityHealth(this.getHealth() + 1);
+                this.setHealth(this.getHealth() + 1);
             }
         }
 
@@ -53,19 +53,16 @@ public abstract class EntityDragonMixin extends EntityLiving {
             List var2 = this.worldObj.getEntitiesWithinAABB(EntityEnderCrystal.class, this.boundingBox.expand((double)var1, (double)var1, (double)var1));
             EntityEnderCrystal var3 = null;
             double var4 = Double.MAX_VALUE;
-            Iterator var6 = var2.iterator();
 
-            while (var6.hasNext())
-            {
-                EntityEnderCrystal var7 = (EntityEnderCrystal)var6.next();
-                double var8 = var7.getDistanceSqToEntity(this);
+	        for (Object o : var2) {
+		        EntityEnderCrystal var7 = (EntityEnderCrystal) o;
+		        double var8 = var7.getDistanceSqToEntity(this);
 
-                if (((EntityEnderCrystalAccess) var7).getIsDried() == (byte) 0 && var8 < var4)
-                {
-                    var4 = var8;
-                    var3 = var7;
-                }
-            }
+		        if (((EntityEnderCrystalAccess) var7).getIsDried() == (byte) 0 && var8 < var4) {
+			        var4 = var8;
+			        var3 = var7;
+		        }
+	        }
 
             if (var3 != this.healingEnderCrystal) {
                 if (this.healingEnderCrystal != null) ((EntityEnderCrystalAccess) this.healingEnderCrystal).setIsHealing(false);
