@@ -49,7 +49,7 @@ public abstract class EntitySlimeMixin extends EntityLiving implements EntitySli
 
     @Inject(
             method = "updateEntityActionState()V",
-            at = @At(value = "INVOKE", target = "Lbtw/entity/mob/SlimeEntity;faceEntity(Lnet/minecraft/src/Entity;FF)V", shift = At.Shift.BY, by = 2)
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/src/EntitySlime;faceEntity(Lnet/minecraft/src/Entity;FF)V", shift = At.Shift.BY, by = 2)
     )
     private void doMergeCheck(CallbackInfo ci) {
         if (!this.isMagma) {
@@ -57,27 +57,27 @@ public abstract class EntitySlimeMixin extends EntityLiving implements EntitySli
                 this.mergeCooldownCounter--;
 
                 if (mergeCooldownCounter <= 0) {
-                    List closeSlimes = this.worldObj.getEntitiesWithinAABB(SlimeEntity.class, this.boundingBox.expand(12.0D, 6.0D, 12.0D));
+                    List closeSlimes = this.worldObj.getEntitiesWithinAABB(EntitySlime.class, this.boundingBox.expand(12.0D, 6.0D, 12.0D));
 
                     for (int i = closeSlimes.size() - 1; i >= 0; i--) {
                         if (((EntitySlimeMixin) closeSlimes.get(i)).getIsCore() == (byte) 1 ||
-                                ((SlimeEntity) closeSlimes.get(i)).getSlimeSize() != this.getSlimeSize() ||
-                                !((SlimeEntity) closeSlimes.get(i)).isEntityAlive()) {
+                                ((EntitySlime) closeSlimes.get(i)).getSlimeSize() != this.getSlimeSize() ||
+                                !((EntitySlime) closeSlimes.get(i)).isEntityAlive()) {
                             closeSlimes.remove(i);
                         }
                     }
 
                     if (closeSlimes.size() >= 2) {
                         if (this.isMerging) {
-                            faceEntity((SlimeEntity) closeSlimes.get(0), 10.0F, 20.0F);
+                            faceEntity((EntitySlime) closeSlimes.get(0), 10.0F, 20.0F);
 
                             double checkRange = this.getSlimeSize() == 1 ? 0.75D : 1.0D;
-                            List veryCloseSlimes = this.worldObj.getEntitiesWithinAABB(SlimeEntity.class, this.boundingBox.expand(checkRange, checkRange, checkRange));
+                            @SuppressWarnings("rawtypes") List veryCloseSlimes = this.worldObj.getEntitiesWithinAABB(EntitySlime.class, this.boundingBox.expand(checkRange, checkRange, checkRange));
 
                             for (int i = veryCloseSlimes.size() - 1; i >= 0; i--) {
                                 if (((EntitySlimeMixin) veryCloseSlimes.get(i)).getIsCore() == (byte) 1 ||
-                                        ((SlimeEntity) veryCloseSlimes.get(i)).getSlimeSize() != this.getSlimeSize() ||
-                                        !((SlimeEntity) veryCloseSlimes.get(i)).isEntityAlive()) {
+                                        ((EntitySlime) veryCloseSlimes.get(i)).getSlimeSize() != this.getSlimeSize() ||
+                                        !((EntitySlime) veryCloseSlimes.get(i)).isEntityAlive()) {
                                     veryCloseSlimes.remove(i);
                                 }
                             }
@@ -113,16 +113,15 @@ public abstract class EntitySlimeMixin extends EntityLiving implements EntitySli
                     }
                 }
             } else {
-                List closeSlimes = this.worldObj.getEntitiesWithinAABB(SlimeEntity.class, this.boundingBox.expand(12.0D, 6.0D, 12.0D));
+                @SuppressWarnings("rawtypes") List closeSlimes = this.worldObj.getEntitiesWithinAABB(EntitySlime.class, this.boundingBox.expand(12.0D, 6.0D, 12.0D));
 
-                SlimeEntity coreSlime = null;
+                EntitySlime coreSlime = null;
 
-                for (int i = 0; i < closeSlimes.size(); i++) {
-                    if (((EntitySlimeMixin) closeSlimes.get(i)).getIsCore() == (byte) 1 && ((SlimeEntity) closeSlimes.get(i)).isEntityAlive()) {
-                        coreSlime = (SlimeEntity) closeSlimes.get(i);
-                        break;
-                    }
-                }
+	            for (Object closeSlime : closeSlimes) {
+		            if (((EntitySlimeMixin) closeSlime).getIsCore() == (byte) 1) {
+			            ((EntitySlime) closeSlime).isEntityAlive();
+		            }
+	            }
 
                 if (this.isMerging) {
                     if (coreSlime != null) {
