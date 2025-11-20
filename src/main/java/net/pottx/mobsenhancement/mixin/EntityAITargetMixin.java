@@ -1,6 +1,5 @@
 package net.pottx.mobsenhancement.mixin;
 
-import net.pottx.mobsenhancement.access.EntityLivingAccess;
 import net.minecraft.src.*;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -8,7 +7,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(EntityAITarget.class)
-public abstract class EntityAITargetMixin extends EntityAIBase {
+public abstract class EntityAITargetMixin extends EntityAIBase implements EntityLivingAccess {
     @Shadow
     protected EntityLiving taskOwner;
 

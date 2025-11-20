@@ -1,7 +1,6 @@
 package net.pottx.mobsenhancement.mixin;
 
 import net.pottx.mobsenhancement.MEAUtils;
-import net.pottx.mobsenhancement.access.EntityLivingAccess;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityLiving;
 import net.minecraft.src.World;

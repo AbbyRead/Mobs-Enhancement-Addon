@@ -4,7 +4,6 @@ import btw.block.BTWBlocks;
 import net.minecraft.src.*;
 import net.pottx.mobsenhancement.WitherDashBehavior;
 import net.pottx.mobsenhancement.WitherSummonMinionBehavior;
-import net.pottx.mobsenhancement.access.EntityWitherAccess;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -75,14 +74,14 @@ public abstract class New_EntityWitherMixin extends EntityMob implements EntityW
 
             for (var1 = 1; var1 < 3; ++var1)
             {
-                if (!this.getIsDoingSpecialAttack() && this.ticksExisted >= ((net.pottx.mobsenhancement.mixin.EntityWitherAccess) this).getField_82223_h()[var1 - 1])
+                if (!this.getIsDoingSpecialAttack() && this.ticksExisted >= ((net.pottx.mobsenhancement.mixin.EntityWitherAccess) this).getNextHeadAttackTime()[var1 - 1])
                 {
-                    ((net.pottx.mobsenhancement.mixin.EntityWitherAccess) this).getField_82223_h()[var1 - 1] = this.ticksExisted + 10 + this.rand.nextInt(10);
+                    ((net.pottx.mobsenhancement.mixin.EntityWitherAccess) this).getNextHeadAttackTime()[var1 - 1] = this.ticksExisted + 10 + this.rand.nextInt(10);
 
                     {
                         int var10001 = var1 - 1;
-                        int var10003 = ((net.pottx.mobsenhancement.mixin.EntityWitherAccess) this).getField_82224_i()[var1 - 1];
-                        ((net.pottx.mobsenhancement.mixin.EntityWitherAccess) this).getField_82224_i()[var10001] = ((net.pottx.mobsenhancement.mixin.EntityWitherAccess) this).getField_82224_i()[var1 - 1] + 1;
+                        int var10003 = ((net.pottx.mobsenhancement.mixin.EntityWitherAccess) this).getIdleHeadTicks()[var1 - 1];
+                        ((net.pottx.mobsenhancement.mixin.EntityWitherAccess) this).getIdleHeadTicks()[var10001] = ((net.pottx.mobsenhancement.mixin.EntityWitherAccess) this).getIdleHeadTicks()[var1 - 1] + 1;
 
                         if (var10003 > 15)
                         {
@@ -91,8 +90,8 @@ public abstract class New_EntityWitherMixin extends EntityMob implements EntityW
                             double var4 = MathHelper.getRandomDoubleInRange(this.rand, this.posX - (double)var2, this.posX + (double)var2);
                             double var6 = MathHelper.getRandomDoubleInRange(this.rand, this.posY - (double)var3, this.posY + (double)var3);
                             double var8 = MathHelper.getRandomDoubleInRange(this.rand, this.posZ - (double)var2, this.posZ + (double)var2);
-                            ((net.pottx.mobsenhancement.mixin.EntityWitherAccess) this).invokeFunc_82209_a(var1 + 1, var4, var6, var8, true);
-                            ((net.pottx.mobsenhancement.mixin.EntityWitherAccess) this).getField_82224_i()[var1 - 1] = 0;
+                            ((net.pottx.mobsenhancement.mixin.EntityWitherAccess) this).invokeShootSkullAt(var1 + 1, var4, var6, var8, true);
+                            ((net.pottx.mobsenhancement.mixin.EntityWitherAccess) this).getIdleHeadTicks()[var1 - 1] = 0;
                         }
                     }
 
@@ -104,18 +103,18 @@ public abstract class New_EntityWitherMixin extends EntityMob implements EntityW
 
                         if (var14 != null && var14.isEntityAlive() && this.getDistanceSqToEntity(var14) <= 900.0D && this.canEntityBeSeen(var14))
                         {
-                            ((net.pottx.mobsenhancement.mixin.EntityWitherAccess) this).invokeFunc_82216_a(var1 + 1, (EntityLiving)var14);
-                            ((net.pottx.mobsenhancement.mixin.EntityWitherAccess) this).getField_82223_h()[var1 - 1] = this.ticksExisted + 40 + this.rand.nextInt(20);
-                            ((net.pottx.mobsenhancement.mixin.EntityWitherAccess) this).getField_82224_i()[var1 - 1] = 0;
+                            ((net.pottx.mobsenhancement.mixin.EntityWitherAccess) this).invokeFireSkullFromHead(var1 + 1, (EntityLiving)var14);
+                            ((net.pottx.mobsenhancement.mixin.EntityWitherAccess) this).getNextHeadAttackTime()[var1 - 1] = this.ticksExisted + 40 + this.rand.nextInt(20);
+                            ((net.pottx.mobsenhancement.mixin.EntityWitherAccess) this).getIdleHeadTicks()[var1 - 1] = 0;
                         }
                         else
                         {
-                            this.func_82211_c(var1, 0);
+                            ((EntityWitherAccess) this).invokeSetHeadTarget(var1, 0);
                         }
                     }
                     else
                     {
-                        @SuppressWarnings("rawtypes") List var13 = this.worldObj.selectEntitiesWithinAABB(EntityLiving.class, this.boundingBox.expand(20.0D, 8.0D, 20.0D), net.pottx.mobsenhancement.mixin.EntityWitherAccess.getAttackEntitySelector());
+                        @SuppressWarnings("rawtypes") List var13 = this.worldObj.selectEntitiesWithinAABB(EntityLiving.class, this.boundingBox.expand(20.0D, 8.0D, 20.0D), EntityWitherAccess.getAttackEntitySelector());
 
                         for (int var16 = 0; var16 < 10 && !var13.isEmpty(); ++var16)
                         {
@@ -127,12 +126,12 @@ public abstract class New_EntityWitherMixin extends EntityMob implements EntityW
                                 {
                                     if (!((EntityPlayer)var5).capabilities.disableDamage)
                                     {
-                                        this.func_82211_c(var1, var5.entityId);
+                                        this.invokeSetHeadTarget(var1, var5.entityId);
                                     }
                                 }
                                 else
                                 {
-                                    this.func_82211_c(var1, var5.entityId);
+                                    this.invokeSetHeadTarget(var1, var5.entityId);
                                 }
 
                                 break;
@@ -146,18 +145,18 @@ public abstract class New_EntityWitherMixin extends EntityMob implements EntityW
 
             if (this.getAttackTarget() != null)
             {
-                this.func_82211_c(0, this.getAttackTarget().entityId);
+                this.invokeSetHeadTarget(0, this.getAttackTarget().entityId);
             }
             else
             {
-                this.func_82211_c(0, 0);
+                this.invokeSetHeadTarget(0, 0);
             }
 
-            if (!this.getIsDoingSpecialAttack() && ((net.pottx.mobsenhancement.mixin.EntityWitherAccess) this).getField_82222_j() > 0)
+            if (!this.getIsDoingSpecialAttack() && ((net.pottx.mobsenhancement.mixin.EntityWitherAccess) this).getBlockBreakCounter() > 0)
             {
-                ((net.pottx.mobsenhancement.mixin.EntityWitherAccess) this).setField_82222_j(((net.pottx.mobsenhancement.mixin.EntityWitherAccess) this).getField_82222_j() - 1);
+                ((net.pottx.mobsenhancement.mixin.EntityWitherAccess) this).setBlockBreakCounter(((net.pottx.mobsenhancement.mixin.EntityWitherAccess) this).getBlockBreakCounter() - 1);
 
-                if (((net.pottx.mobsenhancement.mixin.EntityWitherAccess) this).getField_82222_j() == 0 && this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing"))
+                if (((net.pottx.mobsenhancement.mixin.EntityWitherAccess) this).getBlockBreakCounter() == 0 && this.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing"))
                 {
                     var1 = MathHelper.floor_double(this.posY);
                     var12 = MathHelper.floor_double(this.posX);
