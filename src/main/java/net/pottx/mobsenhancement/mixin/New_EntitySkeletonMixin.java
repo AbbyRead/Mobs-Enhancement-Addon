@@ -41,7 +41,7 @@ public abstract class New_EntitySkeletonMixin extends EntityMob implements Entit
         tasks.addTask(2, new EntityAIFleeFromExplosion(this, 0.375F, 4.0F));
         tasks.addTask(3, new EntityAIFleeFromEnemy(this, EntityPlayer.class, 0.375F, 24.0F, 5));
         this.targetTasks.addTask(4, new SkeletonBreakTorchBehavior(this));
-        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, VillagerEntity.class, 24.0F, 0, ((EntityMobAccess)this).getCanXray() == (byte)0));
+        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityVillager.class, 24.0F, 0, ((EntityMobAccess)this).getCanXray() == (byte)0));
     }
 
     @Inject(
