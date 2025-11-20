@@ -3,6 +3,7 @@ package net.pottx.mobsenhancement.mixin;
 import net.minecraft.src.*;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -18,7 +19,7 @@ public class EntityEndermanMixin extends EntityMob {
 
     @Inject(
             method = "onLivingUpdate",
-            at = @At(value = "INVOKE", target = "Lbtw/entity/mob/EndermanEntity;entityMobOnLivingUpdate()V")
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/src/EntityEnderman;entityMobOnLivingUpdate()V")
     )
     private void updateEnemyTeleport(CallbackInfo ci)
     {
@@ -33,6 +34,7 @@ public class EntityEndermanMixin extends EntityMob {
         }
     }
 
+    @Unique
     protected boolean teleportEnemy() {
         if (this.entityToAttack != null) {
             Entity target = this.entityToAttack;
