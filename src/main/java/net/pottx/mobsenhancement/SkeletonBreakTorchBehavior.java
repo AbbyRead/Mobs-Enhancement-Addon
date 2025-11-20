@@ -13,7 +13,7 @@ public class SkeletonBreakTorchBehavior extends EntityAIBase {
 
     public SkeletonBreakTorchBehavior(EntitySkeleton mySkeleton) {
         this.mySkeleton = mySkeleton;
-    };
+    }
 
     public boolean shouldExecute() {
         if (this.mySkeleton.getAttackTarget() != null || !this.mySkeleton.worldObj.getGameRules().getGameRuleBooleanValue("mobGriefing")) {
