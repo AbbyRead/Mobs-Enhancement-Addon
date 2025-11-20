@@ -9,12 +9,6 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 @Mixin(EntityLiving.class)
 public interface EntityLivingAccess {
 
-    @Unique
-    boolean realisticCanEntityBeSeen(Entity entity, double absDist);
-
-    @Unique
-    boolean realisticCanEntityBeSensed(Entity entity);
-
     @Invoker("addRandomArmor")
     void invokeAddRandomArmor();
 
