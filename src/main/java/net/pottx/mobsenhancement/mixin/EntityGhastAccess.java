@@ -7,5 +7,5 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 @Mixin(EntityGhast.class)
 public interface EntityGhastAccess {
     @Accessor("explosionStrength")
-    public void setExplosionStrength(int explosionStrength);
+    void setExplosionStrength(int explosionStrength);
 }
