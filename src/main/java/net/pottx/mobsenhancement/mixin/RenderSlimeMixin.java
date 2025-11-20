@@ -37,20 +37,14 @@ public abstract class RenderSlimeMixin {
 
 		// Skip magma cube / other variants
 		if (!extendedSlime.mea$getIsMagma() && extendedSlime.mea$getIsCore() == (byte)1) {
-
-			int size = slime.getSlimeSize();
-
-			if (size == 1) {
-				cir.setReturnValue(CORE_SLIME_1);
-				return;
-			}
-
-			if (size == 2) {
-				cir.setReturnValue(CORE_SLIME_2);
-				return;
-			}
+			cir.setReturnValue(
+					switch (slime.getSlimeSize()) {
+						case 1 -> CORE_SLIME_1;
+						case 2 -> CORE_SLIME_2;
+						default -> cir.getReturnValue(); // keep existing value for other sizes
+					}
+			);
 		}
-
 		// Otherwise: let RenderSlime use normal texture
 	}
 }
