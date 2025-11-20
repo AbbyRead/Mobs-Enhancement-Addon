@@ -9,8 +9,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(EntityMagmaCube.class)
-public abstract class MagmaCubeEntityMixin extends EntitySlime {
-    public MagmaCubeEntityMixin(World par1World) {
+public abstract class EntityMagmaCubeMixin extends EntitySlime {
+    public EntityMagmaCubeMixin(World par1World) {
         super(par1World);
     }
 
@@ -48,13 +48,24 @@ public abstract class MagmaCubeEntityMixin extends EntitySlime {
         super.setDead();
     }
 
-    @Override
-    public int getMaxHealth()
-    {
-        int i = MEAUtils.getGameProgressMobsLevel(this.worldObj);
-        i = i > 1 ? 1 : 0;
-        int var1 = this.getSlimeSize() + i;
+    @Inject(method = "applyEntityAttributes", at = @At("RETURN"))
+    private void modifyMaxHealth(CallbackInfo ci) {
+        // Default init to normal intitialization value
+        double baseHealth = this.getEntityAttribute(SharedMonsterAttributes.maxHealth).getAttributeValue();
 
-        return var1 * var1;
+        if (this.worldObj != null) {
+            int tier = MEAUtils.getGameProgressMobsLevel(this.worldObj);
+
+            // Ignore higher difficulties for maxHealth calc
+            tier = tier > 1 ? 1 : 0;
+
+            baseHealth = this.getSlimeSize() + tier;
+        }
+
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth)
+                .setAttribute(baseHealth);
+
+        // Heal to new max HP since applyEntityAttributes is called at construction time
+        this.setHealth((float) (baseHealth * baseHealth));
     }
 }

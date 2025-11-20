@@ -38,7 +38,7 @@
     "EntityWitchMixin",
     "EntityWitherMixin",
     "EntityZombieMixin",
-    "MagmaCubeEntityMixin",
+    "EntityMagmaCubeMixin",
     "MinecraftMixin",
     "MobSpawnerBlockMixin",
     "RenderEnderCrystalMixin",
