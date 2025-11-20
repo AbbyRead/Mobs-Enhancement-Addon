@@ -77,19 +77,31 @@ public abstract class EntityZombieMixin extends EntityMob implements EntityZombi
     }
 
     @Unique
-    public void onKilledBySun()
-    {
-        if (!this.worldObj.isRemote)
-        {
-            EntitySkeleton skeleton = (EntitySkeleton) EntityList.createEntityOfType(EntitySkeleton.class, this.worldObj);
-            skeleton.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
-            skeleton.setHealth(MathHelper.ceiling_float_int(skeleton.getMaxHealth() / 2.0F));
-            for (int i = 0; i < 5 ; i++) {
-                skeleton.setCurrentItemOrArmor(0, this.getCurrentItemOrArmor(0));
-            }
-            this.worldObj.spawnEntityInWorld(skeleton);
-            this.setDead();
+    public void onKilledBySun() {
+        if (this.worldObj.isRemote) return;
+
+        // Create the skeleton directly
+        EntitySkeleton skeleton = new EntitySkeleton(this.worldObj);
+
+        // Position it where the zombie died
+        skeleton.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
+
+        // Reduce health so it starts at half
+        skeleton.setHealth(MathHelper.ceiling_float_int(skeleton.getMaxHealth() / 2.0F));
+
+        // Copy armor / held items from the zombie
+        for (int i = 0; i < 5; i++) {
+            skeleton.setCurrentItemOrArmor(i, this.getCurrentItemOrArmor(i));
         }
+
+        // Call vanilla creature initialization (spawnerInitCreature)
+        skeleton.spawnerInitCreature();
+
+        // Spawn in the world
+        this.worldObj.spawnEntityInWorld(skeleton);
+
+        // Remove the zombie
+        this.setDead();
     }
 
     @Override
