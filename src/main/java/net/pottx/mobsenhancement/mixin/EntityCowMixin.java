@@ -73,26 +73,4 @@ public class EntityCowMixin extends KickingAnimal {
         this.setIsAggressive(par1NBTTagCompound.getByte("IsAggressive"));
     }
 
-    @Override
-    public boolean attackEntityFrom(DamageSource par1DamageSource, int par2) {
-        Entity attacker = par1DamageSource.getEntity();
-        if (attacker instanceof EntityLiving) {
-            this.setAttackTarget((EntityLiving)attacker);
-
-            List animalList = worldObj.getEntitiesWithinAABB( EntityAnimal.class, boundingBox.expand( 24D, 12D, 24D ) );
-
-	        for (Object o : animalList) {
-		        EntityAnimal tempAnimal = (EntityAnimal) o;
-
-		        boolean isSpeciesSame = tempAnimal instanceof EntityCow;
-
-		        if (!tempAnimal.isLivingDead && isSpeciesSame && !tempAnimal.hasAttackTarget() && tempAnimal.canEntityBeSeen(this)) {
-			        tempAnimal.setAttackTarget((EntityLiving) attacker);
-		        }
-
-	        }
-        }
-
-        return super.attackEntityFrom(par1DamageSource, par2);
-    }
 }
