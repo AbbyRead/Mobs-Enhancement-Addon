@@ -7,8 +7,8 @@ import java.util.List;
 
 @Mixin(BlockMobSpawner.class)
 public abstract class MobSpawnerBlockMixin extends BlockContainer {
-    protected MobSpawnerBlockMixin(int par1) {
-        super(par1);
+    protected MobSpawnerBlockMixin(int i, Material material) {
+        super(i, material);
     }
 
     @Override
