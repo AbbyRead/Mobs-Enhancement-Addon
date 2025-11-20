@@ -36,13 +36,13 @@ public abstract class EntityWitherMixin extends EntityMob implements IRangedAtta
     // START: Merged from Temp_EntityWitherMixin
     @Inject(
             method = "<init>",
-                        at = @At(value = "TAIL")
+            at = @At(value = "TAIL")
     )
-            private void addSpecialAttackTasks(CallbackInfo ci) {
+    private void addSpecialAttackTasks(CallbackInfo ci) {
         this.tasks.addTask(1, new WitherSummonMinionBehavior(self)); // Use self instead of this for clarity/safety
         this.tasks.addTask(1, new WitherDashBehavior(self)); // Use self instead of this for clarity/safety
     }
-    
+
     @Override
     public int getMeleeAttackStrength(Entity target) {
         return 10;
@@ -221,12 +221,12 @@ public abstract class EntityWitherMixin extends EntityMob implements IRangedAtta
         int iKnockback = 2;
 
         boolean bAttackSuccess = target.attackEntityFrom( DamageSource.causeMobDamage( this ),
-                                iStrength );
+                iStrength );
 
         if ( bAttackSuccess )
         {
             target.addVelocity(
-                                        -MathHelper.sin( rotationYaw * (float)Math.PI / 180F ) * iKnockback * 0.5F,
+                    -MathHelper.sin( rotationYaw * (float)Math.PI / 180F ) * iKnockback * 0.5F,
                     0.1D,
                     MathHelper.cos( rotationYaw * (float)Math.PI / 180F ) * iKnockback * 0.5F );
 
@@ -251,17 +251,17 @@ public abstract class EntityWitherMixin extends EntityMob implements IRangedAtta
 
     @ModifyArgs(
             method = "<init>",
-                        at = @At(value = "INVOKE", target = "Lnet/minecraft/src/EntityAITasks;addTask(ILnet/minecraft/src/EntityAIBase;)V", ordinal = 1)
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/src/EntityAITasks;addTask(ILnet/minecraft/src/EntityAIBase;)V", ordinal = 1)
     )
-            private void modifyArrowAttackTask(Args args) {
+    private void modifyArrowAttackTask(Args args) {
         args.set(1, new EntityAISmartArrowAttack(this, getAIMoveSpeed(), 40, 0, 30.0F, 0.0F));
     }
 
     @Redirect(
             method = "onLivingUpdate()V",
-                        at = @At(value = "INVOKE", target = "Lnet/minecraft/src/World;getEntityByID(I)Lnet/minecraft/src/Entity;", ordinal = 0)
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/src/World;getEntityByID(I)Lnet/minecraft/src/Entity;", ordinal = 0)
     )
-            private Entity stayStillWhenDoingSpecialAttack(World world, int var1) {
+    private Entity stayStillWhenDoingSpecialAttack(World world, int var1) {
         if (this.mea$getIsDoingSpecialAttack()) {
             return null;
         } else {
@@ -271,9 +271,9 @@ public abstract class EntityWitherMixin extends EntityMob implements IRangedAtta
 
     @Redirect(
             method = "onLivingUpdate()V",
-                        at = @At(value = "INVOKE", target = "Lnet/minecraft/src/MathHelper;sqrt_double(D)F", ordinal = 0)
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/src/MathHelper;sqrt_double(D)F", ordinal = 0)
     )
-            private float keepFartherDistance(double var6) {
+    private float keepFartherDistance(double var6) {
         if (var6 > 64D && !(this.mea$getIsDoingSpecialAttack())) {
             return 1.5F * MathHelper.sqrt_double(var6);
         } else {
