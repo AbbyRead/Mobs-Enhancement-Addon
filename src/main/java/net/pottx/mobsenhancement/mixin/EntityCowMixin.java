@@ -10,10 +10,12 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.List;
-
 @Mixin(EntityCow.class)
-public class EntityCowMixin extends KickingAnimal {
+public abstract class EntityCowMixin extends KickingAnimal implements EntityLivingAccess {
+
+    @Unique
+    private EntityCow self = (EntityCow) (Object) this;
+
     @Unique
     private static final int IS_AGGRESSIVE_DATA_WATCHER_ID = 31;
 
@@ -21,56 +23,52 @@ public class EntityCowMixin extends KickingAnimal {
         super(par1World);
     }
 
-    @Override
-    public EntityAgeable createChild(EntityAgeable var1) {
-        return null; // TODO: Add actual implementation
-    }
-
-    @Override
-    public int getMeleeAttackStrength(Entity target) {
-        return 4;
-    }
-
     @Inject(
-            method = "<init>",
+            method = "<init>(Lnet/minecraft/src/World;)V",
             at = @At(value = "TAIL")
     )
-    private void addExtraDataAndTasks(CallbackInfo ci) {
-        dataWatcher.addObject(IS_AGGRESSIVE_DATA_WATCHER_ID, (byte)0);
-        if (this.rand.nextInt(2) == 0) this.setIsAggressive((byte)1);
+    private void addExtraDataAndTasks(World world, CallbackInfo ci) {
+        this.getDataWatcher().addObject(IS_AGGRESSIVE_DATA_WATCHER_ID, (byte)0);
+        if (this.rand.nextInt(2) == 0) {
+            this.setIsAggressive((byte)1);
+        }
 
         this.tasks.removeAllTasksOfClass(AnimalFleeBehavior.class);
         this.tasks.removeAllTasksOfClass(EntityAIWatchClosest.class);
 
         if (this.getIsAggressive() == (byte)1) {
-            tasks.addTask(1, new AnimalCombatBehavior(this, 0.38F, 0.33F, EntityZombie.class, 4));
+            this.tasks.addTask(1, new AnimalCombatBehavior(self, 0.38F, 0.33F, EntityZombie.class, 4));
         } else {
-            tasks.addTask(1, new AnimalCombatBehavior(this, 0.38F, 0.33F, EntityZombie.class, 15));
+            this.tasks.addTask(1, new AnimalCombatBehavior(self, 0.38F, 0.33F, EntityZombie.class, 15));
         }
     }
 
     @Unique
     public byte getIsAggressive() {
-        return this.dataWatcher.getWatchableObjectByte(IS_AGGRESSIVE_DATA_WATCHER_ID);
+        return this.getDataWatcher().getWatchableObjectByte(IS_AGGRESSIVE_DATA_WATCHER_ID);
     }
 
     @Unique
     public void setIsAggressive(byte isAggressive) {
-        this.dataWatcher.updateObject(IS_AGGRESSIVE_DATA_WATCHER_ID, isAggressive);
+        this.getDataWatcher().updateObject(IS_AGGRESSIVE_DATA_WATCHER_ID, isAggressive);
     }
 
-    @Override
-    public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
-        super.writeEntityToNBT(par1NBTTagCompound);
-
+    @Inject(
+            method = "writeEntityToNBT(Lnet/minecraft/src/NBTTagCompound;)V",
+            at = @At("TAIL")
+    )
+    private void saveIsAggressive(NBTTagCompound par1NBTTagCompound, CallbackInfo ci) {
         par1NBTTagCompound.setByte("IsAggressive", this.getIsAggressive());
     }
 
-    @Override
-    public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
-        super.readEntityFromNBT(par1NBTTagCompound);
-
-        this.setIsAggressive(par1NBTTagCompound.getByte("IsAggressive"));
+    @Inject(
+            method = "readEntityFromNBT(Lnet/minecraft/src/NBTTagCompound;)V",
+            at = @At("TAIL")
+    )
+    private void loadIsAggressive(NBTTagCompound par1NBTTagCompound, CallbackInfo ci) {
+        if (par1NBTTagCompound.hasKey("IsAggressive")) {
+            this.setIsAggressive(par1NBTTagCompound.getByte("IsAggressive"));
+        }
     }
 
 }

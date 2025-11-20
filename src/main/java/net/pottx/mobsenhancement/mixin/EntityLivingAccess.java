@@ -29,4 +29,7 @@ public interface EntityLivingAccess {
 
     @Accessor("lookHelper")
     EntityLookHelper getLookHelper();
+
+    @Accessor("tasks")
+    EntityAITasks getTasks();
 }
