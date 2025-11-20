@@ -20,6 +20,7 @@
     "EntityGhastMixin",
     "EntityLivingBaseMixin",
     "EntityLivingMixin",
+    "EntityMagmaCubeMixin",
     "EntityMixin",
     "EntityMobMixin",
     "EntityPigMixin",
@@ -38,7 +39,6 @@
     "EntityWitchMixin",
     "EntityWitherMixin",
     "EntityZombieMixin",
-    "EntityMagmaCubeMixin",
     "MinecraftMixin",
     "MobSpawnerBlockMixin",
     "RenderEnderCrystalMixin",
@@ -51,6 +51,7 @@
     "access.EntityGhastAccess",
     "access.EntityLivingAccess",
     "access.EntityLivingBaseAccess",
+    "access.EntityPigZombieAccess",
     "access.EntityWitherAccess"
   ],
   "client": [],
