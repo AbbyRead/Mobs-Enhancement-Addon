@@ -1,8 +1,8 @@
 package net.pottx.mobsenhancement;
 
 import net.minecraft.src.*;
+import net.pottx.mobsenhancement.extend.EntityWitherExtend;
 import net.pottx.mobsenhancement.mixin.EntityLivingAccess;
-import net.pottx.mobsenhancement.mixin.EntityWitherAccess;
 
 public class EntityAISmartArrowAttack extends EntityAIBase
 {
@@ -46,7 +46,7 @@ public class EntityAISmartArrowAttack extends EntityAIBase
 
             if (target == null) {
                 return false;
-            } else if (this.entityWielding instanceof EntityWither wither && ((EntityWitherAccess)wither).getIsDoingSpecialAttack()) {
+            } else if (this.entityWielding instanceof EntityWither wither && ((EntityWitherExtend)wither).mea$getIsDoingSpecialAttack()) {
                 return false;
             } else {
                 shouldFlee = target instanceof EntityPlayer || ((EntityLiving)target).getAttackTarget() == entityWielding;
