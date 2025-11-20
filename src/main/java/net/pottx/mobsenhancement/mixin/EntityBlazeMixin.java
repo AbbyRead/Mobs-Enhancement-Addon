@@ -8,8 +8,9 @@ import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(EntityBlaze.class)
 public abstract class EntityBlazeMixin extends EntityLivingBase {
-    public EntityBlazeMixin(World par1World) {
-        super(par1World);
+
+    public EntityBlazeMixin(World world) {
+        super(world);
     }
 
     @Override
