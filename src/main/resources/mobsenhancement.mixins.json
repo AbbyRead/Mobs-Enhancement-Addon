@@ -47,7 +47,7 @@
     "MagmaCubeEntityMixin",
     "MinecraftMixin",
     "MobSpawnerBlockMixin",
-    "New_EntityWitchMixin",
+    "Temp_EntityWitchMixin",
     "RenderEnderCrystalMixin",
     "RenderGhastMixin",
     "SimpleWanderBehaviorMixin",

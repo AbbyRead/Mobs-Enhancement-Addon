@@ -22,13 +22,31 @@ public abstract class EntityWitchMixin extends EntityMob implements IRangedAttac
     private void addFleeFromExplosionTask(CallbackInfo ci) {
         this.tasks.removeAllTasksOfClass(EntityAIWatchClosest.class);
 
-        tasks.addTask(1, new EntityAIFleeFromExplosion(this, 0.375F, 4.0F));
-        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityVillager.class, 24.0F, 0, ((EntityMobExtend)this).getCanXray() == (byte)0));
+        this.tasks.addTask(1, new EntityAIFleeFromExplosion(this, 0.375F, 4.0F));
+        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(
+                this,
+                EntityVillager.class,
+                24.0F,
+                0,
+                ((EntityMobExtend)this).getCanXray() == (byte)0
+        ));
     }
 
-    @Override
-    public int getMaxHealth() {
-        int i = MEAUtils.getGameProgressMobsLevel(this.worldObj);
-        return i > 0 ? 28 : 24;
+    @Inject(method = "applyEntityAttributes", at = @At("RETURN"))
+    private void modifyMaxHealth(CallbackInfo ci) {
+        double baseHealth = 24.0;
+
+        if (this.worldObj != null) {
+            int tier = MEAUtils.getGameProgressMobsLevel(this.worldObj);
+            if (tier > 0) {
+                baseHealth = 28.0;
+            }
+        }
+
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth)
+                .setAttribute(baseHealth);
+
+        // Heal to new max HP since applyEntityAttributes is called at construction time
+        this.setHealth((float) baseHealth);
     }
 }
