@@ -1,9 +1,6 @@
 package net.pottx.mobsenhancement.mixin;
 
-import net.minecraft.src.EntityMob;
-import net.minecraft.src.EntitySpider;
-import net.minecraft.src.PotionEffect;
-import net.minecraft.src.World;
+import net.minecraft.src.*;
 import net.pottx.mobsenhancement.MEAUtils;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -35,9 +32,21 @@ public abstract class EntitySpiderMixin extends EntityMob
         }
     }
 
-    @Override
-    public int getMaxHealth() {
-        int i = this.worldObj == null ? 0 : MEAUtils.getGameProgressMobsLevel(this.worldObj);
-        return i > 0 ? 20 : 16;
+    @Inject(method = "applyEntityAttributes", at = @At("RETURN"))
+    private void modifyMaxHealth(CallbackInfo ci) {
+        double baseHealth = 16.0;
+
+        if (this.worldObj != null) {
+            int tier = MEAUtils.getGameProgressMobsLevel(this.worldObj);
+            if (tier > 0) {
+                baseHealth = 20.0;
+            }
+        }
+
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth)
+                .setAttribute(baseHealth);
+
+        // Heal to new max HP since applyEntityAttributes is called at construction time
+        this.setHealth((float) baseHealth);
     }
 }
