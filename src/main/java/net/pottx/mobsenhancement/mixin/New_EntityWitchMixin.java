@@ -23,7 +23,7 @@ public abstract class New_EntityWitchMixin extends EntityMob {
         this.tasks.removeAllTasksOfClass(EntityAIWatchClosest.class);
 
         tasks.addTask(1, new EntityAIFleeFromExplosion(this, 0.375F, 4.0F));
-        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, VillagerEntity.class, 24.0F, 0, ((EntityMobAccess)this).getCanXray() == (byte)0));
+        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityVillager.class, 24.0F, 0, ((EntityMobAccess)this).getCanXray() == (byte)0));
     }
 
     @Override
