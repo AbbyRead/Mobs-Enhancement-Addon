@@ -7,20 +7,20 @@
 
 ## **1. Interface (`EntitySlimeExtend.java`)**
 
-Defines the methods used to access the injected fields. Methods are prefixed with `mea$` to avoid naming conflicts.
+Defines the methods used to access the injected fields. Methods are prefixed with `meap$` to avoid naming conflicts.
 
 ```java
 package net.pottx.mobsenhancement.extend;
 
 public interface EntitySlimeExtend {
-    boolean mea$getIsMagma();
-    void mea$setIsMagma(boolean value);
+    boolean meap$getIsMagma();
+    void meap$setIsMagma(boolean value);
 
-    byte mea$getIsCore();
-    void mea$setIsCore(byte id);
+    byte meap$getIsCore();
+    void meap$setIsCore(byte id);
 
-    boolean mea$getIsMerging();
-    void mea$setIsMerging(boolean value);
+    boolean meap$getIsMerging();
+    void meap$setIsMerging(boolean value);
 }
 ```
 
@@ -58,19 +58,19 @@ public abstract class EntitySlimeMixin extends EntityLiving implements EntitySli
     @Shadow public abstract int getSlimeSize();
 
     @Override
-    public boolean mea$getIsMagma() { return isMagma; }
+    public boolean meap$getIsMagma() { return isMagma; }
     @Override
-    public void mea$setIsMagma(boolean value) { this.isMagma = value; }
+    public void meap$setIsMagma(boolean value) { this.isMagma = value; }
 
     @Override
-    public boolean mea$getIsMerging() { return isMerging; }
+    public boolean meap$getIsMerging() { return isMerging; }
     @Override
-    public void mea$setIsMerging(boolean value) { this.isMerging = value; }
+    public void meap$setIsMerging(boolean value) { this.isMerging = value; }
 
     @Override
-    public byte mea$getIsCore() { return this.dataWatcher.getWatchableObjectByte(IS_CORE_DATA_WATCHER_ID); }
+    public byte meap$getIsCore() { return this.dataWatcher.getWatchableObjectByte(IS_CORE_DATA_WATCHER_ID); }
     @Override
-    public void mea$setIsCore(byte value) { this.dataWatcher.updateObject(IS_CORE_DATA_WATCHER_ID, value); }
+    public void meap$setIsCore(byte value) { this.dataWatcher.updateObject(IS_CORE_DATA_WATCHER_ID, value); }
 
     @Inject(method = "<init>", at = @At("TAIL"))
     private void onInit(World world, CallbackInfo ci) {
@@ -83,7 +83,7 @@ public abstract class EntitySlimeMixin extends EntityLiving implements EntitySli
     @Unique
     public void exampleMergeLogic() {
         if (isMagma) return;
-        if (mea$getIsCore() != 1) return;
+        if (meap$getIsCore() != 1) return;
 
         mergeCooldownCounter--;
         if (mergeCooldownCounter <= 0) {
@@ -109,8 +109,8 @@ public static EntitySlimeExtend asExtended(EntitySlime slime) {
 EntitySlime slime = ...;
 EntitySlimeExtend ext = asExtended(slime);
 
-ext.mea$setIsMagma(true);
-ext.mea$setIsMerging(true);
+ext.meap$setIsMagma(true);
+ext.meap$setIsMerging(true);
 ```
 
 ---

@@ -52,8 +52,8 @@ The pattern has four main components:
 
 ```java
 public interface EntitySlimeExtend {
-    boolean mea$getIsMagma();
-    void mea$setIsMagma(boolean value);
+    boolean meap$getIsMagma();
+    void meap$setIsMagma(boolean value);
 }
 ```
 
@@ -70,9 +70,9 @@ public abstract class EntitySlimeMixin implements EntitySlimeExtend {
     }
 
     @Override
-    public boolean mea$getIsMagma() { return isMagma; }
+    public boolean meap$getIsMagma() { return isMagma; }
     @Override
-    public void mea$setIsMagma(boolean value) { isMagma = value; }
+    public void meap$setIsMagma(boolean value) { isMagma = value; }
 }
 ```
 
