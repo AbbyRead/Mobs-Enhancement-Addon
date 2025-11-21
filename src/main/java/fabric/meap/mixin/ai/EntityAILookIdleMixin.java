@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(EntityAILookIdle.class)
 public abstract class EntityAILookIdleMixin extends EntityAIBase {
     @Shadow
-    private EntityLivingBase idleEntity;
+    private EntityLiving idleEntity;
 
     @Inject(
             method = "shouldExecute()Z",

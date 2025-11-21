@@ -15,9 +15,6 @@ public interface EntityCreatureAccess {
 	@Accessor("maximumHomeDistance")
 	float getMaximumHomeDistance();
 
-	@SuppressWarnings("SameReturnValue")
 	@Accessor("homePosition")
-	default ChunkCoordinates getHomePosition() {
-		return null;
-	}
+	ChunkCoordinates getHomePosition();
 }

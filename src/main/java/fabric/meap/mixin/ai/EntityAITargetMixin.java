@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 public abstract class EntityAITargetMixin extends EntityAIBase implements EntityLivingBaseExtend {
 
     @Shadow
-    protected EntityLiving taskOwner;
+    protected EntityCreature taskOwner;
 
     @Redirect(
             method = "isSuitableTarget",

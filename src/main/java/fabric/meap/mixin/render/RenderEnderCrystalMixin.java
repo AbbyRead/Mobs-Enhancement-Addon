@@ -35,20 +35,21 @@ public abstract class RenderEnderCrystalMixin extends Render {
             method = "doRenderEnderCrystal(Lnet/minecraft/src/EntityEnderCrystal;DDDFF)V",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/src/RenderEnderCrystal;bindTexture(Lnet/minecraft/src/ResourceLocation;)V")
     )
-    private void useDriedTextureIfNeeded(Args args, EntityEnderCrystal crystal) {
-        if (isDried(crystal)) {
-            args.set(0, DRIED_CRYSTAL_TEXTURE);
-        }
+    private void useDriedTextureIfNeeded(Args args) {
+        args.set(0, DRIED_CRYSTAL_TEXTURE);
     }
 
     @ModifyArgs(
             method = "doRenderEnderCrystal(Lnet/minecraft/src/EntityEnderCrystal;DDDFF)V",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/src/ModelBase;render(Lnet/minecraft/src/Entity;FFFFFF)V")
     )
-    private void freezeAnimationIfDried(Args args, EntityEnderCrystal crystal) {
-        if (isDried(crystal)) {
-            args.set(2, 0.0F); // Stop rotation animation
-            args.set(3, 0.0F); // Stop bobbing animation
+    private void freezeAnimationIfDried(Args args) {
+        Entity entity = args.get(0);
+        if (entity instanceof EntityEnderCrystalExtend crystal) {
+	        if (crystal.meap$getIsDried() == 1) { // DRIED_STATE
+                args.set(2, 0.0F); // Stop rotation animation
+                args.set(3, 0.0F); // Stop bobbing animation
+            }
         }
     }
 

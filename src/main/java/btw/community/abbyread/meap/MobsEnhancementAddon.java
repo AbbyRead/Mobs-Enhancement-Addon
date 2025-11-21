@@ -5,11 +5,8 @@ import btw.BTWAddon;
 import net.minecraft.server.MinecraftServer;
 import btw.community.abbyread.meap.core.MEAEffectManager;
 
-@SuppressWarnings("unused")
 public class MobsEnhancementAddon extends BTWAddon {
-    private static MobsEnhancementAddon instance;
-
-    private MobsEnhancementAddon() {
+    public MobsEnhancementAddon() {
         super();
     }
 
@@ -20,11 +17,5 @@ public class MobsEnhancementAddon extends BTWAddon {
         if (!MinecraftServer.getIsServer()) {
             MEAEffectManager.initEffects();
         }
-    }
-
-    public static MobsEnhancementAddon getInstance() {
-        if (instance == null)
-            instance = new MobsEnhancementAddon();
-        return instance;
     }
 }

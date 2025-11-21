@@ -26,7 +26,7 @@ public abstract class EntityDragonMixin extends EntityLiving
      * @reason I didn't come up with a way to inject.
      */
     @Overwrite
-    public void updateDragonEnderCrystal() {
+    private void updateDragonEnderCrystal() {
         // Handle existing healing crystal
         if (this.healingEnderCrystal != null) {
             if (this.healingEnderCrystal.isDead) {
