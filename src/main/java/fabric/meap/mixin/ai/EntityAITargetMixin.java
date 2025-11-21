@@ -1,7 +1,7 @@
 package fabric.meap.mixin.ai;
 
 import net.minecraft.src.*;
-import btw.community.abbyread.meap.extension.EntityLivingBaseExtend;
+import btw.community.abbyread.meap.extend.EntityLivingBaseExtend;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;

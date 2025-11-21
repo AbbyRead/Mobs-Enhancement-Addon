@@ -4,7 +4,7 @@ import btw.entity.mob.KickingAnimal;
 import btw.entity.mob.behavior.AnimalFleeBehavior;
 import net.minecraft.src.*;
 import btw.community.abbyread.meap.behavior.AnimalCombatBehavior;
-import btw.community.abbyread.meap.extension.EntityLivingBaseExtend;
+import btw.community.abbyread.meap.extend.EntityLivingBaseExtend;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;

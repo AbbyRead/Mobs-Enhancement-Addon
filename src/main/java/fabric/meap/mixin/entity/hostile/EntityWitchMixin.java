@@ -3,7 +3,7 @@ package fabric.meap.mixin.entity.hostile;
 import net.minecraft.src.*;
 import btw.community.abbyread.meap.ai.EntityAIFleeFromExplosion;
 import btw.community.abbyread.meap.core.MEAUtils;
-import btw.community.abbyread.meap.extension.EntityMobExtend;
+import btw.community.abbyread.meap.extend.EntityMobExtend;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;

@@ -4,7 +4,7 @@ import btw.block.BTWBlocks;
 import btw.world.util.WorldUtils;
 import btw.world.util.difficulty.DifficultyParam;
 import net.minecraft.src.*;
-import btw.community.abbyread.meap.extension.EntityPlayerExtend;
+import btw.community.abbyread.meap.extend.EntityPlayerExtend;
 
 public class MEAUtils {
     public static double[] predictRelativeXZOnRangedHit(EntityLivingBase target, double initRelativeX, double initRelativeY, double initRelativeZ, float projectileVelocity) {

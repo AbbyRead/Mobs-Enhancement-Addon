@@ -1,4 +1,4 @@
-package btw.community.abbyread.meap.extension;
+package btw.community.abbyread.meap.extend;
 
 public interface EntityZombieExtend {
     boolean meap$getIsBreakingBlock();

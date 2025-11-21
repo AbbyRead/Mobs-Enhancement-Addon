@@ -1,7 +1,7 @@
 package btw.community.abbyread.meap.ai;
 
 import net.minecraft.src.*;
-import btw.community.abbyread.meap.extension.EntityWitherExtend;
+import btw.community.abbyread.meap.extend.EntityWitherExtend;
 import fabric.meap.mixin.access.EntityLivingAccess;
 
 public class EntityAISmartArrowAttack extends EntityAIBase

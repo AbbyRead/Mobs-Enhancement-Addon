@@ -2,7 +2,7 @@ package btw.community.abbyread.meap.behavior;
 
 import btw.block.BTWBlocks;
 import net.minecraft.src.*;
-import btw.community.abbyread.meap.extension.EntitySkeletonExtend;
+import btw.community.abbyread.meap.extend.EntitySkeletonExtend;
 
 public class SkeletonBreakTorchBehavior extends EntityAIBase {
     private final EntitySkeleton mySkeleton;

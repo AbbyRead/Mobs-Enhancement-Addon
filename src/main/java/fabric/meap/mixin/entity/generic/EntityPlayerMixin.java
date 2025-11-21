@@ -1,7 +1,7 @@
 package fabric.meap.mixin.entity.generic;
 
 import net.minecraft.src.*;
-import btw.community.abbyread.meap.extension.EntityPlayerExtend;
+import btw.community.abbyread.meap.extend.EntityPlayerExtend;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;

@@ -2,7 +2,7 @@ package fabric.meap.mixin.entity.generic;
 
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityEnderCrystal;
-import btw.community.abbyread.meap.extension.EntityEnderCrystalExtend;
+import btw.community.abbyread.meap.extend.EntityEnderCrystalExtend;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;

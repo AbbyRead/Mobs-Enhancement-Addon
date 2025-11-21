@@ -6,7 +6,7 @@
   "name": "Mobs Enhancement Abby Port",
   "description": "Slightly strengthens monsters. This is a port of Mobs Enhancement Addon to BTW CE 3.0.0.",
   "authors": [
-    "Pot_Tx"
+    "Pot_Tx; AbbyRead"
   ],
   "contact": {
     "homepage": "https://github.com/BTW-Community/Mobs-Enhancement-Addon",
@@ -25,7 +25,7 @@
     "btw:addon_prefix": "MEAP",
     "loom:injected_interfaces": {
       "net/minecraft/src/EntitySlime": [
-        "net/pottx/mobsenhancement/extend/EntitySlimeExtend"
+        "btw/community/abbyread/meap/extend/EntitySlimeExtend"
       ]
     }
   },

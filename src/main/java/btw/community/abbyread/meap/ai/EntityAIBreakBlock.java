@@ -1,7 +1,7 @@
 package btw.community.abbyread.meap.ai;
 
 import net.minecraft.src.*;
-import btw.community.abbyread.meap.extension.EntityZombieExtend;
+import btw.community.abbyread.meap.extend.EntityZombieExtend;
 import org.jetbrains.annotations.NotNull;
 
 public class EntityAIBreakBlock extends EntityAIBase {

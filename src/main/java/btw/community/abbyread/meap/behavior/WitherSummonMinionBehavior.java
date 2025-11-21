@@ -3,7 +3,7 @@ package btw.community.abbyread.meap.behavior;
 import btw.community.abbyread.meap.core.MEAEffectManager;
 import net.minecraft.src.*;
 import btw.item.BTWItems;
-import btw.community.abbyread.meap.extension.EntityWitherExtend;
+import btw.community.abbyread.meap.extend.EntityWitherExtend;
 import fabric.meap.mixin.access.EntityWitherAccess;
 
 public class WitherSummonMinionBehavior extends EntityAIBase {

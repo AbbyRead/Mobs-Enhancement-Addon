@@ -1,7 +1,7 @@
 package fabric.meap.mixin.render;
 
 import net.minecraft.src.*;
-import btw.community.abbyread.meap.extension.EntityEnderCrystalExtend;
+import btw.community.abbyread.meap.extend.EntityEnderCrystalExtend;
 import org.lwjgl.opengl.GL11;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;

@@ -3,7 +3,7 @@ package fabric.meap.mixin.entity.hostile;
 import net.minecraft.src.*;
 import btw.community.abbyread.meap.behavior.WitherDashBehavior;
 import btw.community.abbyread.meap.behavior.WitherSummonMinionBehavior;
-import btw.community.abbyread.meap.extension.EntityWitherExtend;
+import btw.community.abbyread.meap.extend.EntityWitherExtend;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;

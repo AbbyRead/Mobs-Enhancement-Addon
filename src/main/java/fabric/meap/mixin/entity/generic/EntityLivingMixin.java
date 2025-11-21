@@ -5,7 +5,7 @@ import net.minecraft.src.EntityLiving;
 import net.minecraft.src.EntitySlime;
 import net.minecraft.src.SharedMonsterAttributes;
 import btw.community.abbyread.meap.core.MEAUtils;
-import btw.community.abbyread.meap.extension.EntityLivingExtend;
+import btw.community.abbyread.meap.extend.EntityLivingExtend;
 import fabric.meap.mixin.access.EntityCreatureAccess;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;

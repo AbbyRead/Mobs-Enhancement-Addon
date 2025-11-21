@@ -2,7 +2,7 @@ package fabric.meap.mixin.entity.hostile;
 
 import net.minecraft.src.*;
 import btw.community.abbyread.meap.core.MEAUtils;
-import btw.community.abbyread.meap.extension.EntitySilverfishExtend;
+import btw.community.abbyread.meap.extend.EntitySilverfishExtend;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;

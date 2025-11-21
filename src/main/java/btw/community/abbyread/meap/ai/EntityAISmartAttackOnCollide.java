@@ -1,8 +1,8 @@
 package btw.community.abbyread.meap.ai;
 
 import net.minecraft.src.*;
-import btw.community.abbyread.meap.extension.EntityLivingExtend;
-import btw.community.abbyread.meap.extension.EntityZombieExtend;
+import btw.community.abbyread.meap.extend.EntityLivingExtend;
+import btw.community.abbyread.meap.extend.EntityZombieExtend;
 import fabric.meap.mixin.access.EntityLivingAccess;
 
 /**

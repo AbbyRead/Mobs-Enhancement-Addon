@@ -2,7 +2,7 @@ package fabric.meap.mixin.entity.projectile;
 
 import net.minecraft.src.*;
 import btw.community.abbyread.meap.core.MEAUtils;
-import btw.community.abbyread.meap.extension.EntityArrowExtend;
+import btw.community.abbyread.meap.extend.EntityArrowExtend;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;

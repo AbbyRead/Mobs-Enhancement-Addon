@@ -2,7 +2,7 @@ package btw.community.abbyread.meap.behavior;
 
 import btw.block.BTWBlocks;
 import net.minecraft.src.*;
-import btw.community.abbyread.meap.extension.EntityWitherExtend;
+import btw.community.abbyread.meap.extend.EntityWitherExtend;
 import fabric.meap.mixin.access.EntityWitherAccess;
 
 import java.util.List;

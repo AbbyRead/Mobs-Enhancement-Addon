@@ -148,7 +148,7 @@ src/main/
 │   ├── core/
 │   │   ├── MEAEffectManager.java
 │   │   └── MEAUtils.java
-│   └── extension/
+│   └── extend/
 │       ├── EntityArrowExtend.java
 │       ├── EntityEnderCrystalExtend.java
 │       ├── EntityLivingBaseExtend.java

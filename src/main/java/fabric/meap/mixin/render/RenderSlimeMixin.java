@@ -3,7 +3,7 @@ package fabric.meap.mixin.render;
 import net.minecraft.src.EntitySlime;
 import net.minecraft.src.RenderSlime;
 import net.minecraft.src.ResourceLocation;
-import btw.community.abbyread.meap.extension.EntitySlimeExtend;
+import btw.community.abbyread.meap.extend.EntitySlimeExtend;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;

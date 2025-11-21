@@ -4,7 +4,7 @@ import net.minecraft.src.EntityCreature;
 import net.minecraft.src.EntityMob;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.World;
-import btw.community.abbyread.meap.extension.EntityMobExtend;
+import btw.community.abbyread.meap.extend.EntityMobExtend;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;

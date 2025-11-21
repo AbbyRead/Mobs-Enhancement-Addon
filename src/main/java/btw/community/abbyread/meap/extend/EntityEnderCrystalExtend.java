@@ -1,4 +1,4 @@
-package btw.community.abbyread.meap.extension;
+package btw.community.abbyread.meap.extend;
 
 import net.minecraft.src.EntityEnderCrystal;
 

@@ -2,9 +2,9 @@ package fabric.meap.mixin.entity.generic;
 
 import net.minecraft.src.*;
 import btw.community.abbyread.meap.core.MEAUtils;
-import btw.community.abbyread.meap.extension.EntityLivingBaseExtend;
-import btw.community.abbyread.meap.extension.EntitySilverfishExtend;
-import btw.community.abbyread.meap.extension.EntityZombieExtend;
+import btw.community.abbyread.meap.extend.EntityLivingBaseExtend;
+import btw.community.abbyread.meap.extend.EntitySilverfishExtend;
+import btw.community.abbyread.meap.extend.EntityZombieExtend;
 import fabric.meap.mixin.access.EntityLivingBaseAccess;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
