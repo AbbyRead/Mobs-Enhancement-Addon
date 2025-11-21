@@ -1,7 +1,5 @@
 # Mobs Enhancement Abby Port
 
-![Mod Thumbnail](src/main/resources/mobsenhancement/thumbnail.png "Happy Creeper")
-
 This is a port of Mobs Enhancement Addon (MEA) to Better Than Wolves 3.0.0.  MEA aims to slightly strengthen mobs, adding difficulty to the game.
 
 ## Features
@@ -130,3 +128,110 @@ This is a port of Mobs Enhancement Addon (MEA) to Better Than Wolves 3.0.0.  MEA
 - Animals panic when pushed by a player.
 - Players' reputation decrease if they attack villagers in a village.
 - Villagers refuse to trade with players who have low reputation.
+
+## Project Structure:
+```
+src/main/
+├── java/btw/community/abbyread/meap/
+│   ├── MobsEnhancementAddon.java
+│   ├── ai/
+│   │   ├── EntityAIBreakBlock.java
+│   │   ├── EntityAIFleeFromEnemy.java
+│   │   ├── EntityAIFleeFromExplosion.java
+│   │   ├── EntityAISmartArrowAttack.java
+│   │   └── EntityAISmartAttackOnCollide.java
+│   ├── behavior/
+│   │   ├── AnimalCombatBehavior.java
+│   │   ├── SkeletonBreakTorchBehavior.java
+│   │   ├── WitherDashBehavior.java
+│   │   └── WitherSummonMinionBehavior.java
+│   ├── core/
+│   │   ├── MEAEffectManager.java
+│   │   └── MEAUtils.java
+│   └── extension/
+│       ├── EntityArrowExtend.java
+│       ├── EntityEnderCrystalExtend.java
+│       ├── EntityLivingBaseExtend.java
+│       ├── EntityLivingExtend.java
+│       ├── EntityMobExtend.java
+│       ├── EntityPlayerExtend.java
+│       ├── EntitySilverfishExtend.java
+│       ├── EntitySkeletonExtend.java
+│       ├── EntitySlimeExtend.java
+│       ├── EntityWitherExtend.java
+│       └── EntityZombieExtend.java
+├── java/fabric/meap/mixin/
+│   ├── access/
+│   │   ├── EntityAccess.java
+│   │   ├── EntityCreatureAccess.java
+│   │   ├── EntityCreeperAccess.java
+│   │   ├── EntityGhastAccess.java
+│   │   ├── EntityLivingAccess.java
+│   │   ├── EntityLivingBaseAccess.java
+│   │   ├── EntityPigZombieAccess.java
+│   │   └── EntityWitherAccess.java
+│   ├── ai/
+│   │   ├── CreeperSwellBehaviorMixin.java
+│   │   ├── EntityAILookIdleMixin.java
+│   │   ├── EntityAITargetMixin.java
+│   │   ├── EntityAITradePlayerMixin.java
+│   │   └── SimpleWanderBehaviorMixin.java
+│   ├── entity/
+│   │   ├── generic/
+│   │   │   ├── EntityAnimalMixin.java
+│   │   │   ├── EntityLivingBaseMixin.java
+│   │   │   ├── EntityLivingMixin.java
+│   │   │   ├── EntityMixin.java
+│   │   │   ├── EntityMobMixin.java
+│   │   │   ├── EntityPlayerMPMixin.java
+│   │   │   └── EntityPlayerMixin.java
+│   │   ├── hostile/
+│   │   │   ├── EntityBlazeMixin.java
+│   │   │   ├── EntityCreeperMixin.java
+│   │   │   ├── EntityDragonMixin.java
+│   │   │   ├── EntityEnderCrystalMixin.java
+│   │   │   ├── EntityEndermanMixin.java
+│   │   │   ├── EntityGhastMixin.java
+│   │   │   ├── EntityMagmaCubeMixin.java
+│   │   │   ├── EntityPigZombieMixin.java
+│   │   │   ├── EntitySilverfishMixin.java
+│   │   │   ├── EntitySkeletonMixin.java
+│   │   │   ├── EntitySlimeMixin.java
+│   │   │   ├── EntitySpiderMixin.java
+│   │   │   ├── EntityWitchMixin.java
+│   │   │   ├── EntityWitherMixin.java
+│   │   │   └── EntityZombieMixin.java
+│   │   ├── passive/
+│   │   │   ├── EntityCowMixin.java
+│   │   │   ├── EntityPigMixin.java
+│   │   │   ├── EntitySheepMixin.java
+│   │   │   └── EntityVillagerMixin.java
+│   │   └── projectile/
+│   │       ├── EntityArrowMixin.java
+│   │       ├── EntitySmallFireballMixin.java
+│   │       └── EntityThrowableMixin.java
+│   ├── render/
+│   │   ├── EntityRendererMixin.java
+│   │   ├── RenderEnderCrystalMixin.java
+│   │   ├── RenderGhastMixin.java
+│   │   └── RenderSlimeMixin.java
+│   └── world/
+│       ├── BiomeDecoratorMixin.java
+│       ├── MinecraftMixin.java
+│       ├── MobSpawnerBlockMixin.java
+│       └── SpawnerAnimalsMixin.java
+└── resources/
+    ├── assets/
+    │   ├── mea_textures/
+    │   │   ├── core_slime_1.png
+    │   │   ├── core_slime_2.png
+    │   │   ├── crystal_dried.png
+    │   │   ├── ghast.png
+    │   │   └── ghast_fire.png
+    │   └── mod_meta/
+    │       ├── mea-faithful_icon.png
+    │       ├── mea-faithful_icon_LAYERS.psd
+    │       └── original_mea_project_thumbnail.png
+    ├── fabric.mod.json
+    └── meap.mixins.json
+```

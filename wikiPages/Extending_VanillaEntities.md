@@ -19,7 +19,7 @@ The interface represents the new API you want every `EntitySlime` instance to ha
 It contains *only methods*, no state â€” the state will be injected into the target class by the mixin.
 
 ```java
-package net.pottx.mobsenhancement.extend;
+package net.pottx.mobsenhancement.extension;
 
 /**
  * API for additional slime properties injected with a Mixin.
@@ -29,14 +29,17 @@ package net.pottx.mobsenhancement.extend;
  */
 public interface EntitySlimeExtend {
 
-    boolean meap$getIsMagma();
-    void meap$setIsMagma(boolean value);
+	boolean meap$getIsMagma();
 
-    byte meap$getIsCore();
-    void meap$setIsCore(byte id);
+	void meap$setIsMagma(boolean value);
 
-    boolean meap$getIsMerging();
-    void meap$setIsMerging(boolean value);
+	byte meap$getIsCore();
+
+	void meap$setIsCore(byte id);
+
+	boolean meap$getIsMerging();
+
+	void meap$setIsMerging(boolean value);
 }
 ```
 
@@ -53,7 +56,7 @@ The mixin adds new fields, initializes them, and makes them part of the entityâ€
 package net.pottx.mobsenhancement.mixin;
 
 import net.minecraft.src.*;
-import net.pottx.mobsenhancement.extend.EntitySlimeExtend;
+import net.pottx.mobsenhancement.extension.EntitySlimeExtend;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -64,76 +67,93 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(EntitySlime.class)
 public abstract class EntitySlimeMixin extends EntityLiving implements EntitySlimeExtend {
 
-    // ---------------------------------------------------------
-    // Injected fields (stored in the real EntitySlime instances)
-    // ---------------------------------------------------------
-    @Unique private boolean isMagma;
-    @Unique private boolean isMerging;
-    @Unique private int mergeCooldownCounter;
+	// ---------------------------------------------------------
+	// Injected fields (stored in the real EntitySlime instances)
+	// ---------------------------------------------------------
+	@Unique
+	private boolean isMagma;
+	@Unique
+	private boolean isMerging;
+	@Unique
+	private int mergeCooldownCounter;
 
-    @Unique private static final int IS_CORE_DATA_WATCHER_ID = 25;
+	@Unique
+	private static final int IS_CORE_DATA_WATCHER_ID = 25;
 
-    // Stub constructor to satisfy the superclass
-    private EntitySlimeMixin(World world) {
-        super(world);
-    }
+	// Stub constructor to satisfy the superclass
+	private EntitySlimeMixin(World world) {
+		super(world);
+	}
 
-    // ---------------------------------------------------------
-    // Shadow vanilla methods used internally
-    // ---------------------------------------------------------
-    @Shadow protected abstract void setSlimeSize(int size);
-    @Shadow protected abstract EntitySlime createInstance();
-    @Shadow public abstract int getSlimeSize();
+	// ---------------------------------------------------------
+	// Shadow vanilla methods used internally
+	// ---------------------------------------------------------
+	@Shadow
+	protected abstract void setSlimeSize(int size);
 
-    // ---------------------------------------------------------
-    // Interface implementation
-    // ---------------------------------------------------------
-    @Override
-    public boolean meap$getIsMagma() { return isMagma; }
+	@Shadow
+	protected abstract EntitySlime createInstance();
 
-    @Override
-    public void meap$setIsMagma(boolean value) { isMagma = value; }
+	@Shadow
+	public abstract int getSlimeSize();
 
-    @Override
-    public boolean meap$getIsMerging() { return isMerging; }
+	// ---------------------------------------------------------
+	// Interface implementation
+	// ---------------------------------------------------------
+	@Override
+	public boolean meap$getIsMagma() {
+		return isMagma;
+	}
 
-    @Override
-    public void meap$setIsMerging(boolean value) { isMerging = value; }
+	@Override
+	public void meap$setIsMagma(boolean value) {
+		isMagma = value;
+	}
 
-    @Override
-    public byte meap$getIsCore() {
-        return dataWatcher.getWatchableObjectByte(IS_CORE_DATA_WATCHER_ID);
-    }
+	@Override
+	public boolean meap$getIsMerging() {
+		return isMerging;
+	}
 
-    @Override
-    public void meap$setIsCore(byte value) {
-        dataWatcher.updateObject(IS_CORE_DATA_WATCHER_ID, value);
-    }
+	@Override
+	public void meap$setIsMerging(boolean value) {
+		isMerging = value;
+	}
 
-    // ---------------------------------------------------------
-    // Constructor inject: initialize new fields
-    // ---------------------------------------------------------
-    @Inject(method = "<init>", at = @At("TAIL"))
-    private void onInit(World world, CallbackInfo ci) {
-        isMagma = false;
-        isMerging = false;
-        mergeCooldownCounter = 40;
+	@Override
+	public byte meap$getIsCore() {
+		return dataWatcher.getWatchableObjectByte(IS_CORE_DATA_WATCHER_ID);
+	}
 
-        dataWatcher.addObject(IS_CORE_DATA_WATCHER_ID, (byte) 0);
-    }
+	@Override
+	public void meap$setIsCore(byte value) {
+		dataWatcher.updateObject(IS_CORE_DATA_WATCHER_ID, value);
+	}
 
-    // Example method using the injected fields
-    @Unique
-    public void exampleMergeLogic() {
-        if (isMagma) return;
-        if (meap$getIsCore() != 1) return;
+	// ---------------------------------------------------------
+	// Constructor inject: initialize new fields
+	// ---------------------------------------------------------
+	@Inject(method = "<init>", at = @At("TAIL"))
+	private void onInit(World world, CallbackInfo ci) {
+		isMagma = false;
+		isMerging = false;
+		mergeCooldownCounter = 40;
 
-        mergeCooldownCounter--;
-        if (mergeCooldownCounter <= 0) {
-            isMerging = false;
-            mergeCooldownCounter = 40;
-        }
-    }
+		dataWatcher.addObject(IS_CORE_DATA_WATCHER_ID, (byte) 0);
+	}
+
+	// Example method using the injected fields
+	@Unique
+	public void exampleMergeLogic() {
+		if (isMagma) return;
+		if (meap$getIsCore() != 1) return;
+
+		mergeCooldownCounter--;
+		if (mergeCooldownCounter <= 0) {
+			isMerging = false;
+			mergeCooldownCounter = 40;
+		}
+	}
 }
 ```
 
