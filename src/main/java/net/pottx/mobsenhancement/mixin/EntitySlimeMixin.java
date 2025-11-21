@@ -21,6 +21,7 @@ public abstract class EntitySlimeMixin extends EntityLiving implements EntitySli
 
     @Unique private static final int IS_CORE_DATA_WATCHER_ID = 25;
 
+    @SuppressWarnings("unused")
     private EntitySlimeMixin(World world) {
         super(world);
     }
@@ -28,7 +29,9 @@ public abstract class EntitySlimeMixin extends EntityLiving implements EntitySli
     // ------------------------------
     // Shadow existing methods
     // ------------------------------
+    @SuppressWarnings("unused")
     @Shadow protected abstract void setSlimeSize(int size);
+    @SuppressWarnings("unused")
     @Shadow protected abstract EntitySlime createInstance();
     @Shadow public abstract int getSlimeSize();
 
@@ -37,28 +40,28 @@ public abstract class EntitySlimeMixin extends EntityLiving implements EntitySli
     // ------------------------------
 
     @Override
-    public boolean mea$getIsMagma() {
+    public boolean meap$getIsMagma() {
         return this.isMagma;
     }
 
     @Override
-    public void mea$setIsMagma(boolean value) {
+    public void meap$setIsMagma(boolean value) {
         this.isMagma = value;
     }
 
     @Override
-    public boolean mea$getIsMerging() { return this.isMerging; }
+    public boolean meap$getIsMerging() { return this.isMerging; }
 
     @Override
-    public void mea$setIsMerging(boolean value) { this.isMerging = value; }
+    public void meap$setIsMerging(boolean value) { this.isMerging = value; }
 
     @Override
-    public byte mea$getIsCore() {
+    public byte meap$getIsCore() {
         return this.dataWatcher.getWatchableObjectByte(IS_CORE_DATA_WATCHER_ID);
     }
 
     @Override
-    public void mea$setIsCore(byte value) {
+    public void meap$setIsCore(byte value) {
         this.dataWatcher.updateObject(IS_CORE_DATA_WATCHER_ID, value);
     }
 
@@ -72,17 +75,18 @@ public abstract class EntitySlimeMixin extends EntityLiving implements EntitySli
         this.dataWatcher.addObject(IS_CORE_DATA_WATCHER_ID, (byte)0);
 
         if (this.getSlimeSize() < 4 && this.rand.nextInt(4) == 0) {
-            this.mea$setIsCore((byte)1);
+            this.meap$setIsCore((byte)1);
         }
     }
 
     // ------------------------------
     // Example: merge logic using Mixin fields
     // ------------------------------
+    @SuppressWarnings("unused")
     @Unique
     private void doMergeLogic() {
         if (isMagma) return;
-        if (this.mea$getIsCore() != (byte)1) return;
+        if (this.meap$getIsCore() != (byte)1) return;
 
         mergeCooldownCounter--;
         if (mergeCooldownCounter <= 0) {

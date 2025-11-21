@@ -16,6 +16,7 @@ public abstract class EntityDragonMixin extends EntityLiving
     @Shadow public EntityEnderCrystal healingEnderCrystal;
     @Shadow public EntityDragonPart dragonPartHead;
 
+    @SuppressWarnings("unused")
     private EntityDragonMixin(World world) {
         super(world);
     }
@@ -55,7 +56,7 @@ public abstract class EntityDragonMixin extends EntityLiving
             for (EntityEnderCrystal crystal : nearbyCrystals) {
                 double distanceSq = crystal.getDistanceSqToEntity(this);
 
-                if (((EntityEnderCrystalExtend) crystal).mea$getIsDried() == (byte) 0 && distanceSq < closestDistanceSq) {
+                if (((EntityEnderCrystalExtend) crystal).meap$getIsDried() == (byte) 0 && distanceSq < closestDistanceSq) {
                     closestDistanceSq = distanceSq;
                     closestCrystal = crystal;
                 }
@@ -64,10 +65,10 @@ public abstract class EntityDragonMixin extends EntityLiving
             // Update healing crystal state
             if (closestCrystal != this.healingEnderCrystal) {
                 if (this.healingEnderCrystal != null) {
-                    ((EntityEnderCrystalExtend) this.healingEnderCrystal).mea$setIsHealing(false);
+                    ((EntityEnderCrystalExtend) this.healingEnderCrystal).meap$setIsHealing(false);
                 }
                 if (closestCrystal != null) {
-                    ((EntityEnderCrystalExtend) closestCrystal).mea$setIsHealing(true);
+                    ((EntityEnderCrystalExtend) closestCrystal).meap$setIsHealing(true);
                 }
                 this.healingEnderCrystal = closestCrystal;
             }

@@ -7,6 +7,7 @@ import java.util.List;
 
 @Mixin(BlockMobSpawner.class)
 public abstract class MobSpawnerBlockMixin extends BlockContainer {
+    @SuppressWarnings("unused")
     private MobSpawnerBlockMixin(int i, Material material) {
         super(i, material);
     }

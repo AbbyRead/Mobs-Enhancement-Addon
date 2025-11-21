@@ -10,6 +10,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(EntityThrowable.class)
 public abstract class EntityThrowableMixin extends Entity {
+    @SuppressWarnings("unused")
     private EntityThrowableMixin(World par1World) {
         super(par1World);
     }

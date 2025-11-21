@@ -11,6 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(EntitySilverfish.class)
 public abstract class EntitySilverfishMixin extends EntityMob implements EntitySilverfishExtend {
+    @SuppressWarnings("unused")
     private EntitySilverfishMixin(World par1World) {
         super(par1World);
     }
@@ -34,7 +35,7 @@ public abstract class EntitySilverfishMixin extends EntityMob implements EntityS
     }
 
     @Unique
-    public void mea$split() {
+    public void meap$split() {
         double vx = this.motionZ * (0.25 + this.rand.nextDouble() * 0.5);
         double vz = 0 - this.motionX * (0.25 + this.rand.nextDouble() * 0.5);
         int hp = MathHelper.ceiling_double_int(this.getHealth() * 0.5);

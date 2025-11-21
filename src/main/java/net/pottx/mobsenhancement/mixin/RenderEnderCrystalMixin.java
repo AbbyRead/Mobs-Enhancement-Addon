@@ -63,12 +63,12 @@ public abstract class RenderEnderCrystalMixin extends Render {
 
     @Unique
     private boolean isDried(EntityEnderCrystal crystal) {
-        return ((EntityEnderCrystalExtend) crystal).mea$getIsDried() == DRIED_STATE;
+        return ((EntityEnderCrystalExtend) crystal).meap$getIsDried() == DRIED_STATE;
     }
 
     @Unique
     private EntityEnderCrystal getChargingTarget(EntityEnderCrystal crystal) {
-        return ((EntityEnderCrystalExtend) crystal).mea$getChargingEnderCrystal();
+        return ((EntityEnderCrystalExtend) crystal).meap$getChargingEnderCrystal();
     }
 
     @Unique

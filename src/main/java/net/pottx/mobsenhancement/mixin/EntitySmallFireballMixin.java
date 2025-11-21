@@ -9,6 +9,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(EntitySmallFireball.class)
 public abstract class EntitySmallFireballMixin extends EntityFireball {
+    @SuppressWarnings("unused")
     private EntitySmallFireballMixin(World par1World) {
         super(par1World);
     }

@@ -4,26 +4,26 @@ import net.minecraft.src.EntityEnderCrystal;
 
 public interface EntityEnderCrystalExtend {
     @SuppressWarnings("unused")
-    void mea$setRespawnCounter(int respawnCounter);
+    void meap$setRespawnCounter(int respawnCounter);
 
-    byte mea$getIsDried();
+    byte meap$getIsDried();
 
-    void mea$setIsDried(byte isDried);
+    void meap$setIsDried(byte isDried);
 
-    EntityEnderCrystal mea$getChargingEnderCrystal();
+    EntityEnderCrystal meap$getChargingEnderCrystal();
 
-    boolean mea$getIsOccupied();
+    boolean meap$getIsOccupied();
 
-    void mea$setIsOccupied(boolean isOccupied);
+    void meap$setIsOccupied(boolean isOccupied);
 
-    boolean mea$getIsHealing();
+    boolean meap$getIsHealing();
 
-    void mea$setIsHealing(boolean isHealing);
+    void meap$setIsHealing(boolean isHealing);
     
-    void mea$setChargingCounter(int counter);
+    void meap$setChargingCounter(int counter);
 
 	@SuppressWarnings("unused")
-	default int mea$getChargingCounter() {
+	default int meap$getChargingCounter() {
 		return 0;
 	}
 }

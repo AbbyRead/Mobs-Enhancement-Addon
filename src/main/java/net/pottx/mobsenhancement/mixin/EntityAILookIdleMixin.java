@@ -20,8 +20,8 @@ public abstract class EntityAILookIdleMixin extends EntityAIBase {
             cancellable = true
     )
     private void shouldNotExecuteIfBreaking(CallbackInfoReturnable<Boolean> cir) {
-        if ((this.idleEntity instanceof EntityZombie && ((EntityZombieExtend) this.idleEntity).mea$getIsBreakingBlock()) ||
-                (this.idleEntity instanceof EntitySkeleton && ((EntitySkeletonExtend) this.idleEntity).mea$getIsBreakingTorch())) {
+        if ((this.idleEntity instanceof EntityZombie && ((EntityZombieExtend) this.idleEntity).meap$getIsBreakingBlock()) ||
+                (this.idleEntity instanceof EntitySkeleton && ((EntitySkeletonExtend) this.idleEntity).meap$getIsBreakingTorch())) {
             cir.setReturnValue(false);
         }
     }
@@ -32,8 +32,8 @@ public abstract class EntityAILookIdleMixin extends EntityAIBase {
             cancellable = true
     )
     private void notContinueIfBreaking(CallbackInfoReturnable<Boolean> cir) {
-        if ((this.idleEntity instanceof EntityZombie && ((EntityZombieExtend) this.idleEntity).mea$getIsBreakingBlock()) ||
-                (this.idleEntity instanceof EntitySkeleton && ((EntitySkeletonExtend) this.idleEntity).mea$getIsBreakingTorch())) {
+        if ((this.idleEntity instanceof EntityZombie && ((EntityZombieExtend) this.idleEntity).meap$getIsBreakingBlock()) ||
+                (this.idleEntity instanceof EntitySkeleton && ((EntitySkeletonExtend) this.idleEntity).meap$getIsBreakingTorch())) {
             cir.setReturnValue(false);
         }
     }

@@ -3,9 +3,9 @@ package net.pottx.mobsenhancement.extend;
 public interface EntityPlayerExtend {
 
     // Motions
-    double mea$getRealMotionX();
-    double mea$getRealMotionY();
-    double mea$getRealMotionZ();
+    double meap$getRealMotionX();
+    double meap$getRealMotionY();
+    double meap$getRealMotionZ();
 
-    boolean mea$isCloseToEnd();
+    boolean meap$isCloseToEnd();
 }

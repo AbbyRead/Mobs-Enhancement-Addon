@@ -43,7 +43,7 @@ public class EntityLivingBaseMixin implements EntityLivingBaseExtend {
 		cir.setReturnValue(canTopBeSeen || canCenterBeSeen || canBottomBeSeen || canEyeBeSeen);
 	}
 
-	public boolean mea$realisticCanEntityBeSeen(Entity entity, double absDist) {
+	public boolean meap$realisticCanEntityBeSeen(Entity entity, double absDist) {
 		boolean canTopBeSeen = MEAUtils.rayTraceBlocks_do_do_do( self.worldObj,
 				self.worldObj.getWorldVec3Pool().getVecFromPool( self.posX, self.posY + (double)self.getEyeHeight(), self.posZ ),
 				self.worldObj.getWorldVec3Pool().getVecFromPool( entity.posX, entity.posY + entity.height, entity.posZ ), false, true ) == null;
@@ -72,7 +72,7 @@ public class EntityLivingBaseMixin implements EntityLivingBaseExtend {
 		return isInSight && (canTopBeSeen || canCenterBeSeen || canBottomBeSeen || canEyeBeSeen);
 	}
 
-	public boolean mea$realisticCanEntityBeSensed(Entity entity) {
+	public boolean meap$realisticCanEntityBeSensed(Entity entity) {
 		boolean canTopBeSeen = MEAUtils.rayTraceBlocks_do_do_do( self.worldObj,
 				self.worldObj.getWorldVec3Pool().getVecFromPool( self.posX, self.posY + (double)self.getEyeHeight(), self.posZ ),
 				self.worldObj.getWorldVec3Pool().getVecFromPool( entity.posX, entity.posY + entity.height, entity.posZ ), false, true ) == null;
@@ -107,7 +107,7 @@ public class EntityLivingBaseMixin implements EntityLivingBaseExtend {
 	private void silverfishSplitWhenAttacked(DamageSource damageSource, float amount, CallbackInfoReturnable<Boolean> cir) {
 		if (!(self instanceof EntitySilverfish silverfish)) return;
 		if (damageSource instanceof EntityDamageSource && amount < silverfish.getHealth()) {
-			((EntitySilverfishExtend)silverfish).mea$split();
+			((EntitySilverfishExtend)silverfish).meap$split();
 		}
 	}
 
@@ -123,7 +123,7 @@ public class EntityLivingBaseMixin implements EntityLivingBaseExtend {
 		{
 			if (damageSource == DamageSource.onFire && !zombie.isVillager() && self.getHealth() <= amount)
 			{
-				extendedZombie.mea$onKilledBySun();
+				extendedZombie.meap$onKilledBySun();
 			}
 			else
 			{

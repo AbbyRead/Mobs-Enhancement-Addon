@@ -36,7 +36,7 @@ public abstract class RenderSlimeMixin {
 		EntitySlimeExtend extendedSlime = (EntitySlimeExtend) slime;
 
 		// Skip magma cube / other variants
-		if (!extendedSlime.mea$getIsMagma() && extendedSlime.mea$getIsCore() == (byte)1) {
+		if (!extendedSlime.meap$getIsMagma() && extendedSlime.meap$getIsCore() == (byte)1) {
 			cir.setReturnValue(
 					switch (slime.getSlimeSize()) {
 						case 1 -> CORE_SLIME_1;

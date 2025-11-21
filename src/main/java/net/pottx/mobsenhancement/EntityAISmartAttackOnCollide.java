@@ -7,7 +7,7 @@ import net.pottx.mobsenhancement.mixin.access.EntityLivingAccess;
 
 /**
  * Enhanced attack AI that adds health-based fleeing behavior and respects entity home distances.
- * Mobs will avoid combat when their health is too low and they're being actively targeted.
+ * Mobs will avoid combat when their health is too low and when they're being actively targeted.
  */
 public class EntityAISmartAttackOnCollide extends EntityAIBase {
 
@@ -17,7 +17,7 @@ public class EntityAISmartAttackOnCollide extends EntityAIBase {
     private static final int ATTACK_COOLDOWN_TICKS = 20;
     private static final double TOOL_REACH_BONUS = 2.0D;
 
-    @SuppressWarnings("FieldCanBeLocal") private final World world;
+    private final World world;
     private final EntityLiving attacker;
     private final float moveSpeed;
     private final boolean hasLongMemory;
@@ -105,7 +105,7 @@ public class EntityAISmartAttackOnCollide extends EntityAIBase {
     }
 
     private boolean isAttackerBusy() {
-        return attacker instanceof EntityZombie && ((EntityZombieExtend) attacker).mea$getIsBreakingBlock();
+        return attacker instanceof EntityZombie && ((EntityZombieExtend) attacker).meap$getIsBreakingBlock();
     }
 
     private boolean shouldFleeFromCombat(EntityLivingBase potentialTarget) {
@@ -116,7 +116,7 @@ public class EntityAISmartAttackOnCollide extends EntityAIBase {
     }
 
     private boolean isTargetWithinHomeRange() {
-        return ((EntityLivingExtend) attacker).mea$isWithinMaximumHomeDistance(
+        return ((EntityLivingExtend) attacker).meap$isWithinMaximumHomeDistance(
                 MathHelper.floor_double(currentTarget.posX),
                 MathHelper.floor_double(currentTarget.posY),
                 MathHelper.floor_double(currentTarget.posZ)
@@ -193,6 +193,7 @@ public class EntityAISmartAttackOnCollide extends EntityAIBase {
         attacker.attackEntityAsMob(currentTarget);
     }
 
+	@SuppressWarnings("unused")
 	public World getWorld() {
 		return world;
 	}

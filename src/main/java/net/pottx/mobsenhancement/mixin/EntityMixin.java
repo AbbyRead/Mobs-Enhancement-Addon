@@ -28,10 +28,10 @@ public class EntityMixin {
 		if (!(self instanceof EntityEnderCrystal)) return;
 
 		EntityEnderCrystalExtend crystal = (EntityEnderCrystalExtend) self;
-		if (crystal.mea$getIsDried() == (byte) 0) {
+		if (crystal.meap$getIsDried() == (byte) 0) {
 			// Allow normal death
-			crystal.mea$setIsDried((byte) 1);
-			crystal.mea$setChargingCounter(0);
+			crystal.meap$setIsDried((byte) 1);
+			crystal.meap$setChargingCounter(0);
 		} else {
 			// Already dried, don't actually die
 			ci.cancel();

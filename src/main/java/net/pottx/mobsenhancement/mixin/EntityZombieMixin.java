@@ -23,6 +23,7 @@ public abstract class EntityZombieMixin extends EntityMob implements EntityZombi
     @Shadow
     private IEntitySelector targetEntitySelector;
 
+    @SuppressWarnings("unused")
     private EntityZombieMixin(World par1World) {
         super(par1World);
     }
@@ -41,7 +42,7 @@ public abstract class EntityZombieMixin extends EntityMob implements EntityZombi
 
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(
                 this, EntityPlayer.class, 24.0F, 0,
-                ((EntityMobExtend)this).mea$getCanXray() == (byte)0
+                ((EntityMobExtend)this).meap$getCanXray() == (byte)0
         ));
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityVillager.class, 24.0F, 0, false));this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(
                 this,
@@ -79,16 +80,16 @@ public abstract class EntityZombieMixin extends EntityMob implements EntityZombi
     }
 
     @Unique
-    public boolean mea$getIsBreakingBlock() {
+    public boolean meap$getIsBreakingBlock() {
         return this.isBreakingBlock;
     }
 
     @Unique
-    public void mea$setIsBreakingBlock(boolean isBreakingBlock) {
+    public void meap$setIsBreakingBlock(boolean isBreakingBlock) {
         this.isBreakingBlock = isBreakingBlock;
     }
 
-    public void mea$onKilledBySun() {
+    public void meap$onKilledBySun() {
         if (this.worldObj.isRemote) return;
 
         // Create the skeleton directly

@@ -11,6 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(EntitySheep.class)
 public class EntitySheepMixin extends EntityAnimal
 {
+    @SuppressWarnings("unused")
     private EntitySheepMixin(World par1World) {
         super(par1World);
     }

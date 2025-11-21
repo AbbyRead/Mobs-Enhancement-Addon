@@ -14,6 +14,7 @@ import java.util.List;
 
 @Mixin(EntityPig.class)
 public abstract class EntityPigMixin extends EntityAnimal {
+	@SuppressWarnings("unused")
 	private EntityPigMixin(World par1World) {
         super(par1World);
     }

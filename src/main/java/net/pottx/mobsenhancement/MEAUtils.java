@@ -12,9 +12,9 @@ public class MEAUtils {
         double targetMotionY = target.motionY;
         double targetMotionZ = target.motionZ;
         if (target instanceof EntityPlayer) {
-            targetMotionX = ((EntityPlayerExtend)target).mea$getRealMotionX();
-            targetMotionY = ((EntityPlayerExtend)target).mea$getRealMotionY();
-            targetMotionZ = ((EntityPlayerExtend)target).mea$getRealMotionZ();
+            targetMotionX = ((EntityPlayerExtend)target).meap$getRealMotionX();
+            targetMotionY = ((EntityPlayerExtend)target).meap$getRealMotionY();
+            targetMotionZ = ((EntityPlayerExtend)target).meap$getRealMotionZ();
         }
         double a = targetMotionX * targetMotionX + targetMotionY * targetMotionY + targetMotionZ * targetMotionZ - (double) projectileVelocity * (double) projectileVelocity;
         double b = 2 * (initRelativeX * targetMotionX + initRelativeY * targetMotionY + initRelativeZ * targetMotionZ);

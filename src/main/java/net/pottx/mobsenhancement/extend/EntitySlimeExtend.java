@@ -2,14 +2,15 @@ package net.pottx.mobsenhancement.extend;
 
 public interface EntitySlimeExtend {
     // isMagma
-    boolean mea$getIsMagma();
-    void mea$setIsMagma(boolean value);
+    boolean meap$getIsMagma();
+    void meap$setIsMagma(boolean value);
 
     // isCore
-    byte mea$getIsCore();
-    void mea$setIsCore(byte id);
+    byte meap$getIsCore();
+    @SuppressWarnings("unused")
+    void meap$setIsCore(byte id);
 
     // isMerging
-    @SuppressWarnings("unused") boolean mea$getIsMerging();
-    @SuppressWarnings("unused") void mea$setIsMerging(boolean value);
+    @SuppressWarnings("unused") boolean meap$getIsMerging();
+    @SuppressWarnings("unused") void meap$setIsMerging(boolean value);
 }

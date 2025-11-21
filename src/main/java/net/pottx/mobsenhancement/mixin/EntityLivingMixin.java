@@ -18,7 +18,7 @@ public class EntityLivingMixin implements EntityLivingExtend {
 	@Unique
 	final EntityLiving self = (EntityLiving) (Object) this;
 
-	public boolean mea$isWithinMaximumHomeDistance(int x, int y, int z) {
+	public boolean meap$isWithinMaximumHomeDistance(int x, int y, int z) {
 		if (!(self instanceof EntityCreature creature)) return true;
 		EntityCreatureAccess access = (EntityCreatureAccess) creature;
 		if (access.getMaximumHomeDistance() == -1.0F) {

@@ -14,7 +14,7 @@ public class AnimalCombatBehavior extends EntityAIBase {
     private int pathTimer;
 	private final int healthBoundary;
 
-    public AnimalCombatBehavior(EntityAnimal theAnimal, float animalApproachSpeed, float animalFleeSpeed, @SuppressWarnings("rawtypes") Class fearedEntityClass, int healthBoundary)
+    public AnimalCombatBehavior(EntityAnimal theAnimal, float animalApproachSpeed, float animalFleeSpeed, @SuppressWarnings({"rawtypes", "unused"}) Class fearedEntityClass, int healthBoundary)
     {
         this.theAnimal = theAnimal;
         this.animalApproachSpeed = animalApproachSpeed;

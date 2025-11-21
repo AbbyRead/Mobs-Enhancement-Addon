@@ -40,11 +40,11 @@ public class WitherDashBehavior extends EntityAIBase {
         super.resetTask();
 
         this.dashCooldownCounter = (this.myWither.posY > 256D ? 40 : 80) + this.myWither.rand.nextInt(40);
-        ((EntityWitherExtend)this.myWither).mea$setIsDoingSpecialAttack(false);
+        ((EntityWitherExtend)this.myWither).meap$setIsDoingSpecialAttack(false);
     }
 
     public void startExecuting() {
-        ((EntityWitherExtend)this.myWither).mea$setIsDoingSpecialAttack(true);
+        ((EntityWitherExtend)this.myWither).meap$setIsDoingSpecialAttack(true);
         this.dashTarget = (EntityLiving) this.myWither.getAttackTarget();
         this.dashProcessCounter = 40;
     }

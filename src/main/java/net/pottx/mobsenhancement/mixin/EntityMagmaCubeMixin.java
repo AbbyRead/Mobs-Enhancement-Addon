@@ -10,6 +10,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(EntityMagmaCube.class)
 public abstract class EntityMagmaCubeMixin extends EntitySlime {
+    @SuppressWarnings("unused")
     private EntityMagmaCubeMixin(World par1World) {
         super(par1World);
     }
@@ -19,7 +20,7 @@ public abstract class EntityMagmaCubeMixin extends EntitySlime {
             at = @At(value = "TAIL")
     )
     private void setIsMagma(CallbackInfo ci) {
-        ((EntitySlimeExtend)this).mea$setIsMagma(true);
+        ((EntitySlimeExtend)this).meap$setIsMagma(true);
     }
 
     @Override

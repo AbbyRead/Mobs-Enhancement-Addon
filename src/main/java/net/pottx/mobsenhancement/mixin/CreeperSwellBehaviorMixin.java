@@ -38,7 +38,7 @@ public abstract class CreeperSwellBehaviorMixin extends EntityAIBase {
         return this.swellingCreeper.getEntitySenses().canSee(creeperAttackTarget) ? distance : distance - 1.0D;
     }
 
-    @SuppressWarnings("unused")
+    @SuppressWarnings({"unused", "SameReturnValue"})
     @Redirect(
             method = "updateTask()V",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/src/EntitySenses;canSee(Lnet/minecraft/src/Entity;)Z")

@@ -46,7 +46,7 @@ public class EntityAISmartArrowAttack extends EntityAIBase
 
             if (target == null) {
                 return false;
-            } else if (this.entityWielding instanceof EntityWither wither && ((EntityWitherExtend)wither).mea$getIsDoingSpecialAttack()) {
+            } else if (this.entityWielding instanceof EntityWither wither && ((EntityWitherExtend)wither).meap$getIsDoingSpecialAttack()) {
                 return false;
             } else {
                 shouldFlee = target instanceof EntityPlayer || ((EntityLiving)target).getAttackTarget() == entityWielding;

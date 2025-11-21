@@ -10,6 +10,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(EntityArrow.class)
 public abstract class EntityArrowMixin extends Entity implements IProjectile, EntityArrowExtend {
+    @SuppressWarnings("unused")
     private EntityArrowMixin(World world) {
         super(world);
     }
@@ -24,7 +25,7 @@ public abstract class EntityArrowMixin extends Entity implements IProjectile, En
 
     @SuppressWarnings("unused")
     @Unique
-    public void mea$resetForPrediction(EntityLiving owner, EntityLiving target, float arrowVelocity, float deviation) {
+    public void meap$resetForPrediction(EntityLiving owner, EntityLiving target, float arrowVelocity, float deviation) {
         double initRelativeX = target.posX - owner.posX;
         double relativeY = target.boundingBox.minY + (double)(target.height / 3.0F) - this.posY;
         double initRelativeZ = target.posZ - owner.posZ;

@@ -19,6 +19,7 @@ public abstract class EntitySkeletonMixin extends EntityMob implements IRangedAt
     final
     EntitySkeleton self = (EntitySkeleton) (Object) this;
 
+    @SuppressWarnings("unused")
     private EntitySkeletonMixin(World world) {
         super(world);
     }
@@ -45,7 +46,7 @@ public abstract class EntitySkeletonMixin extends EntityMob implements IRangedAt
         tasks.addTask(2, new EntityAIFleeFromExplosion(this, 0.375F, 4.0F));
         tasks.addTask(3, new EntityAIFleeFromEnemy(this, EntityPlayer.class, 0.375F, 24.0F, 5));
         this.targetTasks.addTask(4, new SkeletonBreakTorchBehavior(self));
-        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityVillager.class, 24.0F, 0, ((EntityMobExtend)this).mea$getCanXray() == (byte)0));
+        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityVillager.class, 24.0F, 0, ((EntityMobExtend)this).meap$getCanXray() == (byte)0));
     }
 
     @Inject(
@@ -143,12 +144,12 @@ public abstract class EntitySkeletonMixin extends EntityMob implements IRangedAt
     }
 
     @Unique
-    public boolean mea$getIsBreakingTorch() {
+    public boolean meap$getIsBreakingTorch() {
         return isBreakingTorch;
     }
 
     @Unique
-    public void mea$setIsBreakingTorch(boolean isBreakingTorch) {
+    public void meap$setIsBreakingTorch(boolean isBreakingTorch) {
         this.isBreakingTorch = isBreakingTorch;
     }
 

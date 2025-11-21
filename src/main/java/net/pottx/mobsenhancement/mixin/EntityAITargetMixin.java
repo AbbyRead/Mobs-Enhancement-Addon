@@ -18,7 +18,7 @@ public abstract class EntityAITargetMixin extends EntityAIBase implements Entity
             at = @At(value = "INVOKE", target = "Lnet/minecraft/src/EntitySenses;canSee(Lnet/minecraft/src/Entity;)Z")
     )
     private boolean doRealisticCanSeeCheck(EntitySenses entitySenses, Entity par1Entity) {
-        return ((EntityLivingBaseExtend)taskOwner).mea$realisticCanEntityBeSeen(par1Entity, 4);
+        return ((EntityLivingBaseExtend)taskOwner).meap$realisticCanEntityBeSeen(par1Entity, 4);
     }
 
     @Redirect(
@@ -26,6 +26,6 @@ public abstract class EntityAITargetMixin extends EntityAIBase implements Entity
             at = @At(value = "INVOKE", target = "Lnet/minecraft/src/EntitySenses;canSee(Lnet/minecraft/src/Entity;)Z")
     )
     private boolean doRealisticCanSenseCheck(EntitySenses entitySenses, Entity par1Entity) {
-        return ((EntityLivingBaseExtend)taskOwner).mea$realisticCanEntityBeSensed(par1Entity);
+        return ((EntityLivingBaseExtend)taskOwner).meap$realisticCanEntityBeSensed(par1Entity);
     }
 }

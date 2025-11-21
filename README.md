@@ -1,8 +1,8 @@
-# Mobs Enhancement Addon
+# Mobs Enhancement Abby Port
 
 ![Mod Thumbnail](src/main/resources/mobsenhancement/thumbnail.png "Happy Creeper")
 
-This is a Minecraft Better Than Wolves addon that aims to slightly strengthen mobs, adding difficulty to the game.
+This is a port of Mobs Enhancement Addon (MEA) to Better Than Wolves 3.0.0.  MEA aims to slightly strengthen mobs, adding difficulty to the game.
 
 ## Features
 

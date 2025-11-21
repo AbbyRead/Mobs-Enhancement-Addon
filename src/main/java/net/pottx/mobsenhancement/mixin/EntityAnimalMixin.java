@@ -19,6 +19,7 @@ public abstract class EntityAnimalMixin extends EntityAgeable {
 	@Unique
     private int pushedCounter = 0;
 
+    @SuppressWarnings("unused")
     public EntityAnimalMixin(World world) {
         super(world);
     }

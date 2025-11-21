@@ -24,19 +24,19 @@ package net.pottx.mobsenhancement.extend;
 /**
  * API for additional slime properties injected with a Mixin.
  *
- * Prefixing method names (e.g., mea$) avoids accidental collisions
+ * Prefixing method names (e.g., meap$) avoids accidental collisions
  * with vanilla or other mods.
  */
 public interface EntitySlimeExtend {
 
-    boolean mea$getIsMagma();
-    void mea$setIsMagma(boolean value);
+    boolean meap$getIsMagma();
+    void meap$setIsMagma(boolean value);
 
-    byte mea$getIsCore();
-    void mea$setIsCore(byte id);
+    byte meap$getIsCore();
+    void meap$setIsCore(byte id);
 
-    boolean mea$getIsMerging();
-    void mea$setIsMerging(boolean value);
+    boolean meap$getIsMerging();
+    void meap$setIsMerging(boolean value);
 }
 ```
 
@@ -89,24 +89,24 @@ public abstract class EntitySlimeMixin extends EntityLiving implements EntitySli
     // Interface implementation
     // ---------------------------------------------------------
     @Override
-    public boolean mea$getIsMagma() { return isMagma; }
+    public boolean meap$getIsMagma() { return isMagma; }
 
     @Override
-    public void mea$setIsMagma(boolean value) { isMagma = value; }
+    public void meap$setIsMagma(boolean value) { isMagma = value; }
 
     @Override
-    public boolean mea$getIsMerging() { return isMerging; }
+    public boolean meap$getIsMerging() { return isMerging; }
 
     @Override
-    public void mea$setIsMerging(boolean value) { isMerging = value; }
+    public void meap$setIsMerging(boolean value) { isMerging = value; }
 
     @Override
-    public byte mea$getIsCore() {
+    public byte meap$getIsCore() {
         return dataWatcher.getWatchableObjectByte(IS_CORE_DATA_WATCHER_ID);
     }
 
     @Override
-    public void mea$setIsCore(byte value) {
+    public void meap$setIsCore(byte value) {
         dataWatcher.updateObject(IS_CORE_DATA_WATCHER_ID, value);
     }
 
@@ -126,7 +126,7 @@ public abstract class EntitySlimeMixin extends EntityLiving implements EntitySli
     @Unique
     public void exampleMergeLogic() {
         if (isMagma) return;
-        if (mea$getIsCore() != 1) return;
+        if (meap$getIsCore() != 1) return;
 
         mergeCooldownCounter--;
         if (mergeCooldownCounter <= 0) {
@@ -159,10 +159,10 @@ public static EntitySlimeExtend extend(EntitySlime slime) {
 EntitySlime slime = ...;
 
 EntitySlimeExtend ext = extend(slime);
-ext.mea$setIsMagma(true);
+ext.meap$setIsMagma(true);
 
-if (ext.mea$getIsCore() == 1) {
-    ext.mea$setIsMerging(false);
+if (ext.meap$getIsCore() == 1) {
+    ext.meap$setIsMerging(false);
 }
 ```
 

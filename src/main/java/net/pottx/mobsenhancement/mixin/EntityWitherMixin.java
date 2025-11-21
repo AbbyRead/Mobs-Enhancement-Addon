@@ -13,6 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(EntityWither.class)
 public abstract class EntityWitherMixin extends EntityMob implements EntityWitherExtend {
 
+    @SuppressWarnings("unused")
     private EntityWitherMixin(World world) { super(world); }
 
     // --------------------------------------------------------------------
@@ -28,10 +29,10 @@ public abstract class EntityWitherMixin extends EntityMob implements EntityWithe
     private boolean isDoingSpecialAttack;
 
     @Override
-    public boolean mea$getIsDoingSpecialAttack() { return isDoingSpecialAttack; }
+    public boolean meap$getIsDoingSpecialAttack() { return isDoingSpecialAttack; }
 
     @Override
-    public void mea$setIsDoingSpecialAttack(boolean value) { isDoingSpecialAttack = value; }
+    public void meap$setIsDoingSpecialAttack(boolean value) { isDoingSpecialAttack = value; }
 
     // --------------------------------------------------------------------
     // Constructor injection: follow distance + AI tasks

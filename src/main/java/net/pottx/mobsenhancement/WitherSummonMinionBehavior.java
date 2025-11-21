@@ -39,13 +39,13 @@ public class WitherSummonMinionBehavior extends EntityAIBase {
     public void resetTask() {
         summonCooldownCounter = 160 + myWither.rand.nextInt(80);
         summonProcessCounter = 0;
-        ((EntityWitherExtend) myWither).mea$setIsDoingSpecialAttack(false);
+        ((EntityWitherExtend) myWither).meap$setIsDoingSpecialAttack(false);
     }
 
     @Override
     public void startExecuting() {
         summonProcessCounter = 40; // Animation duration
-        ((EntityWitherExtend) myWither).mea$setIsDoingSpecialAttack(true);
+        ((EntityWitherExtend) myWither).meap$setIsDoingSpecialAttack(true);
 
         int baseY = MathHelper.floor_double(myWither.posY);
 
@@ -77,7 +77,7 @@ public class WitherSummonMinionBehavior extends EntityAIBase {
         }
         if (!hasValidY) {
             summonProcessCounter = -1;
-            ((EntityWitherExtend) myWither).mea$setIsDoingSpecialAttack(false);
+            ((EntityWitherExtend) myWither).meap$setIsDoingSpecialAttack(false);
             return;
         }
 

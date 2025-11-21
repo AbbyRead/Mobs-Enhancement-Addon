@@ -29,6 +29,7 @@ public abstract class EntityEnderCrystalMixin extends Entity implements EntityEn
     @Unique
     private int chargingCounter;
 
+    @SuppressWarnings("unused")
     private EntityEnderCrystalMixin(World par1World) {
         super(par1World);
     }
@@ -46,7 +47,7 @@ public abstract class EntityEnderCrystalMixin extends Entity implements EntityEn
             at = @At(value = "INVOKE", target = "Lnet/minecraft/src/EntityEnderCrystal;isEntityInvulnerable()Z")
     )
     private boolean doIsDriedCheck(EntityEnderCrystal entityEnderCrystal) {
-        return ((EntityEnderCrystalExtend) entityEnderCrystal).mea$getIsDried() == (byte) 1 || entityEnderCrystal.isEntityInvulnerable();
+        return ((EntityEnderCrystalExtend) entityEnderCrystal).meap$getIsDried() == (byte) 1 || entityEnderCrystal.isEntityInvulnerable();
     }
 
     @Redirect(
@@ -54,7 +55,7 @@ public abstract class EntityEnderCrystalMixin extends Entity implements EntityEn
             at = @At(value = "INVOKE", target = "Lnet/minecraft/src/World;getBlockId(III)I")
     )
     private int noFireIfDried(World world, int par1, int par2, int par3) {
-        if (this.mea$getIsDried() == (byte) 1) {
+        if (this.meap$getIsDried() == (byte) 1) {
             return Block.fire.blockID;
         } else {
             return this.worldObj.getBlockId(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ));
@@ -66,25 +67,25 @@ public abstract class EntityEnderCrystalMixin extends Entity implements EntityEn
             at = @At(value = "TAIL")
     )
     private void doChargeCycle(CallbackInfo ci) {
-        if (this.mea$getIsDried() == (byte) 1 &&
+        if (this.meap$getIsDried() == (byte) 1 &&
                 this.worldObj.getBlockId(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ)) == Block.fire.blockID) {
             this.worldObj.setBlock(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ), 0);
         }
 
-        if (!this.worldObj.isRemote && this.mea$getIsDried() == (byte) 1 && this.chargingCounter >= 640) {
-            this.mea$setIsDried((byte) 0);
+        if (!this.worldObj.isRemote && this.meap$getIsDried() == (byte) 1 && this.chargingCounter >= 640) {
+            this.meap$setIsDried((byte) 0);
         }
 
         if (this.chargingEnderCrystal != null) {
-            if (this.mea$getIsDried() == (byte) 0 || ((EntityEnderCrystalExtend) this.chargingEnderCrystal).mea$getIsDried() == (byte) 1) {
-                ((EntityEnderCrystalExtend) this.chargingEnderCrystal).mea$setIsOccupied(false);
+            if (this.meap$getIsDried() == (byte) 0 || ((EntityEnderCrystalExtend) this.chargingEnderCrystal).meap$getIsDried() == (byte) 1) {
+                ((EntityEnderCrystalExtend) this.chargingEnderCrystal).meap$setIsOccupied(false);
                 this.chargingEnderCrystal = null;
             } else if (this.chargingCounter < 640) {
                 this.chargingCounter++;
             }
         }
 
-        if (this.mea$getIsDried() == (byte) 1) {
+        if (this.meap$getIsDried() == (byte) 1) {
             @SuppressWarnings("rawtypes")
             List nearCrystals = this.worldObj.getEntitiesWithinAABB(EntityEnderCrystal.class, this.boundingBox.expand(32D, 32D, 32D));
             EntityEnderCrystal nearestChargerCrystal = null;
@@ -94,9 +95,9 @@ public abstract class EntityEnderCrystalMixin extends Entity implements EntityEn
                 EntityEnderCrystal chargerCrystal = (EntityEnderCrystal) nearCrystal;
                 double distance = chargerCrystal.getDistanceSqToEntity(this);
 
-                if (((EntityEnderCrystalExtend) chargerCrystal).mea$getIsDried() == (byte) 0 &&
-                        (chargerCrystal == this.chargingEnderCrystal || !((EntityEnderCrystalExtend) chargerCrystal).mea$getIsOccupied()) &&
-                        !((EntityEnderCrystalExtend) chargerCrystal).mea$getIsHealing() &&
+                if (((EntityEnderCrystalExtend) chargerCrystal).meap$getIsDried() == (byte) 0 &&
+                        (chargerCrystal == this.chargingEnderCrystal || !((EntityEnderCrystalExtend) chargerCrystal).meap$getIsOccupied()) &&
+                        !((EntityEnderCrystalExtend) chargerCrystal).meap$getIsHealing() &&
                         distance < smallestDistance) {
                     smallestDistance = distance;
                     nearestChargerCrystal = chargerCrystal;
@@ -105,10 +106,10 @@ public abstract class EntityEnderCrystalMixin extends Entity implements EntityEn
 
             if (nearestChargerCrystal != this.chargingEnderCrystal) {
                 if (this.chargingEnderCrystal != null) {
-                    ((EntityEnderCrystalExtend) this.chargingEnderCrystal).mea$setIsOccupied(false);
+                    ((EntityEnderCrystalExtend) this.chargingEnderCrystal).meap$setIsOccupied(false);
                 }
                 if (nearestChargerCrystal != null) {
-                    ((EntityEnderCrystalExtend) nearestChargerCrystal).mea$setIsOccupied(true);
+                    ((EntityEnderCrystalExtend) nearestChargerCrystal).meap$setIsOccupied(true);
                 }
 
                 this.chargingEnderCrystal = nearestChargerCrystal;
@@ -139,7 +140,7 @@ public abstract class EntityEnderCrystalMixin extends Entity implements EntityEn
             at = @At(value = "TAIL")
     )
     private void writeIsDried(NBTTagCompound par1NBTTagCompound, CallbackInfo ci) {
-        par1NBTTagCompound.setByte("IsDried", this.mea$getIsDried());
+        par1NBTTagCompound.setByte("IsDried", this.meap$getIsDried());
         par1NBTTagCompound.setInteger("ChargingCounter", this.chargingCounter);
     }
 
@@ -149,7 +150,7 @@ public abstract class EntityEnderCrystalMixin extends Entity implements EntityEn
     )
     private void readIsDried(NBTTagCompound par1NBTTagCompound, CallbackInfo ci) {
         if (par1NBTTagCompound.hasKey("IsDried")) {
-            this.mea$setIsDried(par1NBTTagCompound.getByte("IsDried"));
+            this.meap$setIsDried(par1NBTTagCompound.getByte("IsDried"));
         }
         if (par1NBTTagCompound.hasKey("ChargingCounter")) {
             this.chargingCounter = par1NBTTagCompound.getInteger("ChargingCounter");
@@ -157,52 +158,52 @@ public abstract class EntityEnderCrystalMixin extends Entity implements EntityEn
     }
 
     @Override
-    public void mea$setRespawnCounter(int respawnCounter) {
+    public void meap$setRespawnCounter(int respawnCounter) {
         this.chargingCounter = respawnCounter;
     }
 
     @Override
-    public byte mea$getIsDried() {
+    public byte meap$getIsDried() {
         return this.dataWatcher.getWatchableObjectByte(IS_DRIED_DATA_WATCHER_ID);
     }
 
     @Override
-    public void mea$setIsDried(byte isDried) {
+    public void meap$setIsDried(byte isDried) {
         this.dataWatcher.updateObject(IS_DRIED_DATA_WATCHER_ID, isDried);
     }
 
     @Override
-    public EntityEnderCrystal mea$getChargingEnderCrystal() {
+    public EntityEnderCrystal meap$getChargingEnderCrystal() {
         return this.chargingEnderCrystal;
     }
 
     @Override
-    public boolean mea$getIsOccupied() {
+    public boolean meap$getIsOccupied() {
         return this.isOccupied;
     }
 
     @Override
-    public void mea$setIsOccupied(boolean isOccupied) {
+    public void meap$setIsOccupied(boolean isOccupied) {
         this.isOccupied = isOccupied;
     }
 
     @Override
-    public boolean mea$getIsHealing() {
+    public boolean meap$getIsHealing() {
         return this.isHealing;
     }
 
     @Override
-    public void mea$setIsHealing(boolean isHealing) {
+    public void meap$setIsHealing(boolean isHealing) {
         this.isHealing = isHealing;
     }
 
     @Override
-    public void mea$setChargingCounter(int counter) {
+    public void meap$setChargingCounter(int counter) {
         this.chargingCounter = counter;
     }
 
     @Override
-    public int mea$getChargingCounter() {
+    public int meap$getChargingCounter() {
         return this.chargingCounter;
     }
 }

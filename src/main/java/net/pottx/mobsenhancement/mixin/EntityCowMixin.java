@@ -20,6 +20,7 @@ public abstract class EntityCowMixin extends KickingAnimal implements EntityLivi
     @Unique
     private static final int IS_AGGRESSIVE_DATA_WATCHER_ID = 31;
 
+    @SuppressWarnings("unused")
     private EntityCowMixin(World par1World) {
         super(par1World);
     }
