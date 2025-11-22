@@ -1,10 +1,7 @@
 package fabric.meap.mixin.entity.generic;
 
-import net.minecraft.src.EntityCreature;
-import net.minecraft.src.EntityLiving;
-import net.minecraft.src.EntitySlime;
-import net.minecraft.src.SharedMonsterAttributes;
-import btw.community.abbyread.meap.core.MEAUtils;
+import net.minecraft.src.*;
+import btw.community.abbyread.meap.util.MEAUtils;
 import btw.community.abbyread.meap.extend.EntityLivingExtend;
 import fabric.meap.mixin.access.EntityCreatureAccess;
 import org.spongepowered.asm.mixin.Mixin;
@@ -28,30 +25,19 @@ public class EntityLivingMixin implements EntityLivingExtend {
 		}
 	}
 
-
 	// -----------------------------------------------
 	// Override EntitySlime max HP to use MEA difficulty scaling
 	// -----------------------------------------------
 	@Inject(method = "applyEntityAttributes", at = @At("RETURN"))
 	private void modifyMaxHealth(CallbackInfo ci) {
-
 		if (!(self instanceof EntitySlime slime)) return;
-		// Default init to normal intitialization value
-		double baseHealth = self.getEntityAttribute(SharedMonsterAttributes.maxHealth).getAttributeValue();
 
-		if (self.worldObj != null) {
-			int tier = MEAUtils.getGameProgressMobsLevel(self.worldObj);
+		int tier = MEAUtils.getGameProgressMobsLevel(self.worldObj);
+		tier = (tier > 0 ? 1 : 0);
+		double base = slime.getSlimeSize() + tier;
+		double maxHealth = base * base;
 
-			// Ignore higher difficulties for maxHealth calc
-			tier = tier > 0 ? 1 : 0;
-
-			baseHealth = slime.getSlimeSize() + tier;
-		}
-
-		self.getEntityAttribute(SharedMonsterAttributes.maxHealth)
-				.setAttribute(baseHealth);
-
-		// Heal to new max HP since applyEntityAttributes is called at construction time
-		self.setHealth((float) (baseHealth * baseHealth));
+		self.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(maxHealth);
+		self.setHealth((float) maxHealth);
 	}
 }

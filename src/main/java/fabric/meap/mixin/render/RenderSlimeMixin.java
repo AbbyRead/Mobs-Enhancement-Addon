@@ -16,17 +16,17 @@ public abstract class RenderSlimeMixin {
 	// Texture paths (your core slime ones)
 	@Unique
 	private static final ResourceLocation CORE_SLIME_1 =
-			new ResourceLocation("assets/mea_textures/core_slime_1.png");
+			new ResourceLocation("meap", "textures/core_slime_1.png");
 	@Unique
 	private static final ResourceLocation CORE_SLIME_2 =
-			new ResourceLocation("assets/mea_textures/core_slime_2.png");
+			new ResourceLocation("meap", "textures/core_slime_2.png");
 
 	/**
 	 * Inject into RenderSlime.getSlimeTextures(EntitySlime)
 	 * and return a custom ResourceLocation for core slimes.
 	 */
 	@Inject(
-			method = "getSlimeTextures(Lnet/minecraft/src/EntitySlime;)Lnet/minecraft/src/ResourceLocation;",
+			method = "getSlimeTextures",
 			at = @At("HEAD"),
 			cancellable = true
 	)

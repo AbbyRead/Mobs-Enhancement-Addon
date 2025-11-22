@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "id": "abbyreadmeap",
-  "provides": ["meap", "mobsenhancementabbyport"],
+  "id": "meap",
+  "provides": ["abbyreadmeap", "mobsenhancementabbyport"],
   "version": "${version}",
   "name": "Mobs Enhancement Abby Port",
   "description": "Slightly strengthens monsters. This is a port of Mobs Enhancement Addon to BTW CE 3.0.0.",

@@ -3,7 +3,7 @@ package btw.community.abbyread.meap;
 import btw.AddonHandler;
 import btw.BTWAddon;
 import net.minecraft.server.MinecraftServer;
-import btw.community.abbyread.meap.core.MEAEffectManager;
+import btw.community.abbyread.meap.util.MEAEffectManager;
 
 public class MobsEnhancementAddon extends BTWAddon {
     public MobsEnhancementAddon() {

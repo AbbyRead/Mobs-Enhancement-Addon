@@ -9,7 +9,7 @@ import java.util.List;
 
 public class WitherDashBehavior extends EntityAIBase {
     private final EntityWither myWither;
-    private EntityLiving dashTarget;
+    private EntityLivingBase dashTarget;
     private double targetX;
     private double targetY;
     private double targetZ;
@@ -24,12 +24,12 @@ public class WitherDashBehavior extends EntityAIBase {
 
     @Override
     public boolean shouldExecute() {
-        if (this.myWither.isEntityAlive() && ((EntityWitherAccess)this.myWither).invokeGetSpawnInvulnerabilityTime() <= 0 && this.myWither.isArmored()) {
+        if (this.myWither.isEntityAlive() && ((EntityWitherAccess)this.myWither).meap$getSpawnInvulnerabilityTime() <= 0 && this.myWither.isArmored()) {
             this.dashCooldownCounter--;
         }
 
         return this.myWither.isEntityAlive() && this.myWither.getAttackTarget() != null &&
-                ((EntityWitherAccess)this.myWither).invokeGetSpawnInvulnerabilityTime() <= 0 && this.myWither.isArmored() && this.dashCooldownCounter <= 0;
+                ((EntityWitherAccess)this.myWither).meap$getSpawnInvulnerabilityTime() <= 0 && this.myWither.isArmored() && this.dashCooldownCounter <= 0;
     }
 
     public boolean continueExecuting() {
@@ -45,14 +45,13 @@ public class WitherDashBehavior extends EntityAIBase {
 
     public void startExecuting() {
         ((EntityWitherExtend)this.myWither).meap$setIsDoingSpecialAttack(true);
-        this.dashTarget = (EntityLiving) this.myWither.getAttackTarget();
+        this.dashTarget = this.myWither.getAttackTarget();
         this.dashProcessCounter = 40;
     }
 
     public void updateTask() {
         this.dashProcessCounter --;
         this.myWither.getNavigator().clearPathEntity();
-
         if (this.dashProcessCounter > 15) {
             this.myWither.getLookHelper().setLookPositionWithEntity(this.dashTarget, 30.0F, 30.0F);
         } else if (this.dashProcessCounter == 15) {
