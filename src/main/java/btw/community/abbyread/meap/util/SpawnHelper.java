@@ -1,7 +1,6 @@
 package btw.community.abbyread.meap.util;
 
 import net.minecraft.src.EntityLiving;
-import net.minecraft.src.EntityLivingData;
 import net.minecraft.src.World;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

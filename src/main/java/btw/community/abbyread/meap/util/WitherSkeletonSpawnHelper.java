@@ -1,10 +1,8 @@
 package btw.community.abbyread.meap.util;
 
 import net.minecraft.src.EntitySkeleton;
-import net.minecraft.src.EntityWither;
 import net.minecraft.src.World;
 
-import btw.community.abbyread.meap.extend.EntityWitherExtend;
 import btw.community.abbyread.meap.extend.EntitySkeletonExtend;
 
 /**

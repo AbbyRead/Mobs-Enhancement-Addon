@@ -1,7 +1,6 @@
 package fabric.meap.mixin.entity.hostile;
 
 import btw.community.abbyread.meap.util.SpawnHelper;
-import btw.community.abbyread.meap.util.WitherSkeletonSpawnHelper;
 import net.minecraft.src.*;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
