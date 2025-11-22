@@ -64,7 +64,7 @@ public abstract class EntitySlimeMixin extends EntityLiving implements IMob, Ent
 		this.isMagma = false;
 		dataWatcher.addObject(IS_CORE_DATA_WATCHER_ID, (byte) 0);
 		this.mergeCooldownCounter = 40;
-		if (self.getSlimeSize() < 4 && this.rand.nextInt(4) == 0) this.setIsCore((byte) 1);
+		if (self.getSlimeSize() < 4 && this.rand.nextInt(4) == 0) this.meap$setIsCore((byte) 1);
 	}
 
 	@SuppressWarnings("DiscouragedShift")
@@ -75,7 +75,7 @@ public abstract class EntitySlimeMixin extends EntityLiving implements IMob, Ent
 	))
 	private void doMergeCheck(CallbackInfo ci) {
 		if (!this.isMagma) {
-			if (this.getIsCore() == (byte) 1) {
+			if (this.meap$getIsCore() == (byte) 1) {
 				this.mergeCooldownCounter--;
 				if (mergeCooldownCounter <= 0) {
 					@SuppressWarnings("unchecked")
@@ -105,7 +105,7 @@ public abstract class EntitySlimeMixin extends EntityLiving implements IMob, Ent
 										MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ), 0);
 
 								this.setSlimeSize(self.getSlimeSize() * 2);
-								if (self.getSlimeSize() == 4) this.setIsCore((byte) 0);
+								if (self.getSlimeSize() == 4) this.meap$setIsCore((byte) 0);
 								for (int i = 0; i < 2; i++) {
 									EntitySlimeExtend extend = (EntitySlimeExtend) veryNearby.get(i);
 									extend.meap$simpleSetDead();
@@ -174,28 +174,18 @@ public abstract class EntitySlimeMixin extends EntityLiving implements IMob, Ent
 		this.isDead = true;
 	}
 
-	@Unique
-	public byte getIsCore() {
-		return this.dataWatcher.getWatchableObjectByte(IS_CORE_DATA_WATCHER_ID);
-	}
-
-	@Unique
-	public void setIsCore(byte isCore) {
-		this.dataWatcher.updateObject(IS_CORE_DATA_WATCHER_ID, isCore);
-	}
-
 	@Override
 	public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
 		super.writeEntityToNBT(par1NBTTagCompound);
 
-		par1NBTTagCompound.setByte("IsCore", this.getIsCore());
+		par1NBTTagCompound.setByte("IsCore", this.meap$getIsCore());
 	}
 
 	@Override
 	public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
 		super.readEntityFromNBT(par1NBTTagCompound);
 
-		this.setIsCore(par1NBTTagCompound.getByte("IsCore"));
+		this.meap$setIsCore(par1NBTTagCompound.getByte("IsCore"));
 	}
 
 	@Override
@@ -206,7 +196,7 @@ public abstract class EntitySlimeMixin extends EntityLiving implements IMob, Ent
 		{
 			int count = 2 + this.rand.nextInt(3);
 
-			boolean coreNeeded = self.getSlimeSize() == (byte)4 || this.getIsCore() == (byte)1;
+			boolean coreNeeded = self.getSlimeSize() == (byte)4 || this.meap$getIsCore() == (byte)1;
 
 			for (int i = 0; i < count; ++i)
 			{
