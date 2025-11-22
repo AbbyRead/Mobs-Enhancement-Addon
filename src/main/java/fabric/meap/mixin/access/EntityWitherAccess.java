@@ -10,24 +10,29 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 public interface EntityWitherAccess {
 
     @Accessor("field_82223_h")
-    int[] getNextHeadAttackTime();
+    int[] meap$getNextHeadAttackTime();
 
     @Accessor("field_82224_i")
-    int[] getIdleHeadTicks();
+    int[] meap$getIdleHeadTicks();
 
     @Accessor("field_82222_j")
-    int getBlockBreakCounter();
+    int meap$getBlockBreakCounter();
 
     @Accessor("field_82222_j")
-    void setBlockBreakCounter(int blockBreakCounter);
+    void meap$setBlockBreakCounter(int blockBreakCounter);
 
     @Accessor("attackEntitySelector")
-    static IEntitySelector getValidTargetSelector() {
+    static IEntitySelector meap$getValidTargetSelector() {
+        throw new AssertionError();
+    }
+
+    @Accessor("attackEntitySelector")
+    static IEntitySelector meap$getAttackEntitySelector() {
         throw new AssertionError();
     }
 
     @Invoker("func_82209_a")
-    void invokeShootSkullAt(
+    void meap$shootSkullAt(
             int headIndex,
             double targetX,
             double targetY,
@@ -36,15 +41,14 @@ public interface EntityWitherAccess {
     );
 
     @Invoker("func_82216_a")
-    void invokeFireSkullAtEntity(int headIndex, EntityLivingBase target);
+    void meap$fireSkullAtEntity(int headIndex, EntityLivingBase target);
 
     @Invoker("func_82211_c")
-    void invokeSetHeadTarget(int headIndex, int targetEntityId);
+    void meap$setHeadTarget(int headIndex, int targetEntityId);
 
     @Invoker("func_82212_n")
-    int invokeGetSpawnInvulnerabilityTime();
+    int meap$getSpawnInvulnerabilityTime();
 
     @Invoker("func_82215_s")
-    void invokeSetSpawnInvulnerabilityTime(int time);
-
+    void meap$setSpawnInvulnerabilityTime(int time);
 }

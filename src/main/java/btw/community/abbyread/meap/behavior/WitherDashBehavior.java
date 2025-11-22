@@ -24,12 +24,12 @@ public class WitherDashBehavior extends EntityAIBase {
 
     @Override
     public boolean shouldExecute() {
-        if (this.myWither.isEntityAlive() && ((EntityWitherAccess)this.myWither).invokeGetSpawnInvulnerabilityTime() <= 0 && this.myWither.isArmored()) {
+        if (this.myWither.isEntityAlive() && ((EntityWitherAccess)this.myWither).meap$getSpawnInvulnerabilityTime() <= 0 && this.myWither.isArmored()) {
             this.dashCooldownCounter--;
         }
 
         return this.myWither.isEntityAlive() && this.myWither.getAttackTarget() != null &&
-                ((EntityWitherAccess)this.myWither).invokeGetSpawnInvulnerabilityTime() <= 0 && this.myWither.isArmored() && this.dashCooldownCounter <= 0;
+                ((EntityWitherAccess)this.myWither).meap$getSpawnInvulnerabilityTime() <= 0 && this.myWither.isArmored() && this.dashCooldownCounter <= 0;
     }
 
     public boolean continueExecuting() {
