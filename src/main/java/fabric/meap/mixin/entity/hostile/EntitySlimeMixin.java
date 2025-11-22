@@ -2,7 +2,8 @@ package fabric.meap.mixin.entity.hostile;
 
 import fabric.meap.mixin.access.EntitySlimeAccess;
 import net.minecraft.src.*;
-import btw.community.abbyread.meap.core.MEAEffectManager;
+import btw.community.abbyread.meap.util.MEAEffectManager;
+import btw.community.abbyread.meap.util.SlimeSpawnHelper;
 import btw.community.abbyread.meap.extend.EntitySlimeExtend;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -160,24 +161,7 @@ public abstract class EntitySlimeMixin extends EntityLiving implements IMob, Ent
 
 	@Unique
 	public EntitySlime simpleCreateInstance() {
-		EntitySlimeAccess access = (EntitySlimeAccess) self;
-		EntitySlime instance = access.getCreateInstance();
-
-		// Set world reference
-		instance.worldObj = this.worldObj;
-
-		// Set location early
-		instance.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
-
-		// Initialize attributes / AI safely
-		instance.onSpawnWithEgg(null);
-
-		// Reset mod-specific flags
-		((EntitySlimeExtend)instance).meap$setIsCore((byte)0);
-		((EntitySlimeExtend)instance).meap$setIsMerging(false);
-		((EntitySlimeExtend)instance).meap$setIsMagma(false);
-
-		return instance;
+		return SlimeSpawnHelper.createChildSlime(self);
 	}
 
 	@Override
@@ -200,7 +184,7 @@ public abstract class EntitySlimeMixin extends EntityLiving implements IMob, Ent
 		super.readEntityFromNBT(tag);
 
 		this.meap$setIsCore(tag.getByte("IsCore"));
-		this.setSlimeSize(tag.getByte("SlimeSize"));
+		this.setSlimeSize(tag.getInteger("SlimeSize"));
 	}
 
 	@Override
@@ -218,7 +202,7 @@ public abstract class EntitySlimeMixin extends EntityLiving implements IMob, Ent
 				float dx = ((float)(i % 2) - 0.5F) * (float)size / 40.0F;
 				float dz = ((float)(i / 2) - 0.5F) * (float)size / 40.0F;
 				EntitySlime child = this.simpleCreateInstance();
-				((EntitySlimeAccess)child).invokeSetSlimeSize(size / 2);
+				SlimeSpawnHelper.applyChildSize(child, size / 2);
 				if (coreNeeded) {
 					((EntitySlimeExtend)child).meap$setIsCore((byte)1);
 					coreNeeded = false;

@@ -1,4 +1,4 @@
-package btw.community.abbyread.meap.core;
+package btw.community.abbyread.meap.util;
 
 import btw.block.BTWBlocks;
 import btw.world.util.WorldUtils;

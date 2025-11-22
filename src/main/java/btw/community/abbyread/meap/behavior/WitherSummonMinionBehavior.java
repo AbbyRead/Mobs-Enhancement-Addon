@@ -1,6 +1,6 @@
 package btw.community.abbyread.meap.behavior;
 
-import btw.community.abbyread.meap.core.MEAEffectManager;
+import btw.community.abbyread.meap.util.MEAEffectManager;
 import net.minecraft.src.*;
 import btw.item.BTWItems;
 import btw.community.abbyread.meap.extend.EntityWitherExtend;

@@ -1,7 +1,7 @@
 package fabric.meap.mixin.entity.generic;
 
 import net.minecraft.src.*;
-import btw.community.abbyread.meap.core.MEAUtils;
+import btw.community.abbyread.meap.util.MEAUtils;
 import btw.community.abbyread.meap.extend.EntityLivingExtend;
 import fabric.meap.mixin.access.EntityCreatureAccess;
 import org.spongepowered.asm.mixin.Mixin;
