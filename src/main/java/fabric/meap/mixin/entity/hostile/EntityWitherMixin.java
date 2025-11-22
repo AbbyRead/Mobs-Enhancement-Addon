@@ -50,7 +50,7 @@ public abstract class EntityWitherMixin extends EntityMob implements IBossDispla
     }
 
     @Override
-    protected void updateAITasks() {
+    public void updateAITasks() {
         int countdown;
 
         if (this.meap$getSpawnInvulnerabilityTime() > 0) {
@@ -154,7 +154,7 @@ public abstract class EntityWitherMixin extends EntityMob implements IBossDispla
                     }
 
                     if (destroyedAnyBlocks) {
-                        this.worldObj.playAuxSFXAtEntity((EntityPlayer)null, 1012, (int)this.posX, (int)this.posY, (int)this.posZ, 0);
+                        this.worldObj.playAuxSFXAtEntity(null, 1012, (int)this.posX, (int)this.posY, (int)this.posZ, 0);
                     }
                 }
             }

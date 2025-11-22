@@ -23,7 +23,7 @@ public class WitherSummonMinionBehavior extends EntityAIBase {
 
     @Override
     public boolean shouldExecute() {
-        if (!myWither.isEntityAlive() || ((EntityWitherAccess)myWither).invokeGetSpawnInvulnerabilityTime() > 0 || myWither.isArmored()) {
+        if (!myWither.isEntityAlive() || ((EntityWitherAccess)myWither).meap$getSpawnInvulnerabilityTime() > 0 || myWither.isArmored()) {
             return false;
         }
 
