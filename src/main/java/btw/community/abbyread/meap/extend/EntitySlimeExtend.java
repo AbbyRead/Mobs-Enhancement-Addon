@@ -2,10 +2,6 @@ package btw.community.abbyread.meap.extend;
 
 public interface EntitySlimeExtend {
 
-    // initializedFromNBT
-    boolean meap$getInitializedFromNBT();
-    void meap$setInitializedFromNBT(boolean value);
-
     // isMagma
     boolean meap$getIsMagma();
     void meap$setIsMagma(boolean value);
@@ -13,6 +9,8 @@ public interface EntitySlimeExtend {
     // isCore
     byte meap$getIsCore();
     void meap$setIsCore(byte id);
+
+    void meap$simpleSetDead();
 
     // isMerging
     boolean meap$getIsMerging();

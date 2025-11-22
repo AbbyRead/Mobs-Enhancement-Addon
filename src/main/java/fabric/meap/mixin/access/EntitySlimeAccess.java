@@ -8,4 +8,7 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 public interface EntitySlimeAccess {
 	@Invoker("setSlimeSize")
 	void invokeSetSlimeSize(int size);
+
+	@Invoker("createInstance")
+	EntitySlime getCreateInstance();
 }
