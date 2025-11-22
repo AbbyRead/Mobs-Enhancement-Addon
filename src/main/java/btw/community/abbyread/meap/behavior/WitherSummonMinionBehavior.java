@@ -99,7 +99,6 @@ public class WitherSummonMinionBehavior extends EntityAIBase {
                 if (summonY[i] > 0) {
                     for (int j = 0; j < 8; j++) {
                         myWither.worldObj.playAuxSFX(MEAEffectManager.WITHER_SUMMON_EFFECT_ID, summonX[i], summonY[i], summonZ[i], j);
-                        System.out.println("WITHER_SUMMON_EFFECT_ID");
                     }
                 }
             }

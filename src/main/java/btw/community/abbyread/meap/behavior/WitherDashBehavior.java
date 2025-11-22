@@ -52,7 +52,6 @@ public class WitherDashBehavior extends EntityAIBase {
     public void updateTask() {
         this.dashProcessCounter --;
         this.myWither.getNavigator().clearPathEntity();
-
         if (this.dashProcessCounter > 15) {
             this.myWither.getLookHelper().setLookPositionWithEntity(this.dashTarget, 30.0F, 30.0F);
         } else if (this.dashProcessCounter == 15) {
