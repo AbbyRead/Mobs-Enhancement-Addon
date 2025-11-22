@@ -32,43 +32,29 @@ public class EntityLivingMixin implements EntityLivingExtend {
 	// -----------------------------------------------
 	@Inject(method = "applyEntityAttributes", at = @At("RETURN"))
 	private void modifyMaxHealth(CallbackInfo ci) {
-
 		if (!(self instanceof EntitySlime slime)) return;
 
-		// Determine MEA difficulty tier (0 or 1)
-		int tier = 0;
-		if (self.worldObj != null) {
-			tier = MEAUtils.getGameProgressMobsLevel(self.worldObj);
-			tier = (tier > 0 ? 1 : 0); // MEA only uses tier 0 or 1 for slimes
-		}
-
-		// MEA formula: (size + tier)^2
+		int tier = MEAUtils.getGameProgressMobsLevel(self.worldObj);
+		tier = (tier > 0 ? 1 : 0);
 		double base = slime.getSlimeSize() + tier;
 		double maxHealth = base * base;
 
-		// Apply to attribute
-		self.getEntityAttribute(SharedMonsterAttributes.maxHealth)
-				.setAttribute(maxHealth);
-
-		// Heal to full, because applyEntityAttributes runs during construction,
-		// and increasing maxHealth does not automatically raise current health.
+		self.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(maxHealth);
 		self.setHealth((float) maxHealth);
 	}
 
 	// -------------------------------------------------------------------
-	// Slime natural spawn core assignment
-	// ONLY if NOT loaded from NBT
+	// Natural Spawn Core Assignment
 	// -------------------------------------------------------------------
-
+	// Only if NOT loaded from NBT
 	@Inject(method = "onSpawnWithEgg", at = @At("TAIL"))
 	private void afterSpawnWithEgg(EntityLivingData entityLivingData, CallbackInfoReturnable<EntityLivingData> cir) {
 		if (!(self instanceof EntitySlime slime)) return;
+		EntitySlimeExtend extended = (EntitySlimeExtend) slime;
 
-		EntitySlimeExtend extendedSlime = (EntitySlimeExtend) slime;
-		if (!extendedSlime.meap$getInitializedFromNBT() && slime.getSlimeSize() < 4) {
-			// 1 in 4 chance
+		if (!extended.meap$getInitializedFromNBT() && slime.getSlimeSize() < 4) {
 			if (self.rand.nextInt(4) == 0) {
-				extendedSlime.meap$setIsCore((byte)1);
+				extended.meap$setIsCore((byte)1);
 			}
 		}
 	}

@@ -13,8 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.List;
 
 @Mixin(EntitySlime.class)
-public abstract class EntitySlimeMixin
-        extends EntityLiving implements EntitySlimeExtend, EntitySlimeAccess {
+public abstract class EntitySlimeMixin extends EntityLiving implements EntitySlimeExtend, EntitySlimeAccess {
 
     // -------------------------------------------------------------------
     // Unique Fields
@@ -36,9 +35,8 @@ public abstract class EntitySlimeMixin
     @Shadow public abstract int getSlimeSize();
 
     // -------------------------------------------------------------------
-    // Interface Impl
+    // Interface Implementation
     // -------------------------------------------------------------------
-
     @Override public boolean meap$getInitializedFromNBT() { return this.initializedFromNBT; }
     @Override public void meap$setInitializedFromNBT(boolean value) { this.initializedFromNBT = value; }
 
@@ -56,29 +54,22 @@ public abstract class EntitySlimeMixin
     }
 
     // -------------------------------------------------------------------
-    // Constructor — ONLY initial defaults
+    // Constructor Defaults (Safe)
     // -------------------------------------------------------------------
     @Inject(method = "<init>", at = @At("TAIL"))
     private void onInit(World world, CallbackInfo ci) {
         this.isMagma = false;
         this.mergeCooldownCounter = 40;
+        this.isMerging = false;
     }
 
     // -------------------------------------------------------------------
-    // DataWatcher init — Always safe
+    // DataWatcher Init (Safe)
     // -------------------------------------------------------------------
     @Inject(method = "entityInit", at = @At("TAIL"))
     private void onEntityInit(CallbackInfo ci) {
         this.dataWatcher.addObject(IS_CORE_DATA_WATCHER_ID, (byte)0);
     }
-
-    // -------------------------------------------------------------------
-    // Natural spawn core assignment
-    // ONLY if NOT loaded from NBT
-    // -------------------------------------------------------------------
-
-    // onSpawnWithEgg is inherited directly from EntityLiving.
-    // So this functionality is implemented in EntityLivingMixin.
 
     // -------------------------------------------------------------------
     // NBT Save/Load
@@ -93,38 +84,27 @@ public abstract class EntitySlimeMixin
     public void readEntityFromNBT(NBTTagCompound tag) {
         super.readEntityFromNBT(tag);
         this.meap$setIsCore(tag.getByte("IsCore"));
-        this.meap$setInitializedFromNBT(true);
+        this.meap$setInitializedFromNBT(true); // Prevent core assignment on loaded slimes
     }
 
     // -------------------------------------------------------------------
     // Merge Logic
     // -------------------------------------------------------------------
     @SuppressWarnings("DiscouragedShift")
-    @Inject(
-            method = "updateEntityActionState()V",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/src/EntitySlime;faceEntity(Lnet/minecraft/src/Entity;FF)V",
-                    shift = At.Shift.BY, by = 2
-            )
-    )
+    @Inject(method = "updateEntityActionState()V", at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/src/EntitySlime;faceEntity(Lnet/minecraft/src/Entity;FF)V",
+            shift = At.Shift.BY, by = 2
+    ))
     private void meap$mergeLogic(CallbackInfo ci) {
-
         if (this.meap$getIsMagma()) return;
 
-        // -------------------------------------------------------------------
-        // CORE MERGING
-        // -------------------------------------------------------------------
+        // Core merging
         if (this.meap$getIsCore() == 1) {
             mergeCooldownCounter--;
-
             if (mergeCooldownCounter <= 0) {
-
                 @SuppressWarnings("unchecked")
-                List<EntitySlime> nearby = this.worldObj.getEntitiesWithinAABB(
-                        EntitySlime.class, this.boundingBox.expand(12, 6, 12)
-                );
-
+                List<EntitySlime> nearby = this.worldObj.getEntitiesWithinAABB(EntitySlime.class, this.boundingBox.expand(12,6,12));
                 nearby.removeIf(s -> ((EntitySlimeExtend)s).meap$getIsCore() != 0
                         || s.getSlimeSize() != this.getSlimeSize()
                         || !s.isEntityAlive());
@@ -135,12 +115,8 @@ public abstract class EntitySlimeMixin
                         this.faceEntity(target, 10, 20);
 
                         double range = (this.getSlimeSize() == 1 ? 0.75 : 1.0);
-
                         @SuppressWarnings("unchecked")
-                        List<EntitySlime> veryClose = this.worldObj.getEntitiesWithinAABB(
-                                EntitySlime.class, this.boundingBox.expand(range, range, range)
-                        );
-
+                        List<EntitySlime> veryClose = this.worldObj.getEntitiesWithinAABB(EntitySlime.class, this.boundingBox.expand(range, range, range));
                         veryClose.removeIf(s -> ((EntitySlimeExtend)s).meap$getIsCore() != 0
                                 || s.getSlimeSize() != this.getSlimeSize()
                                 || !s.isEntityAlive());
@@ -151,67 +127,53 @@ public abstract class EntitySlimeMixin
                                     MathHelper.floor_double(this.posY),
                                     MathHelper.floor_double(this.posZ), 0);
 
-                            this.invokeSetSlimeSize(this.getSlimeSize() * 2);
-
+                            ((EntitySlimeAccess)this).invokeSetSlimeSize(this.getSlimeSize() * 2);
                             if (this.getSlimeSize() == 4)
                                 this.meap$setIsCore((byte)0);
 
-                            for (int i = 0; i < 2; i++)
+                            for (int i=0; i<2; i++)
                                 veryClose.get(i).setDead();
 
                             this.isMerging = false;
                             this.mergeCooldownCounter = 40;
                             nearby.forEach(s -> ((EntitySlimeExtend)s).meap$setIsMerging(false));
                         }
-
                     } else {
                         this.isMerging = true;
                         nearby.forEach(s -> ((EntitySlimeExtend)s).meap$setIsMerging(true));
                     }
-                } else {
-                    if (this.isMerging) {
-                        this.isMerging = false;
-                        this.mergeCooldownCounter = 40;
-                        nearby.forEach(s -> ((EntitySlimeExtend)s).meap$setIsMerging(false));
-                    }
+                } else if (this.isMerging) {
+                    this.isMerging = false;
+                    this.mergeCooldownCounter = 40;
+                    nearby.forEach(s -> ((EntitySlimeExtend)s).meap$setIsMerging(false));
                 }
             }
-
-            // -------------------------------------------------------------------
-            // NON-CORE MERGING (FOLLOW CORE)
-            // -------------------------------------------------------------------
-        } else {
+        }
+        // Non-core: follow core
+        else {
             @SuppressWarnings("unchecked")
-            List<EntitySlime> nearby = this.worldObj.getEntitiesWithinAABB(
-                    EntitySlime.class, this.boundingBox.expand(12, 6, 12)
-            );
-
+            List<EntitySlime> nearby = this.worldObj.getEntitiesWithinAABB(EntitySlime.class, this.boundingBox.expand(12,6,12));
             EntitySlime core = nearby.stream()
                     .filter(s -> ((EntitySlimeExtend)s).meap$getIsCore() != 0 && s.isEntityAlive())
                     .findFirst().orElse(null);
 
             if (this.isMerging) {
-                if (core != null) {
-                    this.faceEntity(core, 10, 20);
-                } else {
-                    this.isMerging = false;
-                }
+                if (core != null) this.faceEntity(core, 10, 20);
+                else this.isMerging = false;
             }
         }
     }
 
     // -------------------------------------------------------------------
-    // XP Logic
+    // XP on small slimes
     // -------------------------------------------------------------------
     @Inject(method = "setSlimeSize", at = @At("TAIL"))
     private void meap$xpOnSmall(int size, CallbackInfo ci) {
-        if (!isMagma) {
-            this.experienceValue = (size == 1) ? 2 : 0;
-        }
+        if (!isMagma) this.experienceValue = (size == 1 ? 2 : 0);
     }
 
     // -------------------------------------------------------------------
-    // Helper — Create child slime (never core unless chosen)
+    // Helper for splitting
     // -------------------------------------------------------------------
     @Unique
     private EntitySlime meap$simpleCreateInstance() {
@@ -221,39 +183,32 @@ public abstract class EntitySlimeMixin
     }
 
     // -------------------------------------------------------------------
-    // Slime Splitting — Core inheritance
+    // Slime splitting (core inheritance)
     // -------------------------------------------------------------------
     @Override
     public void setDead() {
         int size = this.getSlimeSize();
-
         if (!this.worldObj.isRemote && size > 1 && this.getHealth() <= 0) {
-
             int count = 2 + this.rand.nextInt(3);
             boolean coreNeeded = (size == 4) || this.meap$getIsCore() == 1;
 
             for (int i = 0; i < count; i++) {
-	            float dx = ((i % 2) - 0.5F) * size / 40F;
+                float dx = ((i % 2) - 0.5F) * size / 40F;
                 float dz = (((float) i / 2) - 0.5F) * size / 40F;
 
                 EntitySlime child = this.meap$simpleCreateInstance();
-
                 if (coreNeeded) {
                     ((EntitySlimeExtend)child).meap$setIsCore((byte)1);
                     coreNeeded = false;
                 }
 
                 ((EntitySlimeAccess)child).invokeSetSlimeSize(size / 2);
-
-                child.setLocationAndAngles(
-                        this.posX + dx, this.posY + 0.5, this.posZ + dz,
-                        this.rand.nextFloat() * 360F, 0
-                );
+                child.setLocationAndAngles(this.posX + dx, this.posY + 0.5, this.posZ + dz,
+                        this.rand.nextFloat() * 360F, 0);
 
                 this.worldObj.spawnEntityInWorld(child);
             }
         }
-
         this.isDead = true;
     }
 }
