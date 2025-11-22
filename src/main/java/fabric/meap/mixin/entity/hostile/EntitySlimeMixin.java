@@ -69,12 +69,13 @@ public abstract class EntitySlimeMixin
     // -------------------------------------------------------------------
     // Merge Logic
     // -------------------------------------------------------------------
+    @SuppressWarnings("DiscouragedShift")
     @Inject(
             method = "updateEntityActionState()V",
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/src/EntitySlime;faceEntity(Lnet/minecraft/src/Entity;FF)V",
-                    shift = At.Shift.AFTER
+                    shift = At.Shift.BY, by = 2
             )
     )
     private void meap$mergeLogic(CallbackInfo ci) {
