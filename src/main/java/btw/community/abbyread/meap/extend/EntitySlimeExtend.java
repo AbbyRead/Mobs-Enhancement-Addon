@@ -1,6 +1,14 @@
 package btw.community.abbyread.meap.extend;
 
+import net.minecraft.src.EntitySlime;
+import org.spongepowered.asm.mixin.Unique;
+
 public interface EntitySlimeExtend {
+
+    // initializedFromNBT
+    boolean meap$getInitializedFromNBT();
+    void meap$setInitializedFromNBT(boolean value);
+
     // isMagma
     boolean meap$getIsMagma();
     void meap$setIsMagma(boolean value);
