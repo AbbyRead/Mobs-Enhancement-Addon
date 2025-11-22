@@ -5,9 +5,11 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "access.EntityCreatureAccess",
+    "access.EntityLivingAccess",
     "access.EntitySlimeAccess",
     "access.EntityWitherAccess",
     "entity.generic.EntityLivingMixin",
+    "entity.hostile.EntitySkeletonMixin",
     "entity.hostile.EntitySlimeMixin",
     "entity.hostile.EntityWitherMixin"
   ],
