@@ -22,9 +22,6 @@ This is a port of Mobs Enhancement Addon (MEA) to Better Than Wolves 3.0.0.  MEA
 - Zombies have a chance to be able to sense targets through opaque blocks.
 - Zombies transform into a skeleton of half its max health when die of sunlight, 
 
-Currently:
-- Zombies crash the game before setting fire in sunlight
-
 ### Skeletons
 
 - Skeletons move faster.

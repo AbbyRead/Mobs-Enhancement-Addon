@@ -4,6 +4,8 @@
   "package": "fabric.meap.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "access.EntityWitherAccess",
+    "entity.hostile.EntityWitherMixin"
   ],
   "client": [
   ],
