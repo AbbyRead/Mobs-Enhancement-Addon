@@ -12,6 +12,7 @@
     "entity.hostile.EntityWitherMixin"
   ],
   "client": [
+    "render.RenderSlimeMixin"
   ],
   "injectors": {
     "defaultRequire": 1
