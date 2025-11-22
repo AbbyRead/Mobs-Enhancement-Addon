@@ -101,9 +101,9 @@ Currently:
 
 ### Withers
 
-- Withers follow their attack target at a larger distance.
+- ✅ Withers follow their attack target at a larger distance.
 - ✅ Withers sometimes summon wither skeletons when their health is above half.
-- Withers sometimes dash toward their attack target when their health is below half.
+- ✅ Withers sometimes dash toward their attack target when their health is below half.
 
 ### Endermen
 
