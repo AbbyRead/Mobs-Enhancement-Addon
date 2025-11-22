@@ -8,10 +8,10 @@ import net.minecraft.src.MathHelper;
 @Environment(EnvType.CLIENT)
 public class MEAEffectManager {
 
-	// TODO: Test if these effects work
 	public static final int SLIME_MERGE_EFFECT_ID = 4095;
 	public static final int WITHER_SUMMON_EFFECT_ID = 4094;
 
+	// TODO: Test if this effect works
 	public static void initEffects() {
 		EffectHandler.effectMap.put(SLIME_MERGE_EFFECT_ID, (mcInstance, world, player, x, y, z, data) -> {
 			world.playSound(x, y, z, "mob.slime.big", 1.0F, (world.rand.nextFloat() - world.rand.nextFloat()) * 0.2F + 1.0F);
