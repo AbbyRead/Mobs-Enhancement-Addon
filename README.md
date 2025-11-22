@@ -66,8 +66,8 @@ This is a port of Mobs Enhancement Addon (MEA) to Better Than Wolves 3.0.0.  MEA
 
 ### Slimes
 
-- One of the slimes that big slimes and medium core slimes split into on death becomes a core slime, whose texture is slightly different from ordinary ones.
-- Core slimes attract nearby ordinary slimes to approach them, and finally merge into them to become one larger slime.
+- ✅ One of the slimes that big slimes and medium core slimes split into on death becomes a core slime, whose texture is slightly different from ordinary ones.
+- ✅ Core slimes attract nearby ordinary slimes to approach them, and finally merge into them to become one larger slime.
 
 Currently:
 - Core slime has missing texture magenta
@@ -102,7 +102,7 @@ Currently:
 ### Withers
 
 - Withers follow their attack target at a larger distance.
-- Withers sometimes summon wither skeletons when their health is above half.
+- ✅ Withers sometimes summon wither skeletons when their health is above half.
 - Withers sometimes dash toward their attack target when their health is below half.
 
 ### Endermen
