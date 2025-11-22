@@ -51,11 +51,6 @@ public abstract class EntitySlimeMixin extends EntityLiving implements IMob, Ent
 		this.dataWatcher.updateObject(IS_CORE_DATA_WATCHER_ID, value);
 	}
 
-	@Unique
-	public void setMagma() {
-		this.isMagma = true;
-	}
-
 	@Inject(
 			method = "<init>",
 			at = @At(value = "TAIL")
