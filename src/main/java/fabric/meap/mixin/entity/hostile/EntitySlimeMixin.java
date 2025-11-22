@@ -89,7 +89,7 @@ public abstract class EntitySlimeMixin extends EntityLiving implements IMob, Ent
 							.toList();
 					if (nearby.size() >= 2) {
 						if (this.isMerging) {
-							faceEntity((EntitySlime) nearby.get(0), 10.0F, 20.0F);
+							faceEntity(nearby.get(0), 10.0F, 20.0F);
 
 							double checkRange = self.getSlimeSize() == 1 ? 0.75D : 1.0D;
 							@SuppressWarnings("unchecked")
