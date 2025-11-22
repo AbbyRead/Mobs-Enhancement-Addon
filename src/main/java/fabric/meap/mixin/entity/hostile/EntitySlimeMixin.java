@@ -74,7 +74,7 @@ public abstract class EntitySlimeMixin
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/src/EntitySlime;faceEntity(Lnet/minecraft/src/Entity;FF)V",
-                    shift = At.Shift.BY, by = 2
+                    shift = At.Shift.AFTER
             )
     )
     private void meap$mergeLogic(CallbackInfo ci) {
@@ -86,6 +86,7 @@ public abstract class EntitySlimeMixin
 
             if (mergeCooldownCounter <= 0) {
 
+                @SuppressWarnings("unchecked")
                 List<EntitySlime> nearby = this.worldObj.getEntitiesWithinAABB(
                         EntitySlime.class, this.boundingBox.expand(12, 6, 12)
                 );
@@ -103,6 +104,7 @@ public abstract class EntitySlimeMixin
 
                         double range = (this.getSlimeSize() == 1 ? 0.75 : 1.0);
 
+                        @SuppressWarnings("unchecked")
                         List<EntitySlime> veryClose = this.worldObj.getEntitiesWithinAABB(
                                 EntitySlime.class, this.boundingBox.expand(range, range, range)
                         );
@@ -147,6 +149,7 @@ public abstract class EntitySlimeMixin
             }
         } else {
             // Follow nearest core if merging
+            @SuppressWarnings("unchecked")
             List<EntitySlime> nearby = this.worldObj.getEntitiesWithinAABB(
                     EntitySlime.class, this.boundingBox.expand(12, 6, 12)
             );
@@ -212,8 +215,9 @@ public abstract class EntitySlimeMixin
             boolean coreNeeded = (size == 4) || this.meap$getIsCore() == (byte)1;
 
             for (int i = 0; i < count; i++) {
+                float f = (float) i;
                 float dx = ((i % 2) - 0.5F) * size / 40F;
-                float dz = ((i / 2) - 0.5F) * size / 40F;
+                float dz = ((f / 2) - 0.5F) * size / 40F;
 
                 EntitySlime child = this.meap$simpleCreateInstance();
 
