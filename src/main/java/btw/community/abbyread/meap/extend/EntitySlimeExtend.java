@@ -12,10 +12,9 @@ public interface EntitySlimeExtend {
 
     // isCore
     byte meap$getIsCore();
-    @SuppressWarnings("unused")
     void meap$setIsCore(byte id);
 
     // isMerging
-    @SuppressWarnings("unused") boolean meap$getIsMerging();
-    @SuppressWarnings("unused") void meap$setIsMerging(boolean value);
+    boolean meap$getIsMerging();
+    void meap$setIsMerging(boolean value);
 }
