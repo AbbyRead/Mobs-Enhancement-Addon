@@ -21,7 +21,7 @@ public abstract class EntitySlimeMixin extends EntityLiving implements IMob, Ent
 	@Unique
 	public boolean isMagma;
 	@Unique
-	private static final int IS_CORE_DATA_WATCHER_ID = 25;
+	private static final int IS_CORE_DATA_WATCHER_ID = 20;
 	@Unique
 	public int mergeCooldownCounter;
 	@Unique
@@ -180,7 +180,9 @@ public abstract class EntitySlimeMixin extends EntityLiving implements IMob, Ent
 
 	@Override
 	public void meap$simpleSetDead() {
-		this.isDead = true;
+		if (!this.worldObj.isRemote) {
+			this.setDead(); // proper removal for 1.6.4
+		}
 	}
 
 	@Override
@@ -212,11 +214,11 @@ public abstract class EntitySlimeMixin extends EntityLiving implements IMob, Ent
 				float dx = ((float)(i % 2) - 0.5F) * (float)size / 40.0F;
 				float dz = ((float)(i / 2) - 0.5F) * (float)size / 40.0F;
 				EntitySlime child = this.simpleCreateInstance();
+				((EntitySlimeAccess)child).invokeSetSlimeSize(size / 2);
 				if (coreNeeded) {
 					((EntitySlimeExtend)child).meap$setIsCore((byte)1);
 					coreNeeded = false;
 				}
-				((EntitySlimeAccess)child).invokeSetSlimeSize(size / 2);
 				child.setLocationAndAngles(this.posX + (double)dx, this.posY + 0.5D, this.posZ + (double)dz, this.rand.nextFloat() * 360.0F, 0.0F);
 				this.worldObj.spawnEntityInWorld(child);
 			}
