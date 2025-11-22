@@ -32,6 +32,8 @@ public abstract class EntitySlimeMixin extends EntityLiving implements IMob, Ent
 	}
 
 	@Shadow
+	public abstract int getSlimeSize();
+	@Shadow
 	protected abstract void setSlimeSize(int iSize);
 
 	// -------------------------------------------------------------------
@@ -186,22 +188,24 @@ public abstract class EntitySlimeMixin extends EntityLiving implements IMob, Ent
 	}
 
 	@Override
-	public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
-		super.writeEntityToNBT(par1NBTTagCompound);
+	public void writeEntityToNBT(NBTTagCompound tag) {
+		super.writeEntityToNBT(tag);
 
-		par1NBTTagCompound.setByte("IsCore", this.meap$getIsCore());
+		tag.setByte("IsCore", this.meap$getIsCore());
+		tag.setInteger("SlimeSize", this.getSlimeSize());
 	}
 
 	@Override
-	public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
-		super.readEntityFromNBT(par1NBTTagCompound);
+	public void readEntityFromNBT(NBTTagCompound tag) {
+		super.readEntityFromNBT(tag);
 
-		this.meap$setIsCore(par1NBTTagCompound.getByte("IsCore"));
+		this.meap$setIsCore(tag.getByte("IsCore"));
+		this.setSlimeSize(tag.getByte("SlimeSize"));
 	}
 
 	@Override
 	public void setDead() {
-		int size = self.getSlimeSize();
+		int size = this.getSlimeSize();
 
 		if (!this.worldObj.isRemote && size > 1 && this.getHealth() <= 0)
 		{
