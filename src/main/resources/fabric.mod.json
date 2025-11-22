@@ -24,7 +24,9 @@
   "custom": {
     "btw:addon_prefix": "MEAP",
     "loom:injected_interfaces": {
-
+      "net/minecraft/src/EntitySlime": [
+        "btw/community/abbyread/meap/extend/EntitySlimeExtend"
+      ]
     }
   },
   "mixins": [
