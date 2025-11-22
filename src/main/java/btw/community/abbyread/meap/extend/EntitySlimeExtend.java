@@ -1,8 +1,5 @@
 package btw.community.abbyread.meap.extend;
 
-import net.minecraft.src.EntitySlime;
-import org.spongepowered.asm.mixin.Unique;
-
 public interface EntitySlimeExtend {
 
     // initializedFromNBT

@@ -151,7 +151,7 @@ public abstract class EntitySlimeMixin
                                     MathHelper.floor_double(this.posY),
                                     MathHelper.floor_double(this.posZ), 0);
 
-                            ((EntitySlimeAccess)this).invokeSetSlimeSize(this.getSlimeSize() * 2);
+                            this.invokeSetSlimeSize(this.getSlimeSize() * 2);
 
                             if (this.getSlimeSize() == 4)
                                 this.meap$setIsCore((byte)0);
