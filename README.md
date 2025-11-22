@@ -22,6 +22,9 @@ This is a port of Mobs Enhancement Addon (MEA) to Better Than Wolves 3.0.0.  MEA
 - Zombies have a chance to be able to sense targets through opaque blocks.
 - Zombies transform into a skeleton of half its max health when die of sunlight, 
 
+Currently:
+- Zombies crash the game before setting fire in sunlight
+
 ### Skeletons
 
 - Skeletons move faster.
@@ -68,6 +71,10 @@ This is a port of Mobs Enhancement Addon (MEA) to Better Than Wolves 3.0.0.  MEA
 
 - One of the slimes that big slimes and medium core slimes split into on death becomes a core slime, whose texture is slightly different from ordinary ones.
 - Core slimes attract nearby ordinary slimes to approach them, and finally merge into them to become one larger slime.
+
+Currently:
+- Core slime has missing texture magenta
+- they don't merge.
 
 ### Silverfish
 
